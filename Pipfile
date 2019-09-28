@@ -8,6 +8,8 @@ python_version = "3.8"
 
 [packages]
 python-dotenv = "*"
+bs4 = "*"
+lxml = "*"
 
 [dev-packages]
 mypy = "*"
