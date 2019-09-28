@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+table {
+  border-collapse: collapse;
+  font: 16px Arial;
+  color: var(--main-color);
+  text-align: center;
+}
+
+tr {
+  background: var(--main-bg);
+}
+
+tr:nth-child(2n) {
+  filter: brightness(var(--stripe-bg));
+}
+
+td:nth-child(1) {
+  width: 20.625em;
+}
+
+td:nth-child(2) {
+  white-space: nowrap;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+tbody {
+  line-height: 1.13em;
+}
+
+.subject {
+  font: bold 1.125em Times New Roman;
+}
+
+.type {
+  font-size: 0.75em;
+}
+
+.teacher {
+  font-size: 0.875em;
+}

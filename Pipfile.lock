@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "adf83b93ffff8d9912b5611f00fd40907ffaa886d649eb61860466f1974c4ee0"
+            "sha256": "d3a780fcef47108828cc365772e725ce9033d78c63386651f5046a97fb41c542"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,13 @@
         ]
     },
     "default": {
+        "imgkit": {
+            "hashes": [
+                "sha256:29a12adf8dc3f2c65c465bcb0568393573b8d52c4be2a4a9230b162a1ac53c8d"
+            ],
+            "index": "pypi",
+            "version": "==1.0.2"
+        },
         "python-dotenv": {
             "hashes": [
                 "sha256:debd928b49dbc2bf68040566f55cdb3252458036464806f4094487244e2a4093",
