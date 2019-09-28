@@ -10,6 +10,7 @@ python_version = "3.8"
 test = "pytest"
 
 [packages]
+python-dotenv = "*"
 
 [dev-packages]
 mypy = "*"
