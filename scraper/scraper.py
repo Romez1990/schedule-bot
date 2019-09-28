@@ -9,8 +9,6 @@ class Scraper:
         html = result.text
         soup = BeautifulSoup(html, 'lxml')
 
-        links: List[str] = []
         link_elements = soup.select('#node-253 .file a')
-        for link in link_elements:
-            links.append(link.get('href'))
+        links: List[str] = [link.get('href') for link in link_elements]
         return links
