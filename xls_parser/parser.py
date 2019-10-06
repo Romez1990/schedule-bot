@@ -70,7 +70,11 @@ class Parser:
                     class_number_cell = \
                         sheet.cell(row_number, column).value
                     if class_number_cell is None:
-                        continue
+                        if not day_schedule:
+                            day_schedule.append(None)
+                            continue
+                        else:
+                            break
                     entry = Entry()
                     entry.subject = str(
                         sheet.cell(row_number, column).value)
@@ -81,6 +85,7 @@ class Parser:
                     entry.class_room = str(
                         sheet.cell(row_number, column + 1).value)
                     day_schedule.append(entry)
-                group_schedule[week_day] = day_schedule
+                if day_schedule:
+                    group_schedule[week_day] = day_schedule
 
             schedule[group] = group_schedule
