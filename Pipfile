@@ -10,6 +10,7 @@ python_version = "3.8"
 python-dotenv = "*"
 bidict = "*"
 pillow = "*"
+openpyxl = "*"
 
 [dev-packages]
 mypy = "*"
