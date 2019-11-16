@@ -9,6 +9,7 @@ python_version = "3.8"
 [packages]
 python-dotenv = "*"
 bidict = "*"
+pillow = "*"
 
 [dev-packages]
 mypy = "*"
