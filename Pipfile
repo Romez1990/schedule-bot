@@ -12,6 +12,7 @@ test = "pytest"
 [packages]
 python-dotenv = "*"
 bidict = "*"
+pillow = "*"
 
 [dev-packages]
 mypy = "*"
