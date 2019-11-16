@@ -13,6 +13,9 @@ test = "pytest"
 python-dotenv = "*"
 bidict = "*"
 pillow = "*"
+requests = "*"
+beautifulsoup4 = "*"
+lxml = "*"
 
 [dev-packages]
 mypy = "*"
