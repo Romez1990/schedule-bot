@@ -31,12 +31,15 @@ class Scraper:
     def _parse_groups(self, groups: Dict[str, str]) -> Schedule:
         schedule = Schedule()
         for group_name, url in groups.items():
-            soup = self._get_soup(url)
-            day_tags: List[Tag] = \
-                soup.select('.table_gp tr:not(:nth-child(1))')
-            group_schedule = self._parse_days(day_tags)
-            schedule[Group(group_name)] = group_schedule
+            self._parse_group(url, group_name, schedule)
         return schedule
+
+    def _parse_group(self, url: str, group_name: str,
+                     schedule: Schedule) -> None:
+        soup = self._get_soup(url)
+        day_tags: List[Tag] = soup.select('.table_gp tr:not(:nth-child(1))')
+        group_schedule = self._parse_days(day_tags)
+        schedule[Group(group_name)] = group_schedule
 
     def _parse_days(self, day_tags: List[Tag]) -> GroupSchedule:
         group_schedule = GroupSchedule()
