@@ -13,10 +13,11 @@ test = "pytest"
 python-dotenv = "*"
 bidict = "*"
 pillow = "*"
-requests = "*"
+aiohttp = "*"
 beautifulsoup4 = "*"
 lxml = "*"
 
 [dev-packages]
 mypy = "*"
 pytest = "*"
+pytest-asyncio = "*"

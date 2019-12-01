@@ -1,12 +1,13 @@
-from pytest import fixture
+from pytest import fixture, mark
 
 from scraper import Scraper
 from renderer import Renderer
 from structures import ScheduleKind, Group
 
 
-def test_render_our_groups(scraper: Scraper, renderer: Renderer) -> None:
-    schedule = scraper.fetch_schedule()
+@mark.asyncio
+async def test_render_our_groups(scraper: Scraper, renderer: Renderer) -> None:
+    schedule = await scraper.fetch_schedule()
     schedule = schedule.filter([
         Group('4ПрИн-5.16'),
         Group('4ПрИн-5а.16'),

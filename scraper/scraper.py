@@ -1,7 +1,8 @@
 from typing import Dict, List
 from urllib.parse import quote
+from asyncio import wait
+from aiohttp import ClientSession
 from bs4 import BeautifulSoup, Tag
-import requests
 
 from structures import (
     Schedule,
@@ -14,13 +15,13 @@ from structures import (
 
 
 class Scraper:
-    def fetch_schedule(self) -> Schedule:
-        groups = self._fetch_groups()
-        schedule = self._parse_groups(groups)
+    async def fetch_schedule(self) -> Schedule:
+        groups = await self._fetch_groups()
+        schedule = await self._parse_groups(groups)
         return schedule
 
-    def _fetch_groups(self) -> Dict[str, str]:
-        soup = self._get_soup('http://edu.viti-mephi.ru/raspth')
+    async def _fetch_groups(self) -> Dict[str, str]:
+        soup = await self._get_soup('http://edu.viti-mephi.ru/raspth')
         link_tags: List[Tag] = soup.select('.raspth_table .cell a')
         groups: Dict[str, str] = \
             {link.text: 'http://edu.viti-mephi.ru/raspth/list?name=' +
@@ -28,15 +29,18 @@ class Scraper:
              for link in link_tags}
         return groups
 
-    def _parse_groups(self, groups: Dict[str, str]) -> Schedule:
+    async def _parse_groups(self, groups: Dict[str, str]) -> Schedule:
         schedule = Schedule()
+        tasks = []
         for group_name, url in groups.items():
-            self._parse_group(url, group_name, schedule)
+            task = self._parse_group(url, group_name, schedule)
+            tasks.append(task)
+        await wait(tasks)
         return schedule
 
-    def _parse_group(self, url: str, group_name: str,
-                     schedule: Schedule) -> None:
-        soup = self._get_soup(url)
+    async def _parse_group(self, url: str, group_name: str,
+                           schedule: Schedule) -> None:
+        soup = await self._get_soup(url)
         day_tags: List[Tag] = soup.select('.table_gp tr:not(:nth-child(1))')
         group_schedule = self._parse_days(day_tags)
         schedule[Group(group_name)] = group_schedule
@@ -68,8 +72,9 @@ class Scraper:
             day_schedule.append(entry)
         return day_schedule
 
-    def _get_soup(self, url: str) -> BeautifulSoup:
-        response = requests.get(url)
-        html = response.text
-        soup = BeautifulSoup(html, 'lxml')
-        return soup
+    async def _get_soup(self, url: str) -> BeautifulSoup:
+        async with ClientSession() as session:
+            async with session.get(url) as response:
+                html = await response.text()
+                soup = BeautifulSoup(html, 'lxml')
+                return soup
