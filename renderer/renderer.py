@@ -1,5 +1,6 @@
 from __future__ import annotations
 from pathlib import Path
+from io import BytesIO
 from typing import Tuple, Dict, List, Any
 from PIL import ImageFont
 
@@ -9,7 +10,6 @@ from structures import (
     GroupSchedule,
     WeekDay,
     DaySchedule,
-    ScheduleKind,
 )
 from .image import Image
 from .themes import themes, Theme
@@ -84,14 +84,13 @@ class Renderer:
             str(Path(__file__).parent / Path(path)),
             self._scale * font_size)
 
-    def render(self, schedule: Schedule, schedule_kind: ScheduleKind,
-               theme_name: str = 'light') -> None:
+    def render(self, schedule: Schedule, theme_name: str = 'light') -> BytesIO:
         self._set_theme(theme_name)
         self._create_image(schedule)
         self._render_sidebar()
         self._render_header(schedule.groups)
         self._render_schedule(schedule)
-        self._save_image(schedule, schedule_kind, theme_name)
+        return self._save_image()
 
     def _set_theme(self, theme_name: str) -> None:
         try:
@@ -298,10 +297,5 @@ class Renderer:
         self._image.text_wrap_center(class_room, position, cell_size,
                                      line_height, font)
 
-    def _save_image(self, schedule: Schedule,
-                    schedule_kind: ScheduleKind, theme_name: str) -> None:
-        filename = ''
-        for group in schedule.groups:
-            filename += str(group) + ' '
-        filename += theme_name
-        self._image.save(schedule_kind, filename)
+    def _save_image(self) -> BytesIO:
+        return self._image.save()

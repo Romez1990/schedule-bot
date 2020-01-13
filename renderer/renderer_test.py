@@ -8,33 +8,32 @@ from structures import (
     WeekDay,
     DaySchedule,
     Entry,
-    ScheduleKind,
 )
 
 
 def test_rendering_day(day_schedule: Schedule,
                        renderer: Renderer) -> None:
-    renderer.render(day_schedule, ScheduleKind.today)
+    renderer.render(day_schedule, 'dark')
 
 
 def test_rendering_week(week_schedule: Schedule,
                         renderer: Renderer) -> None:
-    renderer.render(week_schedule, ScheduleKind.week)
+    renderer.render(week_schedule, 'dark')
 
 
 def test_rendering_multi_group_day(
         multi_group_day_schedule: Schedule, renderer: Renderer) -> None:
-    renderer.render(multi_group_day_schedule, ScheduleKind.today)
+    renderer.render(multi_group_day_schedule, 'dark')
 
 
 def test_rendering_multiple_groups(multiple_groups_schedule: Schedule,
                                    renderer: Renderer) -> None:
-    renderer.render(multiple_groups_schedule, ScheduleKind.week)
+    renderer.render(multiple_groups_schedule, 'dark')
 
 
 def test_render_wrong_theme(day_schedule: Schedule, renderer: Renderer) -> None:
     with raises(ValueError):
-        renderer.render(day_schedule, ScheduleKind.today, '123')
+        renderer.render(day_schedule, '123')
 
 
 @fixture

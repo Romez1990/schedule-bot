@@ -1,8 +1,7 @@
 from pathlib import Path
+from io import BytesIO
 from typing import Tuple, List
 from PIL import Image as ImageBase, ImageDraw, ImageFont
-
-from structures import ScheduleKind
 
 
 class Image:
@@ -88,7 +87,8 @@ class Image:
             lines.append(line)
         return lines
 
-    def save(self, schedule_kind: ScheduleKind, filename: str) -> None:
-        directory: Path = Path(__file__).parent / 'output' / schedule_kind.value
-        directory.mkdir(parents=True, exist_ok=True)
-        self._image.save(str(directory / f'{filename}.jpg'), 'JPEG')
+    def save(self) -> BytesIO:
+        bytes_io = BytesIO()
+        self._image.save(bytes_io, 'JPEG')
+        bytes_io.seek(0)
+        return bytes_io
