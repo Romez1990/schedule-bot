@@ -8,6 +8,7 @@ python_version = "3.8"
 
 [scripts]
 test = "pytest"
+render-my-group = "python script.py render-my-group"
 
 [packages]
 python-dotenv = "*"
