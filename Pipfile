@@ -9,6 +9,7 @@ python_version = "3.8"
 [scripts]
 test = "pytest"
 render-my-group = "python script.py render-my-group"
+bot-server = "python bot_server.py"
 
 [packages]
 python-dotenv = "*"
@@ -17,6 +18,9 @@ pillow = "*"
 aiohttp = "*"
 beautifulsoup4 = "*"
 lxml = "*"
+python-telegram-bot = "*"
+telebot = "*"
+pytelegrambotapi = "*"
 
 [dev-packages]
 mypy = "*"
