@@ -1,20 +1,20 @@
 from __future__ import annotations
-
 import re
 
 
 class Group:
     def __init__(self, group_name: str):
         result = re.search(
-            '^([1-4])([А-Яа-я]{2,4})-(\\d{1,2})(а?)\\.?(\\d{2})$',
+            '^(?P<grade>[1-4])(?P<specialty>[А-Яа-я]{2,4})-'
+            '(?P<number>\\d{1,2})(?P<a>а?)\\.?(?P<admission_year>\\d{2})$',
             group_name)
         if result is None:
             raise ValueError(f'Cannot parse this group name: {group_name}')
-        self.grade = int(result.group(1))
-        self.specialty = result.group(2)
-        self.number = int(result.group(3))
-        self.a = bool(result.group(4))
-        self.admission_year = int(result.group(5))
+        self.grade = int(result.group('grade'))
+        self.specialty = result.group('specialty')
+        self.number = int(result.group('number'))
+        self.a = bool(result.group('a'))
+        self.admission_year = int(result.group('admission_year'))
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Group):
