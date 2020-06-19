@@ -5,6 +5,7 @@ from .group import Group
 from .group_schedule import GroupSchedule
 from .week_day import WeekDay
 from .day_schedule import DaySchedule
+import hashlib
 
 
 class Schedule:
@@ -34,6 +35,12 @@ class Schedule:
 
     def __setitem__(self, key: Group, value: GroupSchedule) -> None:
         self._groups[key] = value
+
+    def __hash__(self) -> int:
+        a = frozenset(self._groups.items())
+        h = hashlib.blake2b(digest_size=16)
+        h.update(a)
+        return h.digest()
 
     def filter(self, groups: List[Group], week_day: WeekDay = None) -> Schedule:
         schedule = Schedule()

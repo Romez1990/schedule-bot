@@ -13,22 +13,22 @@ from structures import (
 
 def test_rendering_day(day_schedule: Schedule,
                        renderer: Renderer) -> None:
-    renderer.render(day_schedule, 'dark')
+    renderer.render(day_schedule)
 
 
 def test_rendering_week(week_schedule: Schedule,
                         renderer: Renderer) -> None:
-    renderer.render(week_schedule, 'dark')
+    renderer.render(week_schedule)
 
 
 def test_rendering_multi_group_day(
         multi_group_day_schedule: Schedule, renderer: Renderer) -> None:
-    renderer.render(multi_group_day_schedule, 'dark')
+    renderer.render(multi_group_day_schedule)
 
 
 def test_rendering_multiple_groups(multiple_groups_schedule: Schedule,
                                    renderer: Renderer) -> None:
-    renderer.render(multiple_groups_schedule, 'dark')
+    renderer.render(multiple_groups_schedule)
 
 
 def test_render_wrong_theme(day_schedule: Schedule, renderer: Renderer) -> None:
