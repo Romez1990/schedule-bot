@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Dict, List
 
+from utils.hashing import hash_somehow
 from .week_day import WeekDay
 from .day_schedule import DaySchedule
 
@@ -24,3 +25,6 @@ class GroupSchedule:
 
     def __setitem__(self, key: WeekDay, value: DaySchedule) -> None:
         self._days[key] = value
+
+    def __hash__(self) -> int:
+        return hash_somehow(str([hash(day) for day in self._days.values()]))
