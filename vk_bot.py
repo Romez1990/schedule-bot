@@ -239,7 +239,7 @@ if __name__ == '__main__':
     groups = schedule.groups
     for group in groups:
         name = str(group)
-        sched = schedule.filter(([Group(name)]))
+        sched = schedule[Group(name)]
         print(f'{name} {hash(sched)}')
 
     # update_thread = Thread(target=update)
