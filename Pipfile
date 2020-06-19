@@ -18,13 +18,9 @@ pillow = "*"
 aiohttp = "*"
 beautifulsoup4 = "*"
 lxml = "*"
-python-telegram-bot = "*"
-telebot = "*"
-pytelegrambotapi = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
 vk-api = "*"
-hashlib = "*"
 
 [dev-packages]
 mypy = "*"
