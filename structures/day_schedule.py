@@ -1,5 +1,6 @@
 from typing import List, Optional, Iterator
 
+from utils.hashing import hash_somehow
 from .entry import Entry
 
 
@@ -24,3 +25,6 @@ class DaySchedule:
         ])
 
     __nonzero__ = __bool__
+
+    def __hash__(self) -> int:
+        return hash_somehow(str([hash(entry) for entry in self._entries]))
