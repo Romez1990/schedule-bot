@@ -2,6 +2,7 @@ from threading import Thread
 from typing import List
 from time import sleep
 from datetime import datetime
+from os import getenv as env
 import vk_api
 from vk_api.utils import get_random_id
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
@@ -15,7 +16,7 @@ from structures import Group, Schedule
 
 from dbtest import User, UserGroup, GroupHash, Service, Theme, Mode, DBHelper
 
-vk_session = vk_api.VkApi(token='d0568eb3485667aa564bb7909d1306f031a280d1e7f139b042029c1c2bba4c9dd937124f9db43d2368bb4')
+vk_session = vk_api.VkApi(token=env('VK_BOT_TOKEN'))
 longpoll = VkBotLongPoll(vk_session, '195862525')
 
 schedule: Schedule
