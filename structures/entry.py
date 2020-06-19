@@ -1,3 +1,6 @@
+from utils.hashing import hash_somehow
+
+
 class Entry:
     def __init__(self, subject: str = None, kind: str = None,
                  teacher: str = None, class_room: str = None):
@@ -15,3 +18,6 @@ class Entry:
         ])
 
     __nonzero__ = __bool__
+
+    def __hash__(self) -> int:
+        return hash_somehow(self.subject + self.kind + self.teacher + self.class_room)
