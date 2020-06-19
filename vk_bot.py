@@ -3,6 +3,7 @@ from typing import List
 from time import sleep
 from datetime import datetime
 from os import getenv as env
+from dotenv import load_dotenv
 from vk_api import VkApi
 from vk_api.utils import get_random_id
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
@@ -15,6 +16,8 @@ from renderer import Renderer
 from structures import Group, Schedule
 
 from dbtest import User, UserGroup, GroupHash, Service, Theme, Mode, DBHelper
+
+load_dotenv()
 
 vk_session = VkApi(token=env('VK_BOT_TOKEN'))
 longpoll = VkBotLongPoll(vk_session, '195862525')
