@@ -37,3 +37,7 @@ class Greeting:
         """
 
         await message.reply('Тут помощь :3')
+
+
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)
