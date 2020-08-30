@@ -23,7 +23,17 @@ class Greeting:
     async def send_welcome(self, message: types.Message) -> None:
         """
         This handler will be called when user sends `/start`
-        :param message:
+        :param message: types.Message
         :return: None
         """
         await message.reply('Привет я бот')
+
+    @dp.message_handler(commands=['/help'])
+    async def send_help(self, message: types.Message) -> None:
+        """
+        This handler will be called when user sends `/help`
+        :param message: types.Message
+        :return: None
+        """
+
+        await message.reply('Тут помощь :3')
