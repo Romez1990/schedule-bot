@@ -1,18 +1,10 @@
 from aiogram import Bot, Dispatcher, executor, types
-from asyncio import run
+from .configure import bot, dp
 
-import asyncio
 import logging
-import os
-
-API_TOKEN = os.getenv('API_KEY_SCHEDULE_BOT')
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-
-# Initialize bot and dispatcher
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
 
 
 class Greeting:
