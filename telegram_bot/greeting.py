@@ -1,5 +1,5 @@
-from aiogram import Bot, Dispatcher, executor, types
-from .configure import bot, dp
+from aiogram import executor, types
+from telegram_bot.configurations.configure import dp
 
 import logging
 
