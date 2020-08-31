@@ -9,3 +9,21 @@ import logging
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
+username = ''
+user_group = ''
+
+
+class Subscription:
+    def __init__(self):
+        pass
+
+    @dp.message_handler(commands=['подписаться'])
+    async def subscribe(message: types.Message) -> None:
+        """
+        This handler will be called when user sends '/подписаться [Название_Группы]
+        :return: None
+        """
+
+
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)
