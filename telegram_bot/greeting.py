@@ -1,6 +1,7 @@
 from aiogram import executor, types
 from telegram_bot.configurations.configure import dp
 from telegram_bot.configurations.button_configuration import buttons
+from aiogram.types import ParseMode
 
 import logging
 
@@ -30,12 +31,15 @@ class Greeting:
         :param message: types.Message
         :return: None
         """
-        await message.reply('/start - команда для старта бота (по умолчанию включен)\n'
-                            'Подписаться [Название_Группы] - подписаться на рассылку расписание\n'
-                            'Отписаться [Название_Группы] - отписаться от рассылки расписание\n'
-                            'Тёмная тема - получаться рассылку расписание в тёмной теме\n'
-                            'Светлая тема - получаться рассылку расписание в светвлой теме\n'
-                            '', reply_markup=buttons)
+        message_text = '''
+<em>/start</em> - <strong>команда для старта бота</strong> (по умолчанию включен)\n
+<em>Подписаться [Название_Группы]</em> - <strong>подписаться на рассылку расписание</strong>\n
+<em>Отписаться [Название_Группы]</em> - <strong>отписаться от рассылки расписание</strong>\n
+<em>Тёмная тема</em> - <strong>получаться рассылку расписание в тёмной теме</strong>\n
+<em>Светлая тема</em> - <strong>получаться рассылку расписание в светвлой теме</strong>\n
+        '''
+
+        await message.reply(message_text, reply_markup=buttons, parse_mode=ParseMode.HTML)
 
 
 if __name__ == '__main__':
