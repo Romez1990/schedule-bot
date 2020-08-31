@@ -20,7 +20,7 @@ class Greeting:
         pass
 
     @dp.message_handler(commands=['start'])
-    async def send_welcome(self, message: types.Message) -> None:
+    async def send_welcome(message: types.Message) -> None:
         """
         This handler will be called when user sends `/start`
         :param message: types.Message
@@ -28,14 +28,13 @@ class Greeting:
         """
         await message.reply('Привет я бот')
 
-    @dp.message_handler(commands=['/help'])
-    async def send_help(self, message: types.Message) -> None:
+    @dp.message_handler(commands=['help'])
+    async def send_help(message: types.Message) -> None:
         """
         This handler will be called when user sends `/help`
         :param message: types.Message
         :return: None
         """
-
         await message.reply('Тут помощь :3')
 
 
