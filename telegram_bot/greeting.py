@@ -1,5 +1,6 @@
 from aiogram import executor, types
 from telegram_bot.configurations.configure import dp
+from telegram_bot.configurations.button_configuration import buttons
 
 import logging
 
@@ -18,7 +19,7 @@ class Greeting:
         :param message: types.Message
         :return: None
         """
-        await message.reply('Привет я бот')
+        await message.reply('Привет я бот', reply_markup=buttons)
 
     @dp.message_handler(commands=['help'])
     async def send_help(message: types.Message) -> None:
@@ -27,7 +28,7 @@ class Greeting:
         :param message: types.Message
         :return: None
         """
-        await message.reply('Тут помощь :3')
+        await message.reply('Тут помощь :3', reply_markup=buttons)
 
 
 if __name__ == '__main__':
