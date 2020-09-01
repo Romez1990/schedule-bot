@@ -6,4 +6,4 @@ __pycache__/
 
 # JetBrains | IDE
 .idea
-/telegram_bot/test.py
+/src/telegram_bot/test.py
