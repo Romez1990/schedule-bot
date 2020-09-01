@@ -8,6 +8,3 @@ def main():
     greeting = Greeting()
     telegram_bot = TelegramBot(subscription, greeting)
     telegram_bot.start()
-
-
-
