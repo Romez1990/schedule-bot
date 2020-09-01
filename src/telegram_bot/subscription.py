@@ -1,4 +1,4 @@
-from aiogram.types import ParseMode, Message
+from aiogram.types import Message
 
 import logging
 
@@ -10,6 +10,7 @@ user_group = ''
 
 
 class Subscription:
+
     async def subscribe(self, message: Message) -> None:
         """
         This handler will be called when user sends '/подписаться [Название_Группы]
