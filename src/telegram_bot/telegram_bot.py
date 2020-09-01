@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher
-from aiogram import executor, types
+from aiogram import executor
 from .subscription import Subscription
 import logging
 import os
