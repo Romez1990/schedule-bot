@@ -4,12 +4,7 @@ from aiogram import executor
 from .greeting import Greeting
 from .subscription import Subscription
 
-import logging
 from os import getenv
-
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
 
 
 class TelegramBot:
