@@ -13,9 +13,6 @@ API_TOKEN = os.getenv('API_KEY_SCHEDULE_BOT')
 logging.basicConfig(level=logging.INFO)
 
 
-# Initialize bot and dispatcher
-
-
 class TelegramBot:
     def __init__(self, subscription: Subscription, greeting: Greeting):
         bot = Bot(token=API_TOKEN)
