@@ -13,7 +13,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 class Greeting:
-    @dp.message_handler(commands=['start'])
     async def send_welcome(self, message: Message) -> None:
         """
         This handler will be called when user sends `/start`
@@ -24,7 +23,6 @@ class Greeting:
         # buttons are taken from directory configurations/buttons.py
         await message.reply(message_text_start, reply_markup=buttons, parse_mode=ParseMode.HTML)
 
-    @dp.message_handler(commands=['help'])
     async def send_help(self, message: Message) -> None:
         """
         This handler will be called when user sends `/help`
