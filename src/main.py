@@ -7,10 +7,10 @@ from .telegram_bot.telegram_dispatcher import TelegramDispatcher
 
 
 def main():
-    subscription = Subscription()
+    telegram_bot = TelegramBot()
+    subscription = Subscription(telegram_bot.bot)
     greeting = Greeting()
-    telegram_bot = TelegramBot(subscription, greeting)
-    # telegram_bot.start()
-    dispatcher = TelegramDispatcher(telegram_bot, subscription, greeting)
-    telegram = Telegram()
-    telegram
+
+    telegram_dispatcher = TelegramDispatcher(telegram_bot.bot, subscription, greeting)
+    telegram = Telegram(telegram_dispatcher)
+    telegram.start()
