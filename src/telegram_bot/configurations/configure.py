@@ -19,5 +19,3 @@ Here I will import all dependencies
 
 p.s Впервые в жизни такие комментарии пишу xDD
 """
-
-
