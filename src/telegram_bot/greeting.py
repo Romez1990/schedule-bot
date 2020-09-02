@@ -34,5 +34,3 @@ class Greeting:
         # message_text_start are taken from directory configurations/messages_text.py
         # buttons are taken from directory configurations/buttons.py
         await message.reply(message_text_help, reply_markup=buttons, parse_mode=ParseMode.HTML)
-
-
