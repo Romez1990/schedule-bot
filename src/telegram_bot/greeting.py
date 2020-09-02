@@ -12,6 +12,9 @@ logging.basicConfig(level=logging.INFO)
 
 
 class Greeting:
+    def __init__(self):
+        pass
+
     async def send_welcome(self, message: Message) -> None:
         """
         This handler will be called when user sends `/start`
