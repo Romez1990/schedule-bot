@@ -16,6 +16,11 @@ class ThemeDecoration:
         pass
 
     async def ask_theme(self, message: Message) -> None:
+        """
+        This method will be called when the user selects a theme
+        :param message:
+        :return: None
+        """
         username = message.from_user.username
         input_from_user = message.text
         ask_theme_from_user = input_from_user.split()
