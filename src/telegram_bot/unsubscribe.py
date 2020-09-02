@@ -12,11 +12,12 @@ class Unsubscribe:
         :param message:
         :return: None
         """
+
         username = message.from_user.username
         group_input_from_user = message.text
 
         user_group = group_input_from_user.split()
-
+        
         if len(username) > 1 and len(user_group[1]) > 6:
             await self.bot.send_message(message.from_user.id,
                                         f'{username} успешно отписался от рассылки на группу {user_group[1]}')
