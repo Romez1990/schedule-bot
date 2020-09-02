@@ -9,4 +9,8 @@ class TelegramBot:
 
     @property
     def bot(self) -> Bot:
+        """
+        This property function return bot
+        :return: Bot
+        """
         return self.__bot

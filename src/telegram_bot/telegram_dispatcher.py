@@ -13,4 +13,8 @@ class TelegramDispatcher:
         self.dispatcher.message_handler(commands=['help'])(greeting.send_help)
 
     def start(self) -> None:
+        """
+        This function launches the bot
+        :return: None
+        """
         executor.start_polling(self.dispatcher, skip_updates=True)

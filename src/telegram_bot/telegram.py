@@ -6,4 +6,8 @@ class Telegram:
         self.dispatcher = dispatcher
 
     def start(self) -> None:
+        """
+        This function return dispatcher start
+        :return: None
+        """
         self.dispatcher.start()
