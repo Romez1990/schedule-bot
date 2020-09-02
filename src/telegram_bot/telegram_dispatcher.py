@@ -11,6 +11,7 @@ class TelegramDispatcher:
                  theme_decoration: ThemeDecoration):
         self.dispatcher = Dispatcher(bot)
         self.dispatcher.message_handler(commands=['подписаться'])(subscription.subscribe)
+        self.dispatcher.message_handler(commands=['отписаться'])(subscription.unsubscribe)
         self.dispatcher.message_handler(commands=['start'])(greeting.send_welcome)
         self.dispatcher.message_handler(commands=['help'])(greeting.send_help)
         self.dispatcher.message_handler(commands=['тема'])(theme_decoration.ask_theme)
