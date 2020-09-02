@@ -1,16 +1,12 @@
 from aiogram import Bot
 from aiogram.types import Message
 
-
 import logging
 
 # Configure logging
 from src.telegram_bot.telegram_bot import TelegramBot
 
 logging.basicConfig(level=logging.INFO)
-
-username = ''
-user_group = ''
 
 
 class Subscription:
@@ -22,11 +18,14 @@ class Subscription:
         This handler will be called when user sends '/подписаться [Название_Группы]
         :return: None
         """
-        print(message.from_user.username)
-        print(message.text)
 
-        if len(message.from_user.username) and len(message.text) > 5:
+        username = message.from_user.username
+        group_input_from_user = message.text
+        user_group = group_input_from_user.split()
+
+        if len(username) > 1 and len(user_group[1]) > 6:
             await self.bot.send_message(message.from_user.id,
-                f'Ваше имя: {message.from_user.username} и группа {message.text} успешна добавлена в база данных')
+                                        f'Ваше имя: "{username}" и группа "{user_group[1]}" '
+                                        f'успешна добавлена в база данных')
         else:
             await self.bot.send_message(message.from_user.id, 'Error')
