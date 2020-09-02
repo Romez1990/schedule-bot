@@ -1,6 +1,7 @@
 from .telegram_bot.telegram_bot import TelegramBot
 from .telegram_bot.subscription import Subscription
 from .telegram_bot.greeting import Greeting
+from .telegram_bot.unsubscribe import Unsubscribe
 
 from .telegram_bot.telegram import Telegram
 from .telegram_bot.telegram_dispatcher import TelegramDispatcher
@@ -14,7 +15,8 @@ def main() -> None:
     telegram_bot = TelegramBot()
     subscription = Subscription(telegram_bot.bot)
     greeting = Greeting()
+    unsubscribe = Unsubscribe(telegram_bot.bot)
 
-    telegram_dispatcher = TelegramDispatcher(telegram_bot.bot, subscription, greeting)
+    telegram_dispatcher = TelegramDispatcher(telegram_bot.bot, subscription, greeting, unsubscribe)
     telegram = Telegram(telegram_dispatcher)
     telegram.start()
