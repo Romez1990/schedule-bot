@@ -29,4 +29,4 @@ class Subscription:
             await self.bot.send_message(message.from_user.id,
                 f'Ваше имя: {message.from_user.username} и группа {message.text} успешна добавлена в база данных')
         else:
-            await self.bot.send_message('Error')
+            await self.bot.send_message(message.from_user.id, 'Error')
