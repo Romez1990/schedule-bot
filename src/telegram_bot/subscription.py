@@ -27,5 +27,8 @@ class Subscription:
             await self.bot.send_message(message.from_user.id,
                                         f'Ваше имя: "{username}" и группа "{user_group[1]}" '
                                         f'успешна добавлена в база данных')
+        elif len(username) < 1 and len(username) < 6:
+            await self.bot.send_message(message.from_user.id, 'У вас недействительные данные')
+
         else:
-            await self.bot.send_message(message.from_user.id, 'Error')
+            await self.bot.send_message(message.from_user.id, 'Произошла ошибка')
