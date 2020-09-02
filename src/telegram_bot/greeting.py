@@ -36,5 +36,3 @@ class Greeting:
         await message.reply(message_text_help, reply_markup=buttons, parse_mode=ParseMode.HTML)
 
 
-if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
