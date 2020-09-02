@@ -32,3 +32,23 @@ class Subscription:
 
         else:
             await self.bot.send_message(message.from_user.id, 'Произошла ошибка')
+
+    async def unsubscribe(self, message: Message) -> None:
+        """
+        This handler will be called when user sends '/отписаться [Название_Группы]
+        :return: None
+        """
+
+        username = message.from_user.username
+        group_input_from_user = message.text
+        user_group = group_input_from_user.split()
+
+        if len(username) > 1 and len(user_group[1]) > 6:
+            await self.bot.send_message(message.from_user.id,
+                                        f'{username} успешно отписался от рассылки на группу {user_group[1]}')
+
+        elif len(username) < 1 and len(user_group[1]) < 6:
+            await self.bot.send_message(message.from_user.id, f'У вас недействительные данные')
+
+        else:
+            await self.bot.send_message(message.from_user.id, f'Извините, произошла ошибка')
