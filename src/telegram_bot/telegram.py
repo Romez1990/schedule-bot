@@ -5,5 +5,5 @@ class Telegram:
     def __init__(self, dispatcher: TelegramDispatcher):
         self.dispatcher = dispatcher
 
-    def start(self):
+    def start(self) -> None:
         self.dispatcher.start()

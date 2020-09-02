@@ -6,7 +6,7 @@ from .telegram_bot.telegram import Telegram
 from .telegram_bot.telegram_dispatcher import TelegramDispatcher
 
 
-def main():
+def main() -> None:
     telegram_bot = TelegramBot()
     subscription = Subscription(telegram_bot.bot)
     greeting = Greeting()

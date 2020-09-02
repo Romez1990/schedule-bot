@@ -12,5 +12,5 @@ class TelegramDispatcher:
         self.dispatcher.message_handler(commands=['start'])(greeting.send_welcome)
         self.dispatcher.message_handler(commands=['help'])(greeting.send_help)
 
-    def start(self):
+    def start(self) -> None:
         executor.start_polling(self.dispatcher, skip_updates=True)
