@@ -1,13 +1,6 @@
 from aiogram import Bot
 from aiogram.types import Message
 
-import logging
-
-# Configure logging
-from src.telegram_bot.telegram_bot import TelegramBot
-
-logging.basicConfig(level=logging.INFO)
-
 
 class Subscription:
     def __init__(self, bot: Bot):

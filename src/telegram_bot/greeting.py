@@ -1,14 +1,8 @@
-from aiogram import executor
 from aiogram.types import Message
 from aiogram.types import ParseMode
 
 from .configurations.messages_text import message_text_start, message_text_help
 from .configurations.button_configuration import buttons
-
-import logging
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
 
 
 class Greeting:
