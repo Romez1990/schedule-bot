@@ -4,6 +4,6 @@ __pycache__/
 # Environment
 /.env
 
-# JetBrains | IDE
+# JetBrains and IDE
 .idea
 /telegram_bot/test.py
