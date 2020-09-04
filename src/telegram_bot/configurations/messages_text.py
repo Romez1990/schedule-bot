@@ -16,6 +16,15 @@ def message_text_start():
         '''
 
 
+def message_subscribe(username, username_group, sub_or_unsub):
+    if sub_or_unsub:
+        return f'<strong>Вы <em>{username}</em> успешно подписались на рассылку группы <em>{username_group}' \
+               f'</em></strong>'
+    else:
+        return f'<strong>Вы <em>{username}</em> успешно отписались от рассылки на группу <em>{username_group}' \
+               f'</em></strong>'
+
+
 def message_theme(name, theme):
     return f'<strong>Вы <em>{name}</em> успешно выбрали рассылку темы: <em>{theme}</em></strong>'
 

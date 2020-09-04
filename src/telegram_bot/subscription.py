@@ -1,5 +1,8 @@
 from aiogram import Bot
 from aiogram.types import Message
+from aiogram.types import ParseMode
+
+from .configurations.messages_text import message_subscribe
 
 
 class Subscription:
@@ -17,9 +20,8 @@ class Subscription:
         user_group = group_input_from_user.split()
 
         if len(username) > 1 and len(user_group[1]) > 6:
-            await self.bot.send_message(message.from_user.id,
-                                        f'Ваше имя: "{username}" и группа "{user_group[1]}" '
-                                        f'успешна добавлена в база данных')
+            await self.bot.send_message(message.from_user.id, message_subscribe(username, user_group[1], True),
+                                        parse_mode=ParseMode.HTML)
         elif len(username) < 1 and len(username) < 6:
             await self.bot.send_message(message.from_user.id, 'У вас недействительные данные')
 
@@ -37,8 +39,8 @@ class Subscription:
         user_group = group_input_from_user.split()
 
         if len(username) > 1 and len(user_group[1]) > 6:
-            await self.bot.send_message(message.from_user.id,
-                                        f'{username} успешно отписался от рассылки на группу {user_group[1]}')
+            await self.bot.send_message(message.from_user.id, message_subscribe(username, user_group[1], False),
+                                        parse_mode=ParseMode.HTML)
 
         elif len(username) < 1 and len(user_group[1]) < 6:
             await self.bot.send_message(message.from_user.id, f'У вас недействительные данные')
