@@ -14,7 +14,7 @@ def main() -> None:
     """
     telegram_bot = TelegramBot()
     subscription = Subscription(telegram_bot.bot)
-    greeting = Greeting()
+    greeting = Greeting(telegram_bot.bot)
     theme_decoration = ThemeDecoration(telegram_bot.bot)
 
     telegram_dispatcher = TelegramDispatcher(telegram_bot.bot, subscription, greeting, theme_decoration)
