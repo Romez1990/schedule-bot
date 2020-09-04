@@ -17,7 +17,7 @@ def message_text_start():
 
 
 def message_theme(name, theme):
-    return f'Вы {name} успешно выбрали рассылку темы: {theme}'
+    return f'<strong>Вы <em>{name}</em> успешно выбрали рассылку темы: <em>{theme}</em></strong>'
 
 
 """

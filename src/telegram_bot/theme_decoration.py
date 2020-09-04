@@ -1,5 +1,6 @@
 from aiogram import Bot
 from aiogram.types import Message
+from aiogram.types import ParseMode
 
 from .configurations.messages_text import message_theme
 
@@ -28,8 +29,10 @@ class ThemeDecoration:
         ask_theme_from_user = input_from_user.split()
 
         if ask_theme_from_user[1] == 'тёмная' or 'темная':
-            await self.bot.send_message(message.from_user.id, message_theme(username, ask_theme_from_user[1]))
+            await self.bot.send_message(message.from_user.id, message_theme(username, ask_theme_from_user[1]),
+                                        parse_mode=ParseMode.HTML)
         elif ask_theme_from_user[1] == 'светлая' or 'белая':
-            await self.bot.send_message(message.from_user.id, message_theme(username, ask_theme_from_user[1]))
+            await self.bot.send_message(message.from_user.id, message_theme(username, ask_theme_from_user[1]),
+                                        parse_mode=ParseMode.HTML)
         else:
             raise SyntaxError('Error')
