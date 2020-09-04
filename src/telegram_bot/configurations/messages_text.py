@@ -16,6 +16,10 @@ def message_text_start():
         '''
 
 
+def message_theme(name, theme):
+    return f'Вы {name} успешно выбрали рассылку темы: {theme}'
+
+
 """
 Here I will take the text and import into other .py files 
 
