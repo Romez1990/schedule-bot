@@ -28,8 +28,8 @@ class ThemeDecoration:
         ask_theme_from_user = input_from_user.split()
 
         if ask_theme_from_user[1] == 'тёмная' or 'темная':
-            print(message_theme(username, ask_theme_from_user[1]))
+            await self.bot.send_message(message.from_user.id, message_theme(username, ask_theme_from_user[1]))
         elif ask_theme_from_user[1] == 'светлая' or 'белая':
-            print(f'The {username} chose a {ask_theme_from_user[1]} theme')
+            await self.bot.send_message(message.from_user.id, message_theme(username, ask_theme_from_user[1]))
         else:
             raise SyntaxError('Error')
