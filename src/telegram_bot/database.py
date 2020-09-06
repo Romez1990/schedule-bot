@@ -24,4 +24,11 @@ async def connect_to_database() -> asyncpg.connection:
         return f"Случилась ошибка, {ex}"
 
 
+async def add_data_to_database(username: str, subscribe: bool) -> None:
+    connect = await connect_to_database()
+    await connect.execute('''
+        INSERT INTO users(username, subscribe) VALUES($1, $2)  
+    ''', username, subscribe)
 
+
+asyncio.get_event_loop().run_until_complete(adding_data_to_database('Dizi', False))
