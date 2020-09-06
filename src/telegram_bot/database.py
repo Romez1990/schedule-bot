@@ -31,4 +31,4 @@ async def add_data_to_database(username: str, subscribe: bool) -> None:
     ''', username, subscribe)
 
 
-asyncio.get_event_loop().run_until_complete(adding_data_to_database('Dizi', False))
+asyncio.get_event_loop().run_until_complete(add_data_to_database('Dizi', False))
