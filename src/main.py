@@ -4,6 +4,9 @@ from .env import (
     BaseEnvironment,
     Environment,
 )
+from .schedule import (
+    GroupParser,
+)
 from .database import (
     Database,
 )
@@ -34,6 +37,7 @@ async def main(loop: AbstractEventLoop) -> None:
     """
     base_env = BaseEnvironment()
     env = Environment(base_env)
+    group_parser = GroupParser()
     database = Database(env)
     user_repository = UserRepository(database)
     user_settings = UserSettings(database)
