@@ -32,5 +32,19 @@ class Database:
         await connect.execute('''
             INSERT INTO users(username, subscribe) VALUES($1, $2)  
         ''', username, subscribe)
+        await connect.close()
 
-    asyncio.get_event_loop().run_until_complete(add_data_to_database('Dizi', False))
+    async def delete_from_database(self, username: str, subscribe: bool) -> None:
+        connect = await self.connect_to_database()
+        await connect.execute('''
+            DELETE FROM users
+            WHERE username = ($1) and subscribe = ($2)
+        ''', username, subscribe)
+        await connect.close()
+
+
+database = Database()
+add = database.add_data_to_database('Dizi10220', True)
+delete = database.delete_from_database('Kuat', True)
+
+asyncio.get_event_loop().run_until_complete(delete)
