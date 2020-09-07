@@ -18,33 +18,30 @@ class Database:
 
         try:
             if connect:
-                print('truee')
                 return connect
             else:
-                print('none')
                 return None
         except asyncpg as ex:
-            print('error')
             return f"Случилась ошибка, {ex}"
 
-    async def add_data_to_database(self, username: str, subscribe: bool) -> None:
+    async def add_data_to_table_users_subscribe(self, username: str, subscribe: bool) -> None:
         connect = await self.connect_to_database()
         await connect.execute('''
-            INSERT INTO users(username, subscribe) VALUES($1, $2)  
+            INSERT INTO users_subscribe(username, subscribe) VALUES($1, $2)  
         ''', username, subscribe)
         await connect.close()
 
-    async def delete_from_database(self, username: str, subscribe: bool) -> None:
+    async def delete_from_table_users_subscribe(self, username: str, subscribe: bool) -> None:
         connect = await self.connect_to_database()
         await connect.execute('''
-            DELETE FROM users
+            DELETE FROM users_subscribe
             WHERE username = ($1) and subscribe = ($2)
         ''', username, subscribe)
         await connect.close()
 
 
 database = Database()
-add = database.add_data_to_database('Dizi10220', True)
-delete = database.delete_from_database('Kuat', True)
+add = database.add_data_to_table_users_subscribe('Kuat22222222', True)
+delete = database.delete_from_table_users_subscribe('Kuat', True)
 
-asyncio.get_event_loop().run_until_complete(delete)
+asyncio.get_event_loop().run_until_complete(add)
