@@ -17,7 +17,7 @@ def message_text_start():
 
 def message_subscribe(username, username_group, sub_or_unsub):
     if sub_or_unsub:
-        return f'<strong>Вы <em>{username}</em> успешно подписались на рассылку группы <em>{username_group}' \
+        return f'<strong>Вы успешно подписались на рассылку группы <em>{username_group}' \
                f'</em></strong>'
     else:
         return f'<strong>Вы <em>{username}</em> успешно отписались от рассылки на группу <em>{username_group}' \
