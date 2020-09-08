@@ -18,7 +18,7 @@ class Subscription:
         username = message.from_user.username
         group_input_from_user = message.text
         user_group = group_input_from_user.split()
-
+        print(message.from_user.id)
         if len(username) > 1 and len(user_group[1]) > 6:
             await self.bot.send_message(message.from_user.id, message_subscribe(username, user_group[1].upper(), True),
                                         parse_mode=ParseMode.HTML)
