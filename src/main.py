@@ -6,6 +6,8 @@ from .telegram_bot.theme_decoration import ThemeDecoration
 from .telegram_bot.telegram import Telegram
 from .telegram_bot.telegram_dispatcher import TelegramDispatcher
 
+from .repositories.user_subscriptions import UserSubscribe
+
 
 def main() -> None:
     """
@@ -13,7 +15,7 @@ def main() -> None:
     :return: None
     """
     telegram_bot = TelegramBot()
-    subscription = Subscription(telegram_bot.bot)
+    subscription = Subscription(telegram_bot.bot, UserSubscribe)
     greeting = Greeting(telegram_bot.bot)
     theme_decoration = ThemeDecoration(telegram_bot.bot)
 
