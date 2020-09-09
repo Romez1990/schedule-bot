@@ -7,7 +7,6 @@ from .telegram_bot.telegram import Telegram
 from .telegram_bot.telegram_dispatcher import TelegramDispatcher
 
 
-
 def main() -> None:
     """
     This function for init then we transfer it to main.py in root directory
