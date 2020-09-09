@@ -14,15 +14,12 @@ class Subscription:
         This handler will be called when user sends '/подписаться [Название_Группы]
         :return: None
         """
-        username = message.from_user.username
-        group_input_from_user = message.text
-        user_group = group_input_from_user.split()
+        user_group = [mess.upper() for mess in message.text.split()][1]
 
-        message_text = [mess.upper() for mess in message.text.split()][1]
-        if len(username) > 1 and len(user_group[1]) > 6:
-            await self.bot.send_message(message.from_user.id, message_subscribe(username, message_text, True),
+        if len(user_group) > 6:
+            await self.bot.send_message(message.from_user.id, message_subscribe(user_group, True),
                                         parse_mode=ParseMode.HTML)
-        elif len(username) < 1 and len(username) < 6:
+        elif len(user_group) < 6:
             await self.bot.send_message(message.from_user.id, 'У вас недействительные данные')
 
         else:
@@ -34,17 +31,13 @@ class Subscription:
         :return: None
         """
 
-        username = message.from_user.username
-        group_input_from_user = message.text
-        user_group = group_input_from_user.split()
+        user_group = [mess.upper() for mess in message.text.split()][1]
 
-        message_text = [mess.upper() for mess in message.text.split()][1]
-
-        if len(username) > 1 and len(user_group[1]) > 6:
-            await self.bot.send_message(message.from_user.id, message_subscribe(username, message_text, False),
+        if len(user_group) > 6:
+            await self.bot.send_message(message.from_user.id, message_subscribe(user_group, False),
                                         parse_mode=ParseMode.HTML)
 
-        elif len(username) < 1 and len(user_group[1]) < 6:
+        elif len(user_group) < 6:
             await self.bot.send_message(message.from_user.id, f'У вас недействительные данные')
 
         else:
