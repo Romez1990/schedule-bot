@@ -18,8 +18,9 @@ class Subscription:
         group_input_from_user = message.text
         user_group = group_input_from_user.split()
 
+        message_text = [mess.upper() for mess in message.text.split()][1]
         if len(username) > 1 and len(user_group[1]) > 6:
-            await self.bot.send_message(message.from_user.id, message_subscribe(username, user_group[1].upper(), True),
+            await self.bot.send_message(message.from_user.id, message_subscribe(username, message_text, True),
                                         parse_mode=ParseMode.HTML)
         elif len(username) < 1 and len(username) < 6:
             await self.bot.send_message(message.from_user.id, 'У вас недействительные данные')
@@ -37,8 +38,10 @@ class Subscription:
         group_input_from_user = message.text
         user_group = group_input_from_user.split()
 
+        message_text = [mess.upper() for mess in message.text.split()][1]
+
         if len(username) > 1 and len(user_group[1]) > 6:
-            await self.bot.send_message(message.from_user.id, message_subscribe(username, user_group[1].upper(), False),
+            await self.bot.send_message(message.from_user.id, message_subscribe(username, message_text, False),
                                         parse_mode=ParseMode.HTML)
 
         elif len(username) < 1 and len(user_group[1]) < 6:
