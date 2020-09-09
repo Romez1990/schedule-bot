@@ -11,8 +11,11 @@ DB_PASS = getenv('DB_PASS_SCHEDULE_BOT')
 
 
 class Database:
-    def __init__(self):
-        pass
+    def __init__(self, db_host, db_name, db_user, db_pass):
+        self.db_host = db_host
+        self.db_name = db_name
+        self.db_user = db_user
+        self.db_pass = db_pass
 
     connection: asyncpg.connection.Connection
 
@@ -21,7 +24,8 @@ class Database:
         This function is responsible for connect to database
         :return: asyncpg.connection
         """
-        self.connection = await asyncpg.connect(host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASS)
+        self.connection = await asyncpg.connect(host=self.db_host, database=self.db_name, user=self.db_user,
+                                                password=self.db_pass)
 
         try:
             if self.connection:
