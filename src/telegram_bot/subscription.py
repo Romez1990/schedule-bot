@@ -3,21 +3,17 @@ from aiogram.types import Message
 from aiogram.types import ParseMode
 
 from .configurations.messages_text import message_subscribe
-from ..repositories.user_subscriptions import UserSubscribe
-from ..database.database import Database
 
 
 class Subscription:
-    def __init__(self, bot: Bot, user_subscribe: UserSubscribe):
+    def __init__(self, bot: Bot):
         self.bot = bot
-        self.user_subscribe = user_subscribe
 
     async def subscribe(self, message: Message) -> None:
         """
         This handler will be called when user sends '/подписаться [Название_Группы]
         :return: None
         """
-        user_subscribe_database_add = self.user_subscribe
         username = message.from_user.username
         group_input_from_user = message.text
         user_group = group_input_from_user.split()
@@ -25,7 +21,6 @@ class Subscription:
         if len(username) > 1 and len(user_group[1]) > 6:
             await self.bot.send_message(message.from_user.id, message_subscribe(username, user_group[1].upper(), True),
                                         parse_mode=ParseMode.HTML)
-            await user_subscribe_database_add.add(user_id=2, group_name="ZVDT23123123123123")
         elif len(username) < 1 and len(username) < 6:
             await self.bot.send_message(message.from_user.id, 'У вас недействительные данные')
 
