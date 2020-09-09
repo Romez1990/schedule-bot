@@ -24,15 +24,14 @@ class ThemeDecoration:
         :param message:
         :return: None
         """
-        username = message.from_user.username
-        input_from_user = message.text
-        ask_theme_from_user = input_from_user.split()
 
-        if ask_theme_from_user[1] == 'тёмная' or 'темная':
-            await self.bot.send_message(message.from_user.id, message_theme(username, ask_theme_from_user[1]),
+        theme = [mess for mess in message.text.split()][1]
+
+        if theme == 'тёмная' or 'темная':
+            await self.bot.send_message(message.from_user.id, message_theme(theme),
                                         parse_mode=ParseMode.HTML)
-        elif ask_theme_from_user[1] == 'светлая' or 'белая':
-            await self.bot.send_message(message.from_user.id, message_theme(username, ask_theme_from_user[1]),
+        elif theme == 'светлая' or 'белая':
+            await self.bot.send_message(message.from_user.id, message_theme(theme),
                                         parse_mode=ParseMode.HTML)
         else:
             raise SyntaxError('Error')
