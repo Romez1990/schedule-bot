@@ -9,15 +9,24 @@ from src.database.config import database_config as dc
 
 
 async def users():
-    pass
+    database = Database(db_host=dc.DB_HOST, db_name=dc.DB_NAME, db_pass=dc.DB_PASS, db_user=dc.DB_USER)
+    await database.connect()
+    user_repository = UserRepository(database)
+    await user_repository.add('VK', '22888232323232')
 
 
 async def subscriptions():
-    pass
+    database = Database(db_host=dc.DB_HOST, db_name=dc.DB_NAME, db_pass=dc.DB_PASS, db_user=dc.DB_USER)
+    await database.connect()
+    user_subscriptions = UserSubscribe(database)
+    await user_subscriptions.add(23, 'ЗВТ-18-9')
 
 
 async def user_settings():
-    pass
+    database = Database(db_host=dc.DB_HOST, db_name=dc.DB_NAME, db_pass=dc.DB_PASS, db_user=dc.DB_USER)
+    await database.connect()
+    user_setting = UserSettings(database)
+    await user_setting.add(34, 'Белая')
 
 
 async def main():
@@ -32,4 +41,4 @@ async def main():
     # await user_subscriptions.add(1, 'ЗВТ-18-9222')
 
 
-run(main())
+run(users())
