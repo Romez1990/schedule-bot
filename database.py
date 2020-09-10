@@ -8,6 +8,18 @@ from src.repositories import UserSubscribe
 from src.database.config import database_config as dc
 
 
+def users():
+    pass
+
+
+def subscriptions():
+    pass
+
+
+def user_settings():
+    pass
+
+
 async def main():
     database = Database(db_host=dc.DB_HOST, db_name=dc.DB_NAME, db_pass=dc.DB_PASS, db_user=dc.DB_USER)
     await database.connect()
