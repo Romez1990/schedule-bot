@@ -8,15 +8,15 @@ from src.repositories import UserSubscribe
 from src.database.config import database_config as dc
 
 
-def users():
+async def users():
     pass
 
 
-def subscriptions():
+async def subscriptions():
     pass
 
 
-def user_settings():
+async def user_settings():
     pass
 
 
