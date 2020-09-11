@@ -1,12 +1,6 @@
 from asyncio import run
 
-from src.database import Database
-from src.repositories import UserRepository
-from src.repositories import UserSettings
-from src.repositories import UserSubscribe
 from src.database.add_data import AddingData
-
-from src.database.config import database_config as dc
 
 
 async def main():
@@ -14,6 +8,7 @@ async def main():
     await add_data.users('telegram', '123123124123')
     await add_data.user_settings(6, 'Светлая')
     await add_data.subscriptions(6, 'ЗВТ-19-8й123123')
+
 
 run(main())
 # ---------------------------------------------------------------------------------------------------------------------
