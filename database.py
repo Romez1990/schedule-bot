@@ -3,7 +3,11 @@ from asyncio import run
 from src.database.add_data import AddingData
 
 
-async def main():
+async def main() -> None:
+    """
+    Here I called databases(src/database/add_data.py) methods and I transfer there data
+    :return: None
+    """
     add_data = AddingData()
     await add_data.users('telegram', '123123124123')
     await add_data.user_settings(6, 'Светлая')
