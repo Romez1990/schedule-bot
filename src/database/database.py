@@ -4,18 +4,18 @@ from typing import Any
 
 import asyncpg
 
-DB_HOST = 'localhost'
-DB_NAME = 'schedule_bot_db'
-DB_USER = getenv('DB_USER_SCHEDULE_BOT')
-DB_PASS = getenv('DB_PASS_SCHEDULE_BOT')
+HOST = 'localhost'
+NAME = 'schedule_bot_db'
+USER = getenv('USER_SCHEDULE_BOT')
+PASS = getenv('PASS_SCHEDULE_BOT')
 
 
 class Database:
-    def __init__(self, db_host, db_name, db_user, db_pass):
-        self.db_host = db_host
-        self.db_name = db_name
-        self.db_user = db_user
-        self.db_pass = db_pass
+    def __init__(self, host, name, user, password):
+        self.host = host
+        self.name = name
+        self.user = user
+        self.password = password
 
     connection: asyncpg.connection.Connection
 
@@ -24,8 +24,8 @@ class Database:
         This function is responsible for connect to database
         :return: asyncpg.connection
         """
-        self.connection = await asyncpg.connect(host=self.db_host, database=self.db_name, user=self.db_user,
-                                                password=self.db_pass)
+        self.connection = await asyncpg.connect(host=self.host, database=self.name, user=self.user,
+                                                password=self.password)
 
         try:
             if self.connection:
