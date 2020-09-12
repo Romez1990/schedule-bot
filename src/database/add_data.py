@@ -1,5 +1,3 @@
-from asyncio import run
-
 from .database import Database
 from ..repositories import UserRepository
 from ..repositories import UserSettings
