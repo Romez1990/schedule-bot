@@ -2,7 +2,13 @@ from asyncio import get_event_loop
 
 from .database import Database
 from .repositories import UserRepository
+from .repositories import UserSubscribe
+from .repositories import UserSettings
+
 from .services.user_service import UserService
+from .services.subscription_service import SubscriptionService
+from .services.setting_service import SettingService
+
 from .telegram_bot.telegram_bot import TelegramBot
 from .telegram_bot.subscription import Subscription
 from .telegram_bot.greeting import Greeting
