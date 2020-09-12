@@ -1,3 +1,5 @@
+from asyncio import get_event_loop
+
 from aiogram import Dispatcher, Bot
 from aiogram.utils import executor
 
@@ -21,4 +23,6 @@ class TelegramDispatcher:
         This function launches the bot
         :return: None
         """
-        executor.start_polling(self.dispatcher, skip_updates=True)
+        loop = get_event_loop()
+        loop.create_task(self.dispatcher.start_polling())
+        print('Telegram bot has been started')
