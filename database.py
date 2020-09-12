@@ -1,6 +1,6 @@
 from asyncio import run
 
-from src.database.add_data import AddingData
+from src.database.add_data import AddData
 
 
 async def main() -> None:
@@ -8,7 +8,7 @@ async def main() -> None:
     Here I called databases(src/database/add_data.py) methods and I transfer there data
     :return: None
     """
-    add_data = AddingData()
+    add_data = AddData()
     await add_data.users('telegram', '123123124123')
     await add_data.user_settings(6, 'Светлая')
     await add_data.subscriptions(6, 'ЗВТ-19-8й123123')

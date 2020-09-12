@@ -8,7 +8,7 @@ from ..repositories import UserSubscribe
 from .config import database_config as dc
 
 
-class AddingData:
+class AddData:
     def __init__(self):
         self.database = Database(db_host=dc.DB_HOST, db_name=dc.DB_NAME, db_pass=dc.DB_PASS, db_user=dc.DB_USER)
 
