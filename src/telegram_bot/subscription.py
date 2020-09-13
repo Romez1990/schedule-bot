@@ -46,3 +46,9 @@ class Subscription:
 
         else:
             await self.bot.send_message(message.from_user.id, f'Извините, произошла ошибка')
+
+    async def change(self, message: Message) -> None:
+        user_group = [mess.upper() for mess in message.text.split()][1]
+        if len(user_group) > 6:
+            await self.user_subscription.change(1, user_group)
+            await self.bot.send_message(message.from_user.id, f'Данные успешно изменены')
