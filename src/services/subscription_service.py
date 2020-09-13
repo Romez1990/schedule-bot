@@ -10,3 +10,6 @@ class SubscriptionService:
 
     async def delete(self, user_id: int, group_name: str) -> None:
         await self.user_subscription.delete(user_id, group_name)
+
+    async def change(self, user_id: int, group_name: str) -> None:
+        await self.user_subscription.change(user_id, group_name)

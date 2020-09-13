@@ -10,3 +10,6 @@ class SettingService:
 
     async def delete(self, user_id: int, theme: str) -> None:
         await self.user_settings.delete(user_id, theme)
+
+    async def change(self, user_id: int, theme: str) -> None:
+        await self.user_settings.change(user_id, theme)
