@@ -3,11 +3,13 @@ from aiogram.types import Message
 from aiogram.types import ParseMode
 
 from .configurations.messages_text import message_subscribe
+from ..services.subscription_service import SubscriptionService
 
 
 class Subscription:
-    def __init__(self, bot: Bot):
+    def __init__(self, bot: Bot, user_subscription: SubscriptionService):
         self.bot = bot
+        self.user_subscription = user_subscription
 
     async def subscribe(self, message: Message) -> None:
         """
@@ -19,6 +21,7 @@ class Subscription:
         if len(user_group) > 6:
             await self.bot.send_message(message.from_user.id, message_subscribe(user_group, True),
                                         parse_mode=ParseMode.HTML)
+            await self.user_subscription.add(user_id=0, group_name=user_group)  # here need worked user_id
         elif len(user_group) < 6:
             await self.bot.send_message(message.from_user.id, 'У вас недействительные данные')
 
