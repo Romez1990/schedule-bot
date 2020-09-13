@@ -27,3 +27,11 @@ class UserSettings:
             DELETE from "user_settings"
             WHERE "user_id" = ($1) and "theme" = ($1)
         ''', user_id, theme)
+
+    async def change(self, user_id: int, theme: str) -> None:
+        await self.database.execute('''
+            UPDATE "user_settings"
+            SET user_id = ($1),
+                theme = ($2)
+            WHERE true 
+        ''', user_id, theme)  # Change `WHERE true` to normal `user_id`
