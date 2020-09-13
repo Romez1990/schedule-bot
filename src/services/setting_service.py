@@ -7,3 +7,6 @@ class SettingService:
 
     async def add(self, user_id, theme):
         await self.user_settings.add(user_id, theme)
+
+    async def delete(self, user_id, theme):
+        await self.user_settings.delete(user_id, theme)
