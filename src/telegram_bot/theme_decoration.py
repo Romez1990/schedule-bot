@@ -3,11 +3,13 @@ from aiogram.types import Message
 from aiogram.types import ParseMode
 
 from .configurations.messages_text import message_theme
+from ..services.setting_service import SettingService
 
 
 class ThemeDecoration:
-    def __init__(self, bot: Bot):
+    def __init__(self, bot: Bot, user_settings: SettingService):
         self.bot = bot
+        self.user_settings = user_settings
 
     async def theme(self, theme: bool, username: str) -> None:
         """
@@ -30,8 +32,10 @@ class ThemeDecoration:
         if theme == 'тёмная' or 'темная':
             await self.bot.send_message(message.from_user.id, message_theme(theme),
                                         parse_mode=ParseMode.HTML)
+            await self.user_settings.add(user_id=0, theme=theme)  # here need worked user_id
         elif theme == 'светлая' or 'белая':
             await self.bot.send_message(message.from_user.id, message_theme(theme),
                                         parse_mode=ParseMode.HTML)
+            await self.user_settings.add(user_id=0, theme=theme)  # here need worked user_id
         else:
             raise SyntaxError('Error')
