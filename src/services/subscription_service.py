@@ -7,3 +7,6 @@ class SubscriptionService:
 
     async def add(self, user_id, group_name):
         await self.user_subscription.add(user_id, group_name)
+
+    async def delete(self, user_id, group_name):
+        await self.user_subscription.delete(user_id, group_name)
