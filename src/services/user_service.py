@@ -10,3 +10,6 @@ class UserService:
         # else add new user
         # add defaults settings for this user
         await self.user_repository.add(platform, platform_id)
+
+    async def delete(self, platform: str, platform_id: str) -> None:
+        await self.user_repository.delete(platform, platform_id)
