@@ -27,3 +27,11 @@ class UserSubscribe:
             DELETE from "subscriptions "
             WHERE "user_id" = ($1) and "group" = ($1)
         ''', user_id, group_name)
+
+    async def change(self, user_id: int, group_name: str) -> None:
+        await self.database.execute('''
+            UPDATE "subscriptions "
+            SET user_id = ($1),
+                "group" = ($2)
+            WHERE true
+            ''', user_id, group_name)  # set WHERE to normal condition
