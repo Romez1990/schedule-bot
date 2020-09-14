@@ -35,3 +35,13 @@ class UserSubscribe:
                 "group" = ($2)
             WHERE true
             ''', user_id, group_name)  # set WHERE to normal condition
+
+    async def check_id(self, user_platform_id: str) -> str:
+        print(user_platform_id)
+        user_id = await self.database.execute(f'''
+            SELECT id FROM users
+            WHERE platform_id = ($1)
+        ''', user_platform_id)
+        user_id_split = [message for message in user_id.split()][1]
+        print(user_id_split)
+        return user_id_split
