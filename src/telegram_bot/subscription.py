@@ -23,6 +23,7 @@ class Subscription:
                                         parse_mode=ParseMode.HTML)
             await self.user_subscription.add(user_id=7,
                                              group_name=user_group)  # here need worked user_id, need work method
+            await self.bot.send_message(message.from_user.id, f'Id = {await self.user_subscription.check_id(str(message.from_user.id))}')
         elif len(user_group) < 6:
             await self.bot.send_message(message.from_user.id, 'У вас недействительные данные')
 
