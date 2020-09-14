@@ -21,7 +21,8 @@ class Subscription:
         if len(user_group) > 6:
             await self.bot.send_message(message.from_user.id, message_subscribe(user_group, True),
                                         parse_mode=ParseMode.HTML)
-            await self.user_subscription.add(user_id=0, group_name=user_group)  # here need worked user_id
+            await self.user_subscription.add(user_id=7,
+                                             group_name=user_group)  # here need worked user_id, need work method
         elif len(user_group) < 6:
             await self.bot.send_message(message.from_user.id, 'У вас недействительные данные')
 
@@ -39,7 +40,8 @@ class Subscription:
         if len(user_group) > 6:
             await self.bot.send_message(message.from_user.id, message_subscribe(user_group, False),
                                         parse_mode=ParseMode.HTML)
-            await self.user_subscription.delete(user_id=0, group_name=user_group)  # here need worker_user_id
+            await self.user_subscription.delete(user_id=0,
+                                                group_name=user_group)  # here need worker_user_id, need work method
 
         elif len(user_group) < 6:
             await self.bot.send_message(message.from_user.id, f'У вас недействительные данные')

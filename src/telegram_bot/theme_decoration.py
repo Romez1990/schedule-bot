@@ -32,10 +32,10 @@ class ThemeDecoration:
         if theme == 'тёмная' or 'темная':
             await self.bot.send_message(message.from_user.id, message_theme(theme),
                                         parse_mode=ParseMode.HTML)
-            await self.user_settings.add(user_id=0, theme=theme)  # here need worked user_id
+            await self.user_settings.add(user_id=7, theme=theme)  # here need worked user_id, here need work method
         elif theme == 'светлая' or 'белая':
             await self.bot.send_message(message.from_user.id, message_theme(theme),
                                         parse_mode=ParseMode.HTML)
-            await self.user_settings.add(user_id=0, theme=theme)  # here need worked user_id
+            await self.user_settings.add(user_id=0, theme=theme)  # here need worked user_id, here need work method
         else:
             raise SyntaxError('Error')
