@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import (
+    Callable,
     Iterator,
     Mapping,
 )
@@ -23,3 +24,6 @@ class GroupSchedule(Mapping[DayOfWeek, DaySchedule]):
 
     def __len__(self) -> int:
         return len(self.__day_schedules)
+
+    def map(self, func: Callable[[DaySchedule], DaySchedule]) -> GroupSchedule:
+        return GroupSchedule({key: func(value) for key, value in self.__day_schedules.items()})
