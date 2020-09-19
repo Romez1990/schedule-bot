@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import (
     Optional,
     Tuple,
+    Callable,
     Iterable,
     Iterator,
     Mapping,
@@ -29,6 +30,9 @@ class Schedule(Mapping[Group, GroupSchedule]):
 
     def __len__(self) -> int:
         return len(self.__group_schedules)
+
+    def map(self, func: Callable[[GroupSchedule], GroupSchedule]) -> Schedule:
+        return Schedule({key: func(value) for key, value in self.__group_schedules.items()})
 
     def filter(self, groups: Iterable[Group], day_of_week: DayOfWeek = None) -> Schedule:
         group_schedules = List(groups) \
