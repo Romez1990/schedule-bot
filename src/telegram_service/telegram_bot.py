@@ -1,11 +1,12 @@
 from aiogram import Bot
 
-from os import getenv
+from ..env import AbstractEnvironment
 
 
 class TelegramBot:
-    def __init__(self):
-        self.__bot = Bot(token=getenv('API_KEY_SCHEDULE_BOT'))
+    def __init__(self, env: AbstractEnvironment):
+        token = env.get_str('API_KEY_SCHEDULE_BOT')
+        self.__bot = Bot(token=token)
 
     @property
     def bot(self) -> Bot:

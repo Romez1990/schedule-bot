@@ -47,7 +47,7 @@ async def main(loop: AbstractEventLoop) -> None:
     user_settings_service = UserSettingsService(user_settings_repository)
     subscription_service = SubscriptionService(subscription_repository, group_parser)
     user_service = UserService(user_repository, user_settings_service, subscription_service)
-    telegram_bot = TelegramBot()
+    telegram_bot = TelegramBot(env)
     subscription = Subscription(telegram_bot.bot, subscription_service)
     greeting = Greeting(telegram_bot.bot, user_service)
     theme_decoration = ThemeDecoration(telegram_bot.bot, user_settings_service)
