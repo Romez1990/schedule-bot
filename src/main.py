@@ -34,7 +34,7 @@ async def main(loop: AbstractEventLoop) -> None:
     """
     base_env = BaseEnvironment()
     env = Environment(base_env)
-    database = Database()
+    database = Database(env)
     user_repository = UserRepository(database)
     user_settings = UserSettings(database)
     user_subscribe = UserSubscribe(database)
