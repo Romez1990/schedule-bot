@@ -1,7 +1,6 @@
 from asyncio import get_event_loop
 
 from aiogram import Dispatcher, Bot
-from aiogram.utils import executor
 
 from .abstract_telegram_dispatcher import AbstractTelegramDispatcher
 from .greeting import Greeting
