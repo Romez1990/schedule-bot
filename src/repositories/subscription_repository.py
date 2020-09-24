@@ -1,47 +1,30 @@
-from ..database import Database
+from typing import List
+
+from ..database import AbstractDatabase
+from ..entities import User, Subscription
+from .abstract_subscription_repository import AbstractSubscriptionRepository
 
 
-class SubscriptionRepository:
-    def __init__(self, database: Database):
-        self.database = database
+class SubscriptionRepository(AbstractSubscriptionRepository):
+    def __init__(self, database: AbstractDatabase):
+        self.__database = database
 
-    async def add(self, user_id: int, group_name: str) -> None:
-        """
-        Here I call execute from database.py and add data for tables a `subscriptions`
-        :param user_id:
-        :param group_name:
-        :return:
-        """
-        await self.database.execute('''
-            INSERT INTO "subscriptions "(user_id, "group") VALUES ($1, $2)
-        ''', user_id, group_name)
+    async def save(self, subscription: Subscription) -> Subscription:
+        await self.__database.execute('''
+            INSERT INTO subscriptions (user_id, "group")
+            VALUES ($1, $2)
+        ''', subscription.user.id, subscription.group)
+        return subscription
 
-    async def delete(self, user_id: int, group_name: str) -> None:
-        """
-        Here I cal execute from database.py and delete dates from a tables `subscriptions`
-        :param user_id:
-        :param group_name:
-        :return:
-        """
-        await self.database.execute('''
-            DELETE from "subscriptions "
-            WHERE "user_id" = ($1) and "group" = ($1)
-        ''', user_id, group_name)
+    async def delete(self, subscription: Subscription) -> None:
+        await self.__database.execute('''
+            DELETE from subscriptions
+            WHERE user_id = $1 AND "group" = $2
+        ''', subscription.user.id, subscription.group)
 
-    async def change(self, user_id: int, group_name: str) -> None:
-        await self.database.execute('''
-            UPDATE "subscriptions "
-            SET user_id = ($1),
-                "group" = ($2)
-            WHERE true
-            ''', user_id, group_name)  # set WHERE to normal condition
-
-    async def check_id(self, user_platform_id: str) -> str:
-        print(user_platform_id)
-        user_id = await self.database.execute(f'''
-            SELECT id FROM users
-            WHERE platform_id = ($1)
-        ''', user_platform_id)
-        user_id_split = [message for message in user_id.split()][1]
-        print(user_id_split)
-        return user_id_split
+    async def find_by_user(self, user: User) -> List[Subscription]:
+        records = await self.__database.fetch('''
+            SELECT "group" FROM subscriptions
+            WHERE user_id = $1
+        ''', user.id)
+        return [Subscription(user, **record) for record in records]

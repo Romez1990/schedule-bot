@@ -1,29 +1,27 @@
-from ..database import Database
+from returns.maybe import Maybe
+
+from ..database import AbstractDatabase
+from ..entities import User
+from .abstract_user_repository import AbstractUserRepository
 
 
-class UserRepository:
-    def __init__(self, database: Database):
-        self.database = database
+class UserRepository(AbstractUserRepository):
+    def __init__(self, database: AbstractDatabase):
+        self.__database = database
 
-    async def add(self, platform: str, platform_id: str) -> None:
-        """
-        Here I call execute from database.py and add data for tables a `users`
-        :param platform:
-        :param platform_id:
-        :return:
-        """
-        await self.database.execute('''
-            INSERT INTO users(platform, platform_id) VALUES ($1, $2)
-        ''', platform, platform_id)
+    async def save(self, user: User) -> User:
+        await self.__database.execute('''
+            INSERT INTO users(platform, platform_id)
+            VALUES ($1, $2)
+        ''', user.platform, user.platform_id)
+        id = await self.__database.fetch_value('''
+            SELECT currval('users_id_seq')
+        ''')
+        return User(user.platform, user.platform_id, id)
 
-    async def delete(self, platform: str, platform_id: str) -> None:
-        """
-        Here I call execute from database.py and delete data for tables a `users`
-        :param platform:
-        :param platform_id:
-        :return:
-        """
-        await self.database.execute('''
-            DELETE from users
-            WHERE platform = ($1) and platform_id = ($2)
-        ''', platform, platform_id)
+    async def find(self, platform: str, platform_id: str) -> Maybe[User]:
+        return (await self.__database.fetch_row('''
+            SELECT * FROM users
+            WHERE platform = $1 AND platform_id = $2
+        ''', platform, platform_id)) \
+            .map(lambda user_record: User(**user_record))

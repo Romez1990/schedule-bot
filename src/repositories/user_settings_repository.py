@@ -1,37 +1,35 @@
-from ..database import Database
+from ..database import AbstractDatabase
+from ..entities import UserSettings, User
+from .abstract_user_settings_repository import AbstractUserSettingsRepository
 
 
-class UserSettingsRepository:
-    def __init__(self, database: Database):
-        self.database = database
+class UserSettingsRepository(AbstractUserSettingsRepository):
+    def __init__(self, database: AbstractDatabase):
+        self.__database = database
 
-    async def add(self, user_id: int, theme: str):
-        """
-        Here I call execute from database.py and add data for tables a `user_settings`
-        :param user_id:
-        :param theme:
-        :return:
-        """
-        await self.database.execute('''
-            INSERT INTO user_settings(user_id, theme) VALUES ($1, $2)
-        ''', user_id, theme)
+    async def save(self, user_settings: UserSettings) -> UserSettings:
+        await self.__database.execute('''
+            INSERT INTO user_settings(user_id, theme)
+            VALUES ($1, $2)
+        ''', user_settings.user.id, user_settings.theme)
+        return user_settings
 
-    async def delete(self, user_id: int, theme: str) -> None:
-        """
-        Here I cal execute from database.py and delete dates from a tables `user_settings`
-        :param theme:
-        :param user_id:
-        :return:
-        """
-        await self.database.execute('''
-            DELETE from "user_settings"
-            WHERE "user_id" = ($1) and "theme" = ($1)
-        ''', user_id, theme)
+    async def delete(self, user_settings: UserSettings) -> None:
+        await self.__database.execute('''
+            DELETE from user_settings
+            WHERE user_id = $1
+        ''', user_settings.user.id)
 
-    async def change(self, user_id: int, theme: str) -> None:
-        await self.database.execute('''
-            UPDATE "user_settings"
-            SET user_id = ($1),
-                theme = ($2)
-            WHERE true 
-        ''', user_id, theme)  # Change `WHERE true` to normal `user_id`
+    async def update(self, user_settings: UserSettings) -> None:
+        await self.__database.execute('''
+            UPDATE user_settings
+            SET theme = $2
+            WHERE user_id = $1 
+        ''', user_settings.user.id, user_settings.theme)
+
+    async def find_by_user(self, user: User) -> UserSettings:
+        maybe_user_settings_record = await self.__database.fetch_row('''
+            SELECT theme FROM user_settings
+            WHERE user_id = $1
+        ''', user.id)
+        return UserSettings(user, **maybe_user_settings_record.unwrap())
