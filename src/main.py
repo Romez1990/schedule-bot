@@ -2,6 +2,7 @@ from asyncio import get_event_loop, AbstractEventLoop
 
 from .env import (
     BaseEnvironment,
+    Environment,
 )
 from .database import (
     Database,
@@ -32,6 +33,7 @@ async def main(loop: AbstractEventLoop) -> None:
     :return: None
     """
     base_env = BaseEnvironment()
+    env = Environment(base_env)
     database = Database()
     user_repository = UserRepository(database)
     user_settings = UserSettings(database)
@@ -46,6 +48,7 @@ async def main(loop: AbstractEventLoop) -> None:
     telegram_dispatcher = TelegramDispatcher(telegram_bot.bot, subscription, greeting, theme_decoration)
     telegram = Telegram(telegram_dispatcher)
 
+    env.read()
     await database.connect()
     telegram.start()
 
