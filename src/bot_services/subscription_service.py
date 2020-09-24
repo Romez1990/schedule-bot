@@ -1,20 +1,28 @@
 from typing import List
+from returns.future import FutureResult
 
+from ..schedule import Group, GroupParser, GroupNameParsingException
 from ..repositories import SubscriptionRepository
+from ..entities import User, Subscription
+from .abstract_subscription_service import AbstractSubscriptionService
 
 
-class SubscriptionService:
-    def __init__(self, user_subscription: SubscriptionRepository):
-        self.user_subscription = user_subscription
+class SubscriptionService(AbstractSubscriptionService):
+    def __init__(self, subscriptions: SubscriptionRepository, group_parser: GroupParser):
+        self.__subscriptions = subscriptions
+        self.__group_parser = group_parser
 
-    async def add(self, user_id: int, group_name: str) -> None:
-        await self.user_subscription.add(user_id, group_name)
+    def create(self, user: User, group_name: str) -> FutureResult[None, GroupNameParsingException]:
+        group_parse_result = self.__group_parser.parse(group_name)
+        return FutureResult.from_result(group_parse_result) \
+            .bind_awaitable(lambda group: self.__create_and_save_subscription(user, group))
 
-    async def delete(self, user_id: int, group_name: str) -> None:
-        await self.user_subscription.delete(user_id, group_name)
+    async def __create_and_save_subscription(self, user: User, group: Group) -> None:
+        subscription = Subscription(user, group)
+        await self.__subscriptions.save(subscription)
 
-    async def change(self, user_id: int, group_name: str) -> None:
-        await self.user_subscription.change(user_id, group_name)
+    async def delete(self, subscription: Subscription) -> None:
+        await self.__subscriptions.delete(subscription)
 
-    async def check_id(self, user_platform_id: str) -> List:
-        await self.user_subscription.check_id(user_platform_id)
+    async def find(self, user: User) -> List[Subscription]:
+        return await self.__subscriptions.find_by_user(user)

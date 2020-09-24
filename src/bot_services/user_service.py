@@ -1,15 +1,32 @@
+from returns.maybe import Nothing
+
 from ..repositories import UserRepository
+from ..entities import User
+from .abstract_user_service import AbstractUserService
+from .user_settings_service import UserSettingsService
+from .subscription_service import SubscriptionService
 
 
-class UserService:
-    def __init__(self, user_repository: UserRepository):
-        self.user_repository = user_repository
+class UserService(AbstractUserService):
+    def __init__(self, users: UserRepository, user_settings_service: UserSettingsService,
+                 subscription_service: SubscriptionService) -> None:
+        self.__users = users
+        self.__user_settings_service = user_settings_service
+        self.__subscription_service = subscription_service
 
-    async def add(self, platform: str, platform_id: str) -> None:
-        # if exist return
-        # else add new user
-        # add defaults settings for this user
-        await self.user_repository.add(platform, platform_id)
+    async def create_if_not_exists(self, platform: str, platform_id: str) -> None:
+        maybe_user = await self.__users.find(platform, platform_id)
+        if maybe_user != Nothing:
+            return
+        await self.__create_user(platform, platform_id)
 
-    async def delete(self, platform: str, platform_id: str) -> None:
-        await self.user_repository.delete(platform, platform_id)
+    async def __create_user(self, platform: str, platform_id: str) -> None:
+        user = User(platform, platform_id)
+        user = await self.__users.save(user)
+        await self.__user_settings_service.create_default_settings(user)
+
+    async def find_user(self, platform: str, platform_id: str) -> User:
+        user = (await self.__users.find(platform, platform_id)).unwrap()
+        user_settings = await self.__user_settings_service.find(user)
+        subscriptions = await self.__subscription_service.find(user)
+        return User(user.platform, user.platform_id, user.id, user_settings, subscriptions)
