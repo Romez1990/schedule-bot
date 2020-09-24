@@ -1,1 +1,1 @@
-bot: python runner.py
+bot: python src/main.py

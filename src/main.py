@@ -18,7 +18,7 @@ from .telegram_bot.telegram import Telegram
 from .telegram_bot.telegram_dispatcher import TelegramDispatcher
 
 
-async def async_main() -> None:
+async def main() -> None:
     """
     This function for init then we transfer it to main.py in root directory
     :return: None
@@ -44,7 +44,6 @@ async def async_main() -> None:
     telegram.start()
 
 
-def main():
-    loop = get_event_loop()
-    loop.create_task(async_main())
-    loop.run_forever()
+loop = get_event_loop()
+loop.create_task(main())
+loop.run_forever()
