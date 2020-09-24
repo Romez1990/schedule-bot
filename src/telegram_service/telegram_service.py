@@ -1,7 +1,7 @@
 from .telegram_dispatcher import TelegramDispatcher
 
 
-class Telegram:
+class TelegramService:
     def __init__(self, dispatcher: TelegramDispatcher):
         self.dispatcher = dispatcher
 

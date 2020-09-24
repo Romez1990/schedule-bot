@@ -21,8 +21,8 @@ from src.bot_services import (
     UserSettingsService,
     SubscriptionService,
 )
-from src.telegram_bot import (
-    Telegram,
+from src.telegram_service import (
+    TelegramService,
     TelegramBot,
     TelegramDispatcher,
     Greeting,
@@ -52,11 +52,11 @@ async def main(loop: AbstractEventLoop) -> None:
     greeting = Greeting(telegram_bot.bot, user_service)
     theme_decoration = ThemeDecoration(telegram_bot.bot, user_settings_service)
     telegram_dispatcher = TelegramDispatcher(telegram_bot.bot, subscription, greeting, theme_decoration)
-    telegram = Telegram(telegram_dispatcher)
+    telegram_service = TelegramService(telegram_dispatcher)
 
     env.read()
     await database.connect()
-    telegram.start()
+    telegram_service.start()
 
 
 loop = get_event_loop()
