@@ -13,8 +13,8 @@ from .database import (
 )
 from .repositories import (
     UserRepository,
-    UserSubscribe,
-    UserSettings,
+    UserSettingsRepository,
+    SubscriptionRepository,
 )
 from .services import (
     UserService,
@@ -42,10 +42,10 @@ async def main(loop: AbstractEventLoop) -> None:
     week_day_translator = WeekDayTranslator()
     database = Database(env)
     user_repository = UserRepository(database)
-    user_settings = UserSettings(database)
-    user_subscribe = UserSubscribe(database)
-    subscription_service = SubscriptionService(user_subscribe)
-    setting_service = SettingService(user_settings)
+    user_settings_repository = UserSettingsRepository(database)
+    subscription_repository = SubscriptionRepository(database)
+    subscription_service = SubscriptionService(subscription_repository)
+    setting_service = SettingService(user_settings_repository)
     user_service = UserService(user_repository)
     telegram_bot = TelegramBot()
     subscription = Subscription(telegram_bot.bot, subscription_service)

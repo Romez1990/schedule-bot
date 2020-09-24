@@ -1,10 +1,10 @@
 from typing import List
 
-from ..repositories import UserSubscribe
+from ..repositories import SubscriptionRepository
 
 
 class SubscriptionService:
-    def __init__(self, user_subscription: UserSubscribe):
+    def __init__(self, user_subscription: SubscriptionRepository):
         self.user_subscription = user_subscription
 
     async def add(self, user_id: int, group_name: str) -> None:

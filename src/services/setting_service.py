@@ -1,8 +1,8 @@
-from ..repositories import UserSettings
+from ..repositories import UserSettingsRepository
 
 
 class SettingService:
-    def __init__(self, user_settings: UserSettings):
+    def __init__(self, user_settings: UserSettingsRepository):
         self.user_settings = user_settings
 
     async def add(self, user_id: int, theme: str) -> None:

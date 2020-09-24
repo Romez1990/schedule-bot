@@ -1,3 +1,3 @@
 from .user_repository import UserRepository
-from .user_settings import UserSettings
-from .user_subscriptions import UserSubscribe
+from .user_settings_repository import UserSettingsRepository
+from .subscription_repository import SubscriptionRepository

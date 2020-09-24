@@ -1,7 +1,7 @@
 from ..database import Database
 
 
-class UserSettings:
+class UserSettingsRepository:
     def __init__(self, database: Database):
         self.database = database
 
