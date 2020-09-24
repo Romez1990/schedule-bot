@@ -6,6 +6,7 @@ from .env import (
 )
 from .schedule import (
     GroupParser,
+    WeekDayTranslator,
 )
 from .database import (
     Database,
@@ -38,6 +39,7 @@ async def main(loop: AbstractEventLoop) -> None:
     base_env = BaseEnvironment()
     env = Environment(base_env)
     group_parser = GroupParser()
+    week_day_translator = WeekDayTranslator()
     database = Database(env)
     user_repository = UserRepository(database)
     user_settings = UserSettings(database)
