@@ -1,5 +1,8 @@
 from asyncio import get_event_loop, AbstractEventLoop
 
+from .env import (
+    BaseEnvironment,
+)
 from .database import (
     Database,
 )
@@ -28,6 +31,7 @@ async def main(loop: AbstractEventLoop) -> None:
     This function for init then we transfer it to main.py in root directory
     :return: None
     """
+    base_env = BaseEnvironment()
     database = Database()
     user_repository = UserRepository(database)
     user_settings = UserSettings(database)
