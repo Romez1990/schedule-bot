@@ -26,4 +26,3 @@ class TelegramDispatcher(AbstractTelegramDispatcher):
         """
         loop = get_event_loop()
         loop.create_task(self.__dispatcher.start_polling())
-        print('Telegram bot has been started')
