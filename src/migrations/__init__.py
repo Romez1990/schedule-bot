@@ -1,0 +1,3 @@
+from .user_migration import UserMigration
+from .user_settings_migration import UserSettingsMigration
+from .subscription_migration import SubscriptionMigration
