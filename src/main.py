@@ -1,4 +1,4 @@
-from asyncio import get_event_loop
+from asyncio import get_event_loop, AbstractEventLoop
 
 from .database import (
     Database,
@@ -23,7 +23,7 @@ from .telegram_bot import (
 )
 
 
-async def main() -> None:
+async def main(loop: AbstractEventLoop) -> None:
     """
     This function for init then we transfer it to main.py in root directory
     :return: None
@@ -47,5 +47,5 @@ async def main() -> None:
 
 
 loop = get_event_loop()
-loop.create_task(main())
+loop.create_task(main(loop))
 loop.run_forever()
