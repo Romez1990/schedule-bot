@@ -16,7 +16,7 @@ from .repositories import (
     UserSettingsRepository,
     SubscriptionRepository,
 )
-from .services import (
+from .bot_services import (
     UserService,
     SubscriptionService,
     SettingService,
