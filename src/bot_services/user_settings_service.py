@@ -1,7 +1,7 @@
 from ..repositories import UserSettingsRepository
 
 
-class SettingService:
+class UserSettingsService:
     def __init__(self, user_settings: UserSettingsRepository):
         self.user_settings = user_settings
 

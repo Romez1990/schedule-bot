@@ -1,3 +1,3 @@
 from .user_service import UserService
-from .setting_service import SettingService
+from .user_settings_service import UserSettingsService
 from .subscription_service import SubscriptionService
