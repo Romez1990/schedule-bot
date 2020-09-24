@@ -1,3 +1,5 @@
+from .abstract_migration_runner import AbstractMigrationRunner
+from .migration_runner import MigrationRunner
 from .user_migration import UserMigration
 from .user_settings_migration import UserSettingsMigration
 from .subscription_migration import SubscriptionMigration
