@@ -6,9 +6,9 @@ class TelegramService(PlatformService):
     def __init__(self, dispatcher: AbstractTelegramDispatcher):
         self.__dispatcher = dispatcher
 
-    def start(self) -> None:
+    async def start(self) -> None:
         """
         This function return dispatcher start
         :return: None
         """
-        self.__dispatcher.start()
+        await self.__dispatcher.start()

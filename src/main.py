@@ -56,7 +56,7 @@ async def main(loop: AbstractEventLoop) -> None:
 
     env.read()
     await database.connect()
-    telegram_service.start()
+    loop.create_task(telegram_service.start())
 
 
 loop = get_event_loop()
