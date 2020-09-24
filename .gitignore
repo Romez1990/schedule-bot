@@ -3,7 +3,3 @@ __pycache__/
 
 # Environment
 /.env
-
-# JetBrains | IDE
-.idea
-/telegram_bot/test.py
