@@ -19,3 +19,4 @@ class TelegramController(AbstractTelegramController):
         self.__user_service = user_service
         self.__user_settings_service = user_settings_service
         self.__subscription_service = subscription_service
+        self.__platform = 'telegram'
