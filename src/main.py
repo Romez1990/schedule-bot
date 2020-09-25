@@ -25,9 +25,7 @@ from src.telegram_service import (
     TelegramService,
     TelegramBot,
     TelegramDispatcher,
-    Greeting,
-    ThemeDecoration,
-    Subscription,
+    TelegramController,
 )
 
 
@@ -48,10 +46,8 @@ async def main(loop: AbstractEventLoop) -> None:
     subscription_service = SubscriptionService(subscription_repository, group_parser)
     user_service = UserService(user_repository, user_settings_service, subscription_service)
     telegram_bot = TelegramBot(env)
-    subscription = Subscription(telegram_bot.bot, subscription_service)
-    greeting = Greeting(telegram_bot.bot, user_service)
-    theme_decoration = ThemeDecoration(telegram_bot.bot, user_settings_service)
-    telegram_dispatcher = TelegramDispatcher(telegram_bot, subscription, greeting, theme_decoration)
+    controller = TelegramController(telegram_bot)
+    telegram_dispatcher = TelegramDispatcher(telegram_bot, controller)
     telegram_service = TelegramService(telegram_dispatcher)
 
     env.read()
