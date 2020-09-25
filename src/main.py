@@ -51,7 +51,7 @@ async def main(loop: AbstractEventLoop) -> None:
     subscription = Subscription(telegram_bot.bot, subscription_service)
     greeting = Greeting(telegram_bot.bot, user_service)
     theme_decoration = ThemeDecoration(telegram_bot.bot, user_settings_service)
-    telegram_dispatcher = TelegramDispatcher(telegram_bot.bot, subscription, greeting, theme_decoration)
+    telegram_dispatcher = TelegramDispatcher(telegram_bot, subscription, greeting, theme_decoration)
     telegram_service = TelegramService(telegram_dispatcher)
 
     env.read()
