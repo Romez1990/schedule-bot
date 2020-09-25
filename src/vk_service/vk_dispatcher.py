@@ -13,4 +13,4 @@ class VkDispatcher:
         self.dispatcher = simple_user_message_handler(router=bot)
 
     async def start(self):
-        await self.dispatcher.start
+        await self.dispatcher.start  # REFACTOR !!
