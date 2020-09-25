@@ -1,7 +1,8 @@
+from ..platform_service import PlatformService
 from .telegram_dispatcher import TelegramDispatcher
 
 
-class TelegramService:
+class TelegramService(PlatformService):
     def __init__(self, dispatcher: TelegramDispatcher):
         self.dispatcher = dispatcher
 
