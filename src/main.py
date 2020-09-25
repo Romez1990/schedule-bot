@@ -46,7 +46,7 @@ async def main(loop: AbstractEventLoop) -> None:
     subscription_service = SubscriptionService(subscription_repository, group_parser)
     user_service = UserService(user_repository, user_settings_service, subscription_service)
     telegram_bot = TelegramBot(env)
-    controller = TelegramController(telegram_bot)
+    controller = TelegramController(telegram_bot, user_service, user_settings_service, subscription_service)
     telegram_dispatcher = TelegramDispatcher(telegram_bot, controller)
     telegram_service = TelegramService(telegram_dispatcher)
 
