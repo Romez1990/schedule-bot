@@ -1,9 +1,10 @@
-from vkwave.bots import SimpleLongPollUserBot
 from vkwave.bots import SimpleBotEvent
+
+from src.vk_service.vk_bot import VkBot
 
 
 class Greeting:
-    def __init__(self, bot: SimpleLongPollUserBot):
+    def __init__(self, bot: VkBot):
         self.bot = bot
 
     async def start(self, event: SimpleBotEvent):
