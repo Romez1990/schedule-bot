@@ -13,5 +13,6 @@ pyrsistent = "*"
 pfun = "*"
 asyncpg = "*"
 aiogram = "*"
+vkwave = "*"
 
 [dev-packages]
