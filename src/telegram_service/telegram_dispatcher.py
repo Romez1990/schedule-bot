@@ -8,6 +8,7 @@ from .abstract_telegram_controller import AbstractTelegramController
 class TelegramDispatcher(AbstractTelegramDispatcher):
     def __init__(self, bot: TelegramBot, controller: AbstractTelegramController) -> None:
         self.__dispatcher = bot.register_bot(Dispatcher)
+        self.__dispatcher.message_handler(commands=['start'])(controller.welcome)
 
     async def start(self) -> None:
         """

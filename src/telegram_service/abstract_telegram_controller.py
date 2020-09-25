@@ -1,2 +1,8 @@
+from aiogram.types import (
+    Message,
+)
+
+
 class AbstractTelegramController:
-    pass
+    async def welcome(self, message: Message) -> None:
+        raise NotImplementedError
