@@ -1,27 +1,27 @@
 from asyncio import get_event_loop, AbstractEventLoop
 
-from .env import (
+from src.env import (
     BaseEnvironment,
     Environment,
 )
-from .schedule import (
+from src.schedule import (
     GroupParser,
     WeekDayTranslator,
 )
-from .database import (
+from src.database import (
     Database,
 )
-from .repositories import (
+from src.repositories import (
     UserRepository,
     UserSettingsRepository,
     SubscriptionRepository,
 )
-from .bot_services import (
+from src.bot_services import (
     UserService,
     UserSettingsService,
     SubscriptionService,
 )
-from .telegram_bot import (
+from src.telegram_bot import (
     Telegram,
     TelegramBot,
     TelegramDispatcher,
