@@ -1,3 +1,7 @@
+from aiogram.types import (
+    Message,
+)
+
 from ..bot_services import (
     AbstractUserService,
     AbstractUserSettingsService,
@@ -20,3 +24,6 @@ class TelegramController(AbstractTelegramController):
         self.__user_settings_service = user_settings_service
         self.__subscription_service = subscription_service
         self.__platform = 'telegram'
+
+    def __get_telegram_id(self, message: Message) -> str:
+        return str(message.from_user.id)
