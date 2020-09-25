@@ -34,5 +34,10 @@ class TelegramController(AbstractTelegramController):
         await self.__bot.send_message(telegram_id, message_text_start(),
                                       reply_markup=buttons, parse_mode=ParseMode.HTML)
 
+    async def help(self, message: Message) -> None:
+        telegram_id = self.__get_telegram_id(message.from_user.id)
+        await self.__bot.send_message(telegram_id, message_text_help(),
+                                      reply_markup=buttons, parse_mode=ParseMode.HTML)
+
     def __get_telegram_id(self, message: Message) -> str:
         return str(message.from_user.id)
