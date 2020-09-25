@@ -3,12 +3,13 @@ from asyncio import get_event_loop
 from aiogram import Dispatcher, Bot
 from aiogram.utils import executor
 
+from .abstract_telegram_dispatcher import AbstractTelegramDispatcher
 from .greeting import Greeting
 from .subscription import Subscription
 from .theme_decoration import ThemeDecoration
 
 
-class TelegramDispatcher:
+class TelegramDispatcher(AbstractTelegramDispatcher):
     def __init__(self, bot: Bot, subscription: Subscription, greeting: Greeting,
                  theme_decoration: ThemeDecoration):
         self.dispatcher = Dispatcher(bot)
