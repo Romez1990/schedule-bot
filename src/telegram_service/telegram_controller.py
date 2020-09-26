@@ -29,13 +29,13 @@ class TelegramController(AbstractTelegramController):
         self.__platform = 'telegram'
 
     async def welcome(self, message: Message) -> None:
-        telegram_id = self.__get_telegram_id(message.from_user.id)
+        telegram_id = self.__get_telegram_id(message)
         await self.__user_service.create_if_not_exists(self.__platform, telegram_id)
         await self.__bot.send_message(telegram_id, message_text_start(),
                                       reply_markup=buttons, parse_mode=ParseMode.HTML)
 
     async def help(self, message: Message) -> None:
-        telegram_id = self.__get_telegram_id(message.from_user.id)
+        telegram_id = self.__get_telegram_id(message)
         await self.__bot.send_message(telegram_id, message_text_help(),
                                       reply_markup=buttons, parse_mode=ParseMode.HTML)
 
