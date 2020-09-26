@@ -1,4 +1,5 @@
 from .telegram_service import TelegramService
+from .abstract_telegram_bot import AbstractTelegramBot
 from .telegram_bot import TelegramBot
 from .abstract_telegram_dispatcher import AbstractTelegramDispatcher
 from .telegram_dispatcher import TelegramDispatcher

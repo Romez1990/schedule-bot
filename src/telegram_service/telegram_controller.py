@@ -9,7 +9,7 @@ from ..bot_services import (
     AbstractSubscriptionService,
 )
 from .abstract_telegram_controller import AbstractTelegramController
-from .telegram_bot import TelegramBot
+from .abstract_telegram_bot import AbstractTelegramBot
 from .configurations.messages_text import message_text_start, message_text_help
 from .configurations.button_configuration import buttons
 
@@ -17,7 +17,7 @@ from .configurations.button_configuration import buttons
 class TelegramController(AbstractTelegramController):
     def __init__(
             self,
-            bot: TelegramBot,
+            bot: AbstractTelegramBot,
             user_service: AbstractUserService,
             user_settings_service: AbstractUserSettingsService,
             subscription_service: AbstractSubscriptionService,
