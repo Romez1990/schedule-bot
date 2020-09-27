@@ -1,9 +1,7 @@
 from vkwave.bots import SimpleBotEvent
 
-from .abstract_vk_controller import AbstractVkController
 
-
-class VkController(AbstractVkController):
+class VkController:
     async def welcome(self, event: SimpleBotEvent) -> None:
         await event.answer('')
 
