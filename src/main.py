@@ -4,6 +4,7 @@ from src.app_container_builder import AppContainerBuilder
 from src.env import AbstractEnvironment
 from src.database import AbstractDatabase
 from src.telegram_service import TelegramService
+from src.vk_service import VkService
 
 
 async def main(loop: AbstractEventLoop) -> None:
@@ -17,10 +18,12 @@ async def main(loop: AbstractEventLoop) -> None:
     env = container.get(AbstractEnvironment)
     database = container.get(AbstractDatabase)
     telegram_service = container.get(TelegramService)
+    vk_service = container.get(VkService)
 
     env.read()
     await database.connect()
     loop.create_task(telegram_service.start())
+    loop.create_task(vk_service.start())
 
 
 loop = get_event_loop()
