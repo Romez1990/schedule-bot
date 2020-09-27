@@ -43,4 +43,4 @@ class TelegramBot:
                                              reply_to_message_id, reply_markup)
 
     def __raise_init_error(self) -> None:
-        raise Exception('bot has not been inited')
+        raise Exception('Telegram bot has not been inited')
