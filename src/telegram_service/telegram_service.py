@@ -7,7 +7,7 @@ from .telegram_controller import TelegramController
 
 class TelegramService(PlatformService):
     def __init__(self, bot: TelegramBot, controller: TelegramController):
-        self.__dispatcher = bot.register_bot(Dispatcher)
+        self.__dispatcher = bot.register(Dispatcher)
         self.__dispatcher.message_handler(commands=['start'])(controller.welcome)
         self.__dispatcher.message_handler(commands=['help'])(controller.help)
 

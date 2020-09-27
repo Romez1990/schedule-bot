@@ -22,7 +22,7 @@ class TelegramBot:
         token = env.get_str('TELEGRAM_BOT_TOKEN')
         self.__bot = Bot(token=token)
 
-    def register_bot(self, func: Callable[[Bot], T]) -> T:
+    def register(self, func: Callable[[Bot], T]) -> T:
         return func(self.__bot)
 
     async def send_message(self, chat_id: str, text: str, *, parse_mode: str = None,
