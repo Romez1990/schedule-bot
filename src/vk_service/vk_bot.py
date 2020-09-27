@@ -1,12 +1,11 @@
 from vkwave.bots import SimpleLongPollUserBot
 
 from ..env import AbstractEnvironment
-from .abstract_vk_controller import AbstractVkController
-from .abstract_vk_bot import AbstractVkBot
+from .vk_controller import VkController
 
 
-class VkBot(AbstractVkBot):
-    def __init__(self, env: AbstractEnvironment, vk_controller: AbstractVkController) -> None:
+class VkBot:
+    def __init__(self, env: AbstractEnvironment, vk_controller: VkController) -> None:
         token = env.get_str('VK_BOT_TOKEN')
         self.__bot = SimpleLongPollUserBot(tokens=token)
         self.__bot.message_handler(self.__bot.command_filter('start'))(vk_controller.welcome)
