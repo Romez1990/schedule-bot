@@ -24,7 +24,6 @@ from src.bot_services import (
 from src.telegram_service import (
     TelegramService,
     TelegramBot,
-    TelegramDispatcher,
     TelegramController,
 )
 
@@ -47,8 +46,7 @@ async def main(loop: AbstractEventLoop) -> None:
     user_service = UserService(user_repository, user_settings_service, subscription_service)
     telegram_bot = TelegramBot(env)
     controller = TelegramController(telegram_bot, user_service, user_settings_service, subscription_service)
-    telegram_dispatcher = TelegramDispatcher(telegram_bot, controller)
-    telegram_service = TelegramService(telegram_dispatcher)
+    telegram_service = TelegramService(telegram_bot, controller)
 
     env.read()
     await database.connect()
