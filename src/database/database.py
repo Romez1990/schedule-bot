@@ -45,8 +45,8 @@ class Database(AbstractDatabase):
         if self.__connection is None:
             self.__raise_connection_error()
         record = await self.__connection.fetchrow(query, *args)
-        dict = self.__record_to_dict(record)
-        return Maybe.from_value(dict)
+        maybe_record = Maybe.from_value(record)
+        return maybe_record.map(self.__record_to_dict)
 
     async def fetch_value(self, query: str, *args: Any) -> Any:
         if self.__connection is None:
