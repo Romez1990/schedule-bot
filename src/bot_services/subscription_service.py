@@ -1,14 +1,14 @@
 from typing import List
 from returns.future import FutureResult
 
-from ..schedule import Group, GroupParser, GroupNameParsingException
-from ..repositories import SubscriptionRepository
+from ..schedule import Group, AbstractGroupParser, GroupNameParsingException
+from ..repositories import AbstractSubscriptionRepository
 from ..entities import User, Subscription
 from .abstract_subscription_service import AbstractSubscriptionService
 
 
 class SubscriptionService(AbstractSubscriptionService):
-    def __init__(self, subscriptions: SubscriptionRepository, group_parser: GroupParser):
+    def __init__(self, subscriptions: AbstractSubscriptionRepository, group_parser: AbstractGroupParser):
         self.__subscriptions = subscriptions
         self.__group_parser = group_parser
 

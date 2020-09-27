@@ -1,10 +1,10 @@
 from ..entities import User, UserSettings
-from ..repositories import UserSettingsRepository
+from ..repositories import AbstractUserSettingsRepository
 from .abstract_user_settings_service import AbstractUserSettingsService
 
 
 class UserSettingsService(AbstractUserSettingsService):
-    def __init__(self, user_settings: UserSettingsRepository) -> None:
+    def __init__(self, user_settings: AbstractUserSettingsRepository) -> None:
         self.__user_settings = user_settings
 
     async def create_default_settings(self, user: User) -> UserSettings:

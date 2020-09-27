@@ -1,15 +1,15 @@
 from returns.maybe import Nothing
 
-from ..repositories import UserRepository
+from ..repositories import AbstractUserRepository
 from ..entities import User
 from .abstract_user_service import AbstractUserService
-from .user_settings_service import UserSettingsService
-from .subscription_service import SubscriptionService
+from .abstract_user_settings_service import AbstractUserSettingsService
+from .abstract_subscription_service import AbstractSubscriptionService
 
 
 class UserService(AbstractUserService):
-    def __init__(self, users: UserRepository, user_settings_service: UserSettingsService,
-                 subscription_service: SubscriptionService) -> None:
+    def __init__(self, users: AbstractUserRepository, user_settings_service: AbstractUserSettingsService,
+                 subscription_service: AbstractSubscriptionService) -> None:
         self.__users = users
         self.__user_settings_service = user_settings_service
         self.__subscription_service = subscription_service
