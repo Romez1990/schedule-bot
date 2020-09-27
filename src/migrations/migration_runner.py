@@ -7,14 +7,13 @@ from .migration import Migration
 
 
 class MigrationRunner(AbstractMigrationRunner):
-    def __init__(self, database: AbstractDatabase, migrations: Iterable[Migration]) -> None:
-        self.__migrations = migrations
+    def __init__(self, database: AbstractDatabase) -> None:
         self.__database = database
 
-    async def run(self) -> None:
-        for migration in self.__migrations:
+    async def run(self, migrations: Iterable[Migration]) -> None:
+        for migration in migrations:
             await self.__run_create_table_query(migration.create_table)
-        for migration in self.__migrations:
+        for migration in migrations:
             if hasattr(migration, 'create_relationships'):
                 await self.__run_create_relationships_query(migration.create_relationships)
 
