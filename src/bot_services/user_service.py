@@ -14,11 +14,12 @@ class UserService(AbstractUserService):
         self.__user_settings_service = user_settings_service
         self.__subscription_service = subscription_service
 
-    async def create_if_not_exists(self, platform: str, platform_id: str) -> None:
+    async def create_if_not_exists(self, platform: str, platform_id: str) -> bool:
         maybe_user = await self.__users.find(platform, platform_id)
         if maybe_user != Nothing:
-            return
+            return False
         await self.__create_user(platform, platform_id)
+        return True
 
     async def __create_user(self, platform: str, platform_id: str) -> None:
         user = User(platform, platform_id)
