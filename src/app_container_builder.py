@@ -6,6 +6,7 @@ from .schedule import ScheduleModule
 from .repositories import RepositoriesModule
 from .bot_services import BotServicesModule
 from .telegram_service import TelegramServiceModule
+from .vk_service import VkServiceModule
 
 
 class AppContainerBuilder:
@@ -18,6 +19,7 @@ class AppContainerBuilder:
         self.__container_builder.register_module(RepositoriesModule)
         self.__container_builder.register_module(BotServicesModule)
         self.__container_builder.register_module(TelegramServiceModule)
+        self.__container_builder.register_module(VkServiceModule)
 
     def build(self) -> Container:
         return self.__container_builder.build()
