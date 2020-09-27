@@ -1,11 +1,11 @@
 from vkwave.bots import (
-    SimpleLongPollUserBot
+    SimpleBotEvent,
 )
 
 
 class AbstractVkController:
-    async def welcome(self, event: SimpleLongPollUserBot) -> None:
+    async def welcome(self, event: SimpleBotEvent) -> None:
         raise NotImplementedError
 
-    async def help(self, event: SimpleLongPollUserBot) -> None:
+    async def help(self, event: SimpleBotEvent) -> None:
         raise NotImplementedError
