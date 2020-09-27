@@ -1,12 +1,11 @@
 from aiogram import Dispatcher
 
-from .abstract_telegram_dispatcher import AbstractTelegramDispatcher
-from .abstract_telegram_bot import AbstractTelegramBot
-from .abstract_telegram_controller import AbstractTelegramController
+from .telegram_bot import TelegramBot
+from .telegram_controller import TelegramController
 
 
-class TelegramDispatcher(AbstractTelegramDispatcher):
-    def __init__(self, bot: AbstractTelegramBot, controller: AbstractTelegramController) -> None:
+class TelegramDispatcher:
+    def __init__(self, bot: TelegramBot, controller: TelegramController) -> None:
         self.__dispatcher = bot.register_bot(Dispatcher)
         self.__dispatcher.message_handler(commands=['start'])(controller.welcome)
         self.__dispatcher.message_handler(commands=['help'])(controller.help)

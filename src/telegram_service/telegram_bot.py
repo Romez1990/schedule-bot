@@ -13,12 +13,11 @@ from aiogram.types import (
 )
 
 from ..env import AbstractEnvironment
-from .abstract_telegram_bot import AbstractTelegramBot
 
 T = TypeVar('T')
 
 
-class TelegramBot(AbstractTelegramBot):
+class TelegramBot:
     def __init__(self, env: AbstractEnvironment):
         token = env.get_str('TELEGRAM_BOT_TOKEN')
         self.__bot = Bot(token=token)
