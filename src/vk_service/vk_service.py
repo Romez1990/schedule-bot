@@ -10,5 +10,7 @@ class VkService(PlatformService):
 
     async def start(self) -> None:
         self.__bot.init()
+        self.__bot.message_handler(self.__bot.command_filter('start'))(self.__controller.welcome)
+        self.__bot.message_handler(self.__bot.command_filter('help'))(self.__controller.help)
 
 
