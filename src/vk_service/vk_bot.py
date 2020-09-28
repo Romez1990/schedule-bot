@@ -38,7 +38,7 @@ class VkBot:
     async def start(self) -> None:
         if self.__bot is None:
             self.__raise_init_error()
-        await self.__bot.run_forever()
+        await self.__bot.run()
 
     def __raise_init_error(self) -> None:
         raise Exception('Vk bot has not been inited')
