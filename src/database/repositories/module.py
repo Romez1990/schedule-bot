@@ -1,4 +1,4 @@
-from ..ioc_container import Module, ContainerBuilder
+from ...ioc_container import Module, ContainerBuilder
 from .abstract_user_repository import AbstractUserRepository
 from .user_repository import UserRepository
 from .abstract_user_settings_repository import AbstractUserSettingsRepository

@@ -1,4 +1,4 @@
-from src.migrations.migration import Migration
+from ..migration import Migration
 
 
 class UserSettingsMigration(Migration):

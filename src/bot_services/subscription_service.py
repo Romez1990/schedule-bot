@@ -2,7 +2,7 @@ from typing import List
 from returns.future import FutureResult
 
 from ..schedule import Group, AbstractGroupParser, GroupNameParsingException
-from ..repositories import AbstractSubscriptionRepository
+from ..database import AbstractSubscriptionRepository
 from ..entities import User, Subscription
 from .abstract_subscription_service import AbstractSubscriptionService
 

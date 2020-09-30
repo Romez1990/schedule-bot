@@ -1,7 +1,7 @@
 from typing import List
 
-from ..database import AbstractDatabase
-from ..entities import User, Subscription
+from ...entities import User, Subscription
+from ..abscrtract_database import AbstractDatabase
 from .abstract_subscription_repository import AbstractSubscriptionRepository
 
 

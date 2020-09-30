@@ -1,9 +1,7 @@
 from .ioc_container import ContainerBuilder, Container
 from .env import EnvModule
 from .database import DatabaseModule
-from .migrations import MigrationsModule
 from .schedule import ScheduleModule
-from .repositories import RepositoriesModule
 from .bot_services import BotServicesModule
 from .telegram_service import TelegramServiceModule
 from .vk_service import VkServiceModule
@@ -14,9 +12,7 @@ class AppContainerBuilder:
         self.__container_builder = ContainerBuilder()
         self.__container_builder.register_module(EnvModule)
         self.__container_builder.register_module(DatabaseModule)
-        self.__container_builder.register_module(MigrationsModule)
         self.__container_builder.register_module(ScheduleModule)
-        self.__container_builder.register_module(RepositoriesModule)
         self.__container_builder.register_module(BotServicesModule)
         self.__container_builder.register_module(TelegramServiceModule)
         self.__container_builder.register_module(VkServiceModule)

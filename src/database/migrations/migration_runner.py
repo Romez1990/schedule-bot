@@ -1,7 +1,7 @@
 from typing import Iterable
 from asyncpg import DuplicateObjectError
 
-from ..database import AbstractDatabase
+from ..abscrtract_database import AbstractDatabase
 from .abstract_migration_runner import AbstractMigrationRunner
 from .migration import Migration
 

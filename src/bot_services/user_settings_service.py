@@ -1,5 +1,5 @@
 from ..entities import User, UserSettings
-from ..repositories import AbstractUserSettingsRepository
+from ..database import AbstractUserSettingsRepository
 from .abstract_user_settings_service import AbstractUserSettingsService
 
 

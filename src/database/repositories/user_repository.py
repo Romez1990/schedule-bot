@@ -1,7 +1,7 @@
 from returns.maybe import Maybe
 
-from ..database import AbstractDatabase
-from ..entities import User
+from ...entities import User
+from ..abscrtract_database import AbstractDatabase
 from .abstract_user_repository import AbstractUserRepository
 
 
