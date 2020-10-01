@@ -1,4 +1,4 @@
-from ..platform_services import PlatformService
+from ..platform_service import PlatformService
 from .vk_bot import VkBot
 from .vk_controller import VkController
 

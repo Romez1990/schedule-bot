@@ -1,6 +1,6 @@
 from aiogram import Dispatcher
 
-from ..platform_services import PlatformService
+from ..platform_service import PlatformService
 from .telegram_bot import TelegramBot
 from .telegram_controller import TelegramController
 

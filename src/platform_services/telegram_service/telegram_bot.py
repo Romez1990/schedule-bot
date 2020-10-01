@@ -13,7 +13,7 @@ from aiogram.types import (
     ForceReply,
 )
 
-from ..env import AbstractEnvironment
+from src.env import AbstractEnvironment
 
 T = TypeVar('T')
 

@@ -11,7 +11,7 @@ from vkwave.bots.core import (
     BaseFilter,
 )
 
-from ..env import AbstractEnvironment
+from src.env import AbstractEnvironment
 
 
 class VkBot:

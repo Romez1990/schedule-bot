@@ -3,8 +3,7 @@ from asyncio import get_event_loop, AbstractEventLoop
 from src.app_container_builder import AppContainerBuilder
 from src.env import AbstractEnvironment
 from src.database import AbstractDatabase
-from src.telegram_service import TelegramService
-from src.vk_service import VkService
+from src.platform_services import TelegramService, VkService
 
 
 async def main(loop: AbstractEventLoop) -> None:

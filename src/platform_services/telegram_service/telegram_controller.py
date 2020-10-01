@@ -3,7 +3,7 @@ from aiogram.types import (
     ParseMode,
 )
 
-from ..bot_services import (
+from src.bot_services import (
     AbstractUserService,
     AbstractUserSettingsService,
     AbstractSubscriptionService,
