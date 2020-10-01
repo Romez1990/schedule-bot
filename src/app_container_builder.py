@@ -2,6 +2,7 @@ from .ioc_container import ContainerBuilder, Container
 from .env import EnvModule
 from .database import DatabaseModule
 from .schedule import ScheduleModule
+from .schedule_services import ScheduleServicesModule
 from .bot_services import BotServicesModule
 from .platform_services import PlatformServicesModule
 
@@ -12,6 +13,7 @@ class AppContainerBuilder:
         self.__container_builder.register_module(EnvModule)
         self.__container_builder.register_module(DatabaseModule)
         self.__container_builder.register_module(ScheduleModule)
+        self.__container_builder.register_module(ScheduleServicesModule)
         self.__container_builder.register_module(BotServicesModule)
         self.__container_builder.register_module(PlatformServicesModule)
 
