@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from .environment_driver import EnvironmentDriver
 
 
-class BaseEnvironment(EnvironmentDriver):
+class DotEnvEnvironmentDriver(EnvironmentDriver):
     def read(self) -> None:
         load_dotenv()
 
