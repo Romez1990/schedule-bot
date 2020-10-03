@@ -15,5 +15,6 @@ aiohttp = "*"
 asyncpg = "*"
 aiogram = "*"
 vkwave = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
