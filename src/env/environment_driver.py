@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-class AbstractBaseEnvironment:
+class EnvironmentDriver:
     def read(self) -> None:
         raise NotImplementedError
 

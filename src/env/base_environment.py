@@ -2,10 +2,10 @@ from os import getenv
 from typing import Optional
 from dotenv import load_dotenv
 
-from .abstract_base_environment import AbstractBaseEnvironment
+from .environment_driver import EnvironmentDriver
 
 
-class BaseEnvironment(AbstractBaseEnvironment):
+class BaseEnvironment(EnvironmentDriver):
     def read(self) -> None:
         load_dotenv()
 
