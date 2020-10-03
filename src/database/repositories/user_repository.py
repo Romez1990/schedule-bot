@@ -1,12 +1,12 @@
 from returns.maybe import Maybe
 
 from ...entities import User
-from ..abscrtract_database import AbstractDatabase
+from ..database import Database
 from .abstract_user_repository import AbstractUserRepository
 
 
 class UserRepository(AbstractUserRepository):
-    def __init__(self, database: AbstractDatabase):
+    def __init__(self, database: Database):
         self.__database = database
 
     async def save(self, user: User) -> User:

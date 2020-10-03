@@ -1,13 +1,13 @@
 from typing import Iterable
 from asyncpg import DuplicateObjectError
 
-from ..abscrtract_database import AbstractDatabase
+from ..database import Database
 from .abstract_migration_runner import AbstractMigrationRunner
 from .migration import Migration
 
 
 class MigrationRunner(AbstractMigrationRunner):
-    def __init__(self, database: AbstractDatabase) -> None:
+    def __init__(self, database: Database) -> None:
         self.__database = database
 
     async def run(self, migrations: Iterable[Migration]) -> None:

@@ -6,7 +6,7 @@ from typing import (
 from returns.maybe import Maybe
 
 
-class AbstractDatabase:
+class Database:
     async def connect(self) -> None:
         raise NotImplementedError
 

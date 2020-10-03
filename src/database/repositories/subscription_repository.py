@@ -1,12 +1,12 @@
 from typing import List
 
 from ...entities import User, Subscription
-from ..abscrtract_database import AbstractDatabase
+from ..database import Database
 from .abstract_subscription_repository import AbstractSubscriptionRepository
 
 
 class SubscriptionRepository(AbstractSubscriptionRepository):
-    def __init__(self, database: AbstractDatabase):
+    def __init__(self, database: Database):
         self.__database = database
 
     async def save(self, subscription: Subscription) -> Subscription:

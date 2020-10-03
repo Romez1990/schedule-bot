@@ -8,11 +8,11 @@ from asyncpg import connect, Connection, Record
 from returns.maybe import Maybe
 
 from ..env import AbstractEnvironment
-from .abscrtract_database import AbstractDatabase
+from .database import Database
 from .database_error import DatabaseError
 
 
-class PostgresDatabase(AbstractDatabase):
+class PostgresDatabase(Database):
     def __init__(self, env: AbstractEnvironment) -> None:
         self.__env = env
         self.__connection: Optional[Connection] = None
