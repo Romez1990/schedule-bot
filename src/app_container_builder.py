@@ -1,6 +1,7 @@
 from .ioc_container import ContainerBuilder, Container
 from .env import EnvModule
 from .database import DatabaseModule
+from .http import HttpModule
 from .schedule import ScheduleModule
 from .schedule_services import ScheduleServicesModule
 from .bot_services import BotServicesModule
@@ -12,6 +13,7 @@ class AppContainerBuilder:
         self.__container_builder = ContainerBuilder()
         self.__container_builder.register_module(EnvModule)
         self.__container_builder.register_module(DatabaseModule)
+        self.__container_builder.register_module(HttpModule)
         self.__container_builder.register_module(ScheduleModule)
         self.__container_builder.register_module(ScheduleServicesModule)
         self.__container_builder.register_module(BotServicesModule)
