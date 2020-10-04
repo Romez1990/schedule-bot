@@ -1,4 +1,6 @@
-from typing import Iterable
+from typing import (
+    Iterable,
+)
 
 from .migration import Migration
 

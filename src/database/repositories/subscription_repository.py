@@ -1,4 +1,6 @@
-from typing import List
+from typing import (
+    List,
+)
 
 from src.entities import User, Subscription
 from ..database import Database

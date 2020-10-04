@@ -1,4 +1,6 @@
-from typing import List
+from typing import (
+    List,
+)
 from returns.future import FutureResult
 
 from src.database import AbstractSubscriptionRepository

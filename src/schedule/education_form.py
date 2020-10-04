@@ -1,5 +1,7 @@
 from __future__ import annotations
-from typing import Tuple
+from typing import (
+    Tuple,
+)
 
 
 class EducationForm:
