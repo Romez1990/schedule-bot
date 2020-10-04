@@ -1,4 +1,4 @@
-from ..entities import User
+from src.entities import User
 
 
 class AbstractUserService:

@@ -1,4 +1,4 @@
-from ..ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, ContainerBuilder
 from .abstract_user_service import AbstractUserService
 from .user_service import UserService
 from .abstract_user_settings_service import AbstractUserSettingsService

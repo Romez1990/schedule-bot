@@ -1,9 +1,9 @@
 from typing import List
 from returns.future import FutureResult
 
-from ..schedule import Group, AbstractGroupParser, GroupNameParsingException
-from ..database import AbstractSubscriptionRepository
-from ..entities import User, Subscription
+from src.database import AbstractSubscriptionRepository
+from src.entities import User, Subscription
+from src.schedule import Group, AbstractGroupParser, GroupNameParsingException
 from .abstract_subscription_service import AbstractSubscriptionService
 
 

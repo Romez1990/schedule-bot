@@ -3,8 +3,8 @@ from typing import (
 )
 from returns.future import FutureResult
 
-from ..schedule import GroupNameParsingException
-from ..entities import User, Subscription
+from src.schedule import GroupNameParsingException
+from src.entities import User, Subscription
 
 
 class AbstractSubscriptionService:

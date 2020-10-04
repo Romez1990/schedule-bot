@@ -1,7 +1,7 @@
 from returns.maybe import Nothing
 
-from ..database import AbstractUserRepository
-from ..entities import User
+from src.database import AbstractUserRepository
+from src.entities import User
 from .abstract_user_service import AbstractUserService
 from .abstract_user_settings_service import AbstractUserSettingsService
 from .abstract_subscription_service import AbstractSubscriptionService
