@@ -1,6 +1,6 @@
 from typing import List
 
-from ...entities import User, Subscription
+from src.entities import User, Subscription
 from ..database import Database
 from .abstract_subscription_repository import AbstractSubscriptionRepository
 

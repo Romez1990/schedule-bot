@@ -1,4 +1,4 @@
-from ..ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, ContainerBuilder
 from .repositories import RepositoriesModule
 from .migrations import MigrationsModule
 from .database import Database

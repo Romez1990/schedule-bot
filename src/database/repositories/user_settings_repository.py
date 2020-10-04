@@ -1,4 +1,4 @@
-from ...entities import UserSettings, User
+from src.entities import UserSettings, User
 from ..database import Database
 from .abstract_user_settings_repository import AbstractUserSettingsRepository
 

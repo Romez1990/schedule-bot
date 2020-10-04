@@ -1,4 +1,4 @@
-from ...ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, ContainerBuilder
 from .abstract_migration_service import AbstractMigrationService
 from .migration_service import MigrationService
 from .abstract_migration_repository import AbstractMigrationRepository

@@ -7,7 +7,7 @@ from typing import (
 from asyncpg import connect, Connection, Record
 from returns.maybe import Maybe
 
-from ..env import AbstractEnvironment
+from src.env import AbstractEnvironment
 from .database import Database
 from .database_error import DatabaseError
 

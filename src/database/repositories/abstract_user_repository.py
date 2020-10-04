@@ -1,6 +1,6 @@
 from returns.maybe import Maybe
 
-from ..entities import User
+from src.entities import User
 
 
 class AbstractUserRepository:
