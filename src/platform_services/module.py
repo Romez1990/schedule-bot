@@ -1,4 +1,4 @@
-from ..ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, ContainerBuilder
 from .telegram_service import TelegramServiceModule
 from .vk_service import VkServiceModule
 
