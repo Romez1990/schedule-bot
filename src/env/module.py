@@ -1,4 +1,4 @@
-from ..ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, ContainerBuilder
 from .abstract_environment import AbstractEnvironment
 from .environment import Environment
 from .environment_driver import EnvironmentDriver
