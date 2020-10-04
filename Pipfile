@@ -16,5 +16,6 @@ asyncpg = "*"
 aiogram = "*"
 vkwave = "*"
 beautifulsoup4 = "*"
+lxml = "*"
 
 [dev-packages]
