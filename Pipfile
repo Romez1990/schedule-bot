@@ -17,5 +17,6 @@ aiogram = "*"
 vkwave = "*"
 beautifulsoup4 = "*"
 lxml = "*"
+pillow = "*"
 
 [dev-packages]
