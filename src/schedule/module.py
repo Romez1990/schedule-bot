@@ -1,4 +1,4 @@
-from ..ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, ContainerBuilder
 from .abstract_group_parser import AbstractGroupParser
 from .group_parser import GroupParser
 from .abstract_week_day_translator import AbstractWeekDayTranslator
