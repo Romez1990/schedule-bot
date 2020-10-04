@@ -1,4 +1,4 @@
-from ..schedule import Group
+from src.schedule import Group
 from .user import User
 
 
