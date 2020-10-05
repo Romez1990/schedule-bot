@@ -6,6 +6,7 @@ from .schedule import ScheduleModule
 from .schedule_services import ScheduleServicesModule
 from .bot_services import BotServicesModule
 from .platform_services import PlatformServicesModule
+from .utilities import UtilitiesModule
 
 
 class AppContainerBuilder:
@@ -18,6 +19,7 @@ class AppContainerBuilder:
         self.__container_builder.register_module(ScheduleServicesModule)
         self.__container_builder.register_module(BotServicesModule)
         self.__container_builder.register_module(PlatformServicesModule)
+        self.__container_builder.register_module(UtilitiesModule)
 
     def build(self) -> Container:
         return self.__container_builder.build()
