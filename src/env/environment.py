@@ -3,7 +3,7 @@ from .abstract_environment import AbstractEnvironment
 
 
 class Environment(AbstractEnvironment):
-    def __init__(self, abstract_base_environment: EnvironmentDriver):
+    def __init__(self, abstract_base_environment: EnvironmentDriver) -> None:
         self.__abstract_base_environment = abstract_base_environment
         self.__read = False
 

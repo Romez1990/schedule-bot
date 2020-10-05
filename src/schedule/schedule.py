@@ -16,7 +16,7 @@ from .day_of_week import DayOfWeek
 
 
 class Schedule(Mapping[Group, GroupSchedule]):
-    def __init__(self, group_schedules: Mapping[Group, GroupSchedule]):
+    def __init__(self, group_schedules: Mapping[Group, GroupSchedule]) -> None:
         self.__group_schedules = pmap(group_schedules)
 
     __group_schedules: PMap[Group, GroupSchedule]

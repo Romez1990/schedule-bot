@@ -9,7 +9,7 @@ from .entry import Entry
 
 
 class DaySchedule(Iterable[Maybe[Entry]]):
-    def __init__(self, entries: Iterable[Maybe[Entry]]):
+    def __init__(self, entries: Iterable[Maybe[Entry]]) -> None:
         self.__entries = pvector(entries)
 
     def __iter__(self) -> Iterator[Maybe[Entry]]:

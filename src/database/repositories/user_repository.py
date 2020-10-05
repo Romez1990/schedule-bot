@@ -6,7 +6,7 @@ from .abstract_user_repository import AbstractUserRepository
 
 
 class UserRepository(AbstractUserRepository):
-    def __init__(self, database: Database):
+    def __init__(self, database: Database) -> None:
         self.__database = database
 
     async def save(self, user: User) -> User:

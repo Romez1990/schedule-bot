@@ -10,7 +10,7 @@ from .abstract_subscription_service import AbstractSubscriptionService
 
 
 class SubscriptionService(AbstractSubscriptionService):
-    def __init__(self, subscriptions: AbstractSubscriptionRepository, group_parser: AbstractGroupParser):
+    def __init__(self, subscriptions: AbstractSubscriptionRepository, group_parser: AbstractGroupParser) -> None:
         self.__subscriptions = subscriptions
         self.__group_parser = group_parser
 

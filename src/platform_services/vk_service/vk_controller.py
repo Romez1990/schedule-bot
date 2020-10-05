@@ -4,7 +4,7 @@ from .vk_bot import VkBot
 
 
 class VkController:
-    def __init__(self, bot: VkBot):
+    def __init__(self, bot: VkBot) -> None:
         self.__bot = bot
 
     async def welcome(self, event: SimpleBotEvent) -> None:

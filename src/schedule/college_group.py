@@ -3,7 +3,7 @@ from .group import Group
 
 
 class CollegeGroup(Group):
-    def __init__(self, year: int, speciality: str, number: int, a: bool, admission_year: int):
+    def __init__(self, year: int, speciality: str, number: int, a: bool, admission_year: int) -> None:
         self.__year = year
         self.__speciality = speciality.upper()
         self.__number = number

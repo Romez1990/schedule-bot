@@ -4,7 +4,7 @@ from .abstract_user_settings_repository import AbstractUserSettingsRepository
 
 
 class UserSettingsRepository(AbstractUserSettingsRepository):
-    def __init__(self, database: Database):
+    def __init__(self, database: Database) -> None:
         self.__database = database
 
     async def save(self, user_settings: UserSettings) -> UserSettings:

@@ -8,7 +8,7 @@ from .abstract_subscription_repository import AbstractSubscriptionRepository
 
 
 class SubscriptionRepository(AbstractSubscriptionRepository):
-    def __init__(self, database: Database):
+    def __init__(self, database: Database) -> None:
         self.__database = database
 
     async def save(self, subscription: Subscription) -> Subscription:

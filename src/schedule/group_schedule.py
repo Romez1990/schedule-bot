@@ -10,7 +10,7 @@ from .day_schedule import DaySchedule
 
 
 class GroupSchedule(Mapping[DayOfWeek, DaySchedule]):
-    def __init__(self, day_schedules: Mapping[DayOfWeek, DaySchedule]):
+    def __init__(self, day_schedules: Mapping[DayOfWeek, DaySchedule]) -> None:
         self.__day_schedules = pmap(day_schedules)
 
     __day_schedules: PMap[DayOfWeek, DaySchedule]

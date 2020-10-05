@@ -19,7 +19,7 @@ T = TypeVar('T')
 
 
 class TelegramBot:
-    def __init__(self, env: AbstractEnvironment):
+    def __init__(self, env: AbstractEnvironment) -> None:
         self.__env = env
         self.__bot: Optional[Bot] = None
 

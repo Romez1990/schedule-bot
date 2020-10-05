@@ -6,7 +6,7 @@ from .telegram_controller import TelegramController
 
 
 class TelegramService(PlatformService):
-    def __init__(self, bot: TelegramBot, controller: TelegramController):
+    def __init__(self, bot: TelegramBot, controller: TelegramController) -> None:
         self.__bot = bot
         self.__controller = controller
 

@@ -1,5 +1,5 @@
 class Entry:
-    def __init__(self, subject: str, kind: str, teacher: str, class_room: str):
+    def __init__(self, subject: str, kind: str, teacher: str, class_room: str) -> None:
         self.__subject = subject
         self.__kind = kind
         self.__teacher = teacher

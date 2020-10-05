@@ -6,7 +6,7 @@ from .group import Group
 
 
 class UniversityGroup(Group):
-    def __init__(self, speciality: str, year: int, form: str, number: Maybe[int]):
+    def __init__(self, speciality: str, year: int, form: str, number: Maybe[int]) -> None:
         self.__speciality = speciality.upper()
         self.__year = year
         self.__form = EducationForm(form)
