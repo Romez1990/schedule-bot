@@ -22,6 +22,9 @@ class GroupSchedule(Mapping[DayOfWeek, DaySchedule]):
     def __getitem__(self, key: DayOfWeek) -> DaySchedule:
         return self.__day_schedules[key]
 
+    def remove(self, key: DayOfWeek) -> GroupSchedule:
+        return GroupSchedule(self.__day_schedules.remove(key))
+
     def __len__(self) -> int:
         return len(self.__day_schedules)
 
