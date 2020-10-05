@@ -1,1 +1,2 @@
 from .module import RendererModule
+from .schedule_renderer_interface import ScheduleRendererInterface
