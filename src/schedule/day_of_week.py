@@ -2,7 +2,7 @@ from __future__ import annotations
 from enum import Enum
 
 
-class WeekDay(Enum):
+class DayOfWeek(Enum):
     monday = 0
     tuesday = 1
     wednesday = 2
@@ -11,8 +11,8 @@ class WeekDay(Enum):
     saturday = 5
     sunday = 6
 
-    def __gt__(self, other: WeekDay) -> bool:
+    def __gt__(self, other: DayOfWeek) -> bool:
         return self.value > other.value
 
-    def __lt__(self, other: WeekDay) -> bool:
+    def __lt__(self, other: DayOfWeek) -> bool:
         return self.value < other.value

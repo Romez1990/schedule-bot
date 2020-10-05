@@ -6,7 +6,7 @@ from .college_group import CollegeGroup
 from .abstract_group_parser import AbstractGroupParser
 from .errors import GroupNameParsingException
 from .group_schedule import GroupSchedule
-from .week_day import WeekDay
-from .abstract_week_day_translator import AbstractWeekDayTranslator
+from .day_of_week import DayOfWeek
+from .abstract_day_of_week_translator import AbstractDayOfWeekTranslator
 from .day_schedule import DaySchedule
 from .entry import Entry

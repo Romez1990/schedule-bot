@@ -5,20 +5,20 @@ from typing import (
 )
 from pyrsistent import pmap, PMap
 
-from .week_day import WeekDay
+from .day_of_week import DayOfWeek
 from .day_schedule import DaySchedule
 
 
-class GroupSchedule(Mapping[WeekDay, DaySchedule]):
-    def __init__(self, day_schedules: Mapping[WeekDay, DaySchedule]):
+class GroupSchedule(Mapping[DayOfWeek, DaySchedule]):
+    def __init__(self, day_schedules: Mapping[DayOfWeek, DaySchedule]):
         self.__day_schedules = pmap(day_schedules)
 
-    __day_schedules: PMap[WeekDay, DaySchedule]
+    __day_schedules: PMap[DayOfWeek, DaySchedule]
 
-    def __iter__(self) -> Iterator[WeekDay]:
+    def __iter__(self) -> Iterator[DayOfWeek]:
         return iter(self.__day_schedules)
 
-    def __getitem__(self, key: WeekDay) -> DaySchedule:
+    def __getitem__(self, key: DayOfWeek) -> DaySchedule:
         return self.__day_schedules[key]
 
     def __len__(self) -> int:
