@@ -25,6 +25,9 @@ class GroupSchedule(Mapping[DayOfWeek, DaySchedule]):
     def remove(self, key: DayOfWeek) -> GroupSchedule:
         return GroupSchedule(self.__day_schedules.remove(key))
 
+    # def __contains__(self, key: DayOfWeek) -> bool:
+    #     return key in self.__day_schedules
+
     def __len__(self) -> int:
         return len(self.__day_schedules)
 
