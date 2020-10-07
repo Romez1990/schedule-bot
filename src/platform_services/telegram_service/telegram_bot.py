@@ -13,13 +13,13 @@ from aiogram.types import (
     ForceReply,
 )
 
-from src.env import AbstractEnvironment
+from src.env import EnvironmentInterface
 
 T = TypeVar('T')
 
 
 class TelegramBot:
-    def __init__(self, env: AbstractEnvironment) -> None:
+    def __init__(self, env: EnvironmentInterface) -> None:
         self.__env = env
         self.__bot: Optional[Bot] = None
 

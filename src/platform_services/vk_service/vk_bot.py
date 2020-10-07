@@ -11,11 +11,11 @@ from vkwave.bots.core import (
     BaseFilter,
 )
 
-from src.env import AbstractEnvironment
+from src.env import EnvironmentInterface
 
 
 class VkBot:
-    def __init__(self, env: AbstractEnvironment) -> None:
+    def __init__(self, env: EnvironmentInterface) -> None:
         self.__env = env
         self.__bot: Optional[SimpleLongPollUserBot] = None
 

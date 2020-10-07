@@ -1,7 +1,7 @@
 from asyncio import get_event_loop, AbstractEventLoop
 
 from src.app_container_builder import AppContainerBuilder
-from src.env import AbstractEnvironment
+from src.env import EnvironmentInterface
 from src.database import Database
 from src.platform_services import TelegramService, VkService
 
@@ -14,7 +14,7 @@ async def main(loop: AbstractEventLoop) -> None:
     container_builder = AppContainerBuilder()
     container = container_builder.build()
 
-    env = container.get(AbstractEnvironment)
+    env = container.get(EnvironmentInterface)
     database = container.get(Database)
     telegram_service = container.get(TelegramService)
     vk_service = container.get(VkService)

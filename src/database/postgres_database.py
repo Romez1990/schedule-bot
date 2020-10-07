@@ -7,13 +7,13 @@ from typing import (
 from asyncpg import connect, Connection, Record
 from returns.maybe import Maybe
 
-from src.env import AbstractEnvironment
+from src.env import EnvironmentInterface
 from .database import Database
 from .database_error import DatabaseError
 
 
 class PostgresDatabase(Database):
-    def __init__(self, env: AbstractEnvironment) -> None:
+    def __init__(self, env: EnvironmentInterface) -> None:
         self.__env = env
         self.__connection: Optional[Connection] = None
 

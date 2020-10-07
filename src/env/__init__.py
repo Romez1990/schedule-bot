@@ -1,2 +1,2 @@
 from .module import EnvModule
-from .abstract_environment import AbstractEnvironment
+from .environment_interface import EnvironmentInterface

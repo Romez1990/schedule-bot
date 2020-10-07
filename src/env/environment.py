@@ -1,8 +1,8 @@
 from .environment_driver import EnvironmentDriver
-from .abstract_environment import AbstractEnvironment
+from .environment_interface import EnvironmentInterface
 
 
-class Environment(AbstractEnvironment):
+class Environment(EnvironmentInterface):
     def __init__(self, abstract_base_environment: EnvironmentDriver) -> None:
         self.__abstract_base_environment = abstract_base_environment
         self.__read = False

@@ -1,4 +1,4 @@
-class AbstractEnvironment:
+class EnvironmentInterface:
     def read(self) -> None:
         raise NotImplementedError
 
