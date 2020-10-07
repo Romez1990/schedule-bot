@@ -22,10 +22,16 @@ class GroupListScraper(GroupListScraperInterface):
 
     async def get_groups_and_links(self) -> Dict[UniversityGroup, str]:
         document = await self.__page_parser.parse('http://www.viti-mephi.ru/raspisanie')
+        university_nodes = [tag for tag in document.select_all('.node-raspisanie') if self.__is_university_node(tag)]
         groups_and_links = List(document.select_all('.table_raspisanie a')) \
             .map(self.__get_group_and_link) \
             .filter(self.__is_university_group_acceptable)
         return {group: link for group, link in groups_and_links}
+
+    def __is_university_node(self, tag: Tag) -> bool:
+        header = tag.select('h2')
+        header_text = header.text.strip()
+        return header_text.startswith('Факультет')
 
     def __get_group_and_link(self, group_tag: Tag) -> Tuple[UniversityGroup, str]:
         group_name = group_tag.text.strip()
