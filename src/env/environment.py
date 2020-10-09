@@ -3,19 +3,19 @@ from .environment_interface import EnvironmentInterface
 
 
 class Environment(EnvironmentInterface):
-    def __init__(self, abstract_base_environment: EnvironmentDriver) -> None:
-        self.__abstract_base_environment = abstract_base_environment
+    def __init__(self, environment_driver: EnvironmentDriver) -> None:
+        self.__environment_driver = environment_driver
         self.__read = False
 
     def read(self) -> None:
-        self.__abstract_base_environment.read()
+        self.__environment_driver.read()
         self.__read = True
 
     def get_str(self, key: str) -> str:
         if not self.__read:
             raise EnvironmentError('environment was not read')
 
-        value = self.__abstract_base_environment.get_str(key)
+        value = self.__environment_driver.get_str(key)
         if value is None:
             raise EnvironmentError(f'no {key} environment variable')
         return value
