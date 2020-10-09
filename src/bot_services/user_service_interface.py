@@ -1,7 +1,7 @@
 from src.entities import User
 
 
-class AbstractUserService:
+class UserServiceInterface:
     async def create_if_not_exists(self, platform: str, platform_id: str) -> bool:
         raise NotImplementedError
 

@@ -7,7 +7,7 @@ from src.schedule import GroupNameParsingException
 from src.entities import User, Subscription
 
 
-class AbstractSubscriptionService:
+class SubscriptionServiceInterface:
     def create(self, user: User, group_name: str) -> FutureResult[None, GroupNameParsingException]:
         raise NotImplementedError
 

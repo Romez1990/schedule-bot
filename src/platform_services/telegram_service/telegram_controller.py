@@ -4,9 +4,9 @@ from aiogram.types import (
 )
 
 from src.bot_services import (
-    AbstractUserService,
-    AbstractUserSettingsService,
-    AbstractSubscriptionService,
+    UserServiceInterface,
+    UserSettingsServiceInterface,
+    SubscriptionServiceInterface,
 )
 from .telegram_bot import TelegramBot
 from .configurations.messages_text import message_text_start, message_text_help
@@ -17,9 +17,9 @@ class TelegramController:
     def __init__(
             self,
             bot: TelegramBot,
-            user_service: AbstractUserService,
-            user_settings_service: AbstractUserSettingsService,
-            subscription_service: AbstractSubscriptionService,
+            user_service: UserServiceInterface,
+            user_settings_service: UserSettingsServiceInterface,
+            subscription_service: SubscriptionServiceInterface,
     ) -> None:
         self.__bot = bot
         self.__user_service = user_service

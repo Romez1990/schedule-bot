@@ -1,9 +1,9 @@
 from src.database import UserSettingsRepositoryInterface
 from src.entities import User, UserSettings
-from .abstract_user_settings_service import AbstractUserSettingsService
+from .user_settings_service_interface import UserSettingsServiceInterface
 
 
-class UserSettingsService(AbstractUserSettingsService):
+class UserSettingsService(UserSettingsServiceInterface):
     def __init__(self, user_settings: UserSettingsRepositoryInterface) -> None:
         self.__user_settings = user_settings
 
