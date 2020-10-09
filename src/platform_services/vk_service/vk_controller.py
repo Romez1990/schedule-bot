@@ -12,7 +12,7 @@ class VkController:
         self.__bot = bot
 
     async def welcome(self, event: SimpleBotEvent) -> None:
-        await event.answer(message_text_start())
+        await event.answer(message=message_text_start())
 
     async def help(self, event: SimpleBotEvent) -> None:
-        await event.answer(message_text_help())
+        await event.answer(message=message_text_help())
