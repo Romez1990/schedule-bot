@@ -1,8 +1,8 @@
-from .abstract_day_of_week_translator import AbstractDayOfWeekTranslator
+from .day_of_week_translator_interface import DayOfWeekTranslatorInterface
 from .day_of_week import DayOfWeek
 
 
-class DayOfWeekTranslator(AbstractDayOfWeekTranslator):
+class DayOfWeekTranslator(DayOfWeekTranslatorInterface):
     __days_of_week = [
         'Понедельник',
         'Вторник',

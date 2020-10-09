@@ -7,14 +7,14 @@ from typing import (
 from returns.maybe import Maybe, Some, Nothing
 from returns.result import Result, Success, Failure
 
-from .abstract_group_parser import AbstractGroupParser
+from .group_parser_interface import GroupParserInterface
 from .group import Group
 from .university_group import UniversityGroup
 from .college_group import CollegeGroup
 from .errors import GroupNameParsingException
 
 
-class GroupParser(AbstractGroupParser):
+class GroupParser(GroupParserInterface):
     def parse(self, group_name: str) -> Result[Group, GroupNameParsingException]:
         parsers: List[Callable[[], Maybe[Group]]] = [
             lambda: self.__parse_university_group(group_name),

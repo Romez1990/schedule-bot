@@ -3,10 +3,10 @@ from .schedule import Schedule
 from .group import Group
 from .university_group import UniversityGroup
 from .college_group import CollegeGroup
-from .abstract_group_parser import AbstractGroupParser
+from .group_parser_interface import GroupParserInterface
 from .errors import GroupNameParsingException
 from .group_schedule import GroupSchedule
 from .day_of_week import DayOfWeek
-from .abstract_day_of_week_translator import AbstractDayOfWeekTranslator
+from .day_of_week_translator_interface import DayOfWeekTranslatorInterface
 from .day_schedule import DaySchedule
 from .entry import Entry
