@@ -3,7 +3,7 @@ from returns.maybe import Maybe
 from src.entities import User
 
 
-class AbstractUserRepository:
+class UserRepositoryInterface:
     async def save(self, user: User) -> User:
         raise NotImplementedError
 

@@ -1,10 +1,10 @@
 from .repositories import (
-    AbstractUserRepository,
-    AbstractUserSettingsRepository,
-    AbstractSubscriptionRepository,
+    UserRepositoryInterface,
+    UserSettingsRepositoryInterface,
+    SubscriptionRepositoryInterface,
 )
 from .migrations import (
-    AbstractMigrationService
+    MigrationServiceInterface
 )
 from .module import DatabaseModule
 from .database import Database

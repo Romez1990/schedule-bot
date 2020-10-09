@@ -1,11 +1,11 @@
-from .abstract_migration_service import AbstractMigrationService
-from .abstract_migration_repository import AbstractMigrationRepository
-from .abstract_migration_runner import AbstractMigrationRunner
+from .migration_service_interface import MigrationServiceInterface
+from .migration_repository_interface import MigrationRepositoryInterface
+from .migration_runner_interface import MigrationRunnerInterface
 
 
-class MigrationService(AbstractMigrationService):
-    def __init__(self, migration_repository: AbstractMigrationRepository,
-                 migration_runner: AbstractMigrationRunner) -> None:
+class MigrationService(MigrationServiceInterface):
+    def __init__(self, migration_repository: MigrationRepositoryInterface,
+                 migration_runner: MigrationRunnerInterface) -> None:
         self.__migration_repository = migration_repository
         self.__migration_runner = migration_runner
 

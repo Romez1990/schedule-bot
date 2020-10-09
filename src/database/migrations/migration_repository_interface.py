@@ -5,6 +5,6 @@ from typing import (
 from .migration import Migration
 
 
-class AbstractMigrationRepository:
+class MigrationRepositoryInterface:
     def get_all(self) -> List[Migration]:
         raise NotImplementedError

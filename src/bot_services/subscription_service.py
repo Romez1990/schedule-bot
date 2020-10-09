@@ -3,14 +3,14 @@ from typing import (
 )
 from returns.future import FutureResult
 
-from src.database import AbstractSubscriptionRepository
+from src.database import SubscriptionRepositoryInterface
 from src.entities import User, Subscription
 from src.schedule import Group, AbstractGroupParser, GroupNameParsingException
 from .abstract_subscription_service import AbstractSubscriptionService
 
 
 class SubscriptionService(AbstractSubscriptionService):
-    def __init__(self, subscriptions: AbstractSubscriptionRepository, group_parser: AbstractGroupParser) -> None:
+    def __init__(self, subscriptions: SubscriptionRepositoryInterface, group_parser: AbstractGroupParser) -> None:
         self.__subscriptions = subscriptions
         self.__group_parser = group_parser
 

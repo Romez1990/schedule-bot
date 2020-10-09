@@ -2,10 +2,10 @@ from returns.maybe import Maybe
 
 from src.entities import User
 from ..database import Database
-from .abstract_user_repository import AbstractUserRepository
+from .user_repository_interface import UserRepositoryInterface
 
 
-class UserRepository(AbstractUserRepository):
+class UserRepository(UserRepositoryInterface):
     def __init__(self, database: Database) -> None:
         self.__database = database
 

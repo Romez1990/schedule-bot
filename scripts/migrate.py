@@ -1,7 +1,7 @@
 from asyncio import run
 
 from src.app_container_builder import AppContainerBuilder
-from src.database import Database, AbstractMigrationService
+from src.database import Database, MigrationServiceInterface
 from src.env import EnvironmentInterface
 
 
@@ -11,7 +11,7 @@ async def main() -> None:
 
     env = container.get(EnvironmentInterface)
     database = container.get(Database)
-    migration_service = container.get(AbstractMigrationService)
+    migration_service = container.get(MigrationServiceInterface)
 
     env.read()
     await database.connect()

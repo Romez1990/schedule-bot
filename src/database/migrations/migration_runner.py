@@ -4,11 +4,11 @@ from typing import (
 from asyncpg import DuplicateObjectError
 
 from ..database import Database
-from .abstract_migration_runner import AbstractMigrationRunner
+from .migration_runner_interface import MigrationRunnerInterface
 from .migration import Migration
 
 
-class MigrationRunner(AbstractMigrationRunner):
+class MigrationRunner(MigrationRunnerInterface):
     def __init__(self, database: Database) -> None:
         self.__database = database
 

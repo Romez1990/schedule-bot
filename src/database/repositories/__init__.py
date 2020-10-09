@@ -1,4 +1,4 @@
 from .module import RepositoriesModule
-from .abstract_user_repository import AbstractUserRepository
-from .abstract_user_settings_repository import AbstractUserSettingsRepository
-from .abstract_subscription_repository import AbstractSubscriptionRepository
+from .user_repository_interface import UserRepositoryInterface
+from .user_settings_repository_interface import UserSettingsRepositoryInterface
+from .subscription_repository_interface import SubscriptionRepositoryInterface

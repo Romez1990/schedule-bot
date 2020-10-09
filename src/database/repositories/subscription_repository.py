@@ -4,10 +4,10 @@ from typing import (
 
 from src.entities import User, Subscription
 from ..database import Database
-from .abstract_subscription_repository import AbstractSubscriptionRepository
+from .subscription_repository_interface import SubscriptionRepositoryInterface
 
 
-class SubscriptionRepository(AbstractSubscriptionRepository):
+class SubscriptionRepository(SubscriptionRepositoryInterface):
     def __init__(self, database: Database) -> None:
         self.__database = database
 

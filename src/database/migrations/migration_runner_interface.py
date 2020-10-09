@@ -5,6 +5,6 @@ from typing import (
 from .migration import Migration
 
 
-class AbstractMigrationRunner:
+class MigrationRunnerInterface:
     async def run(self, migrations: Iterable[Migration]) -> None:
         raise NotImplementedError

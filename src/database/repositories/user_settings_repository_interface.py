@@ -1,7 +1,7 @@
 from src.entities import User, UserSettings
 
 
-class AbstractUserSettingsRepository:
+class UserSettingsRepositoryInterface:
     async def save(self, user_settings: UserSettings) -> UserSettings:
         raise NotImplementedError
 

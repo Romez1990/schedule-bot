@@ -5,11 +5,11 @@ from typing import (
     List,
 )
 
-from .abstract_migration_repository import AbstractMigrationRepository
+from .migration_repository_interface import MigrationRepositoryInterface
 from .migration import Migration
 
 
-class MigrationRepository(AbstractMigrationRepository):
+class MigrationRepository(MigrationRepositoryInterface):
     def __init__(self) -> None:
         self.__target_package = 'migrations'
         self.__current_package = '.'.join(__name__.split('.')[:-1])

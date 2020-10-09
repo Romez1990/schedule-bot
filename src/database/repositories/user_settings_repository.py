@@ -1,9 +1,9 @@
 from src.entities import UserSettings, User
 from ..database import Database
-from .abstract_user_settings_repository import AbstractUserSettingsRepository
+from .user_settings_repository_interface import UserSettingsRepositoryInterface
 
 
-class UserSettingsRepository(AbstractUserSettingsRepository):
+class UserSettingsRepository(UserSettingsRepositoryInterface):
     def __init__(self, database: Database) -> None:
         self.__database = database
 

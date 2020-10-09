@@ -5,7 +5,7 @@ from typing import (
 from src.entities import User, Subscription
 
 
-class AbstractSubscriptionRepository:
+class SubscriptionRepositoryInterface:
     async def save(self, subscription: Subscription) -> Subscription:
         raise NotImplementedError
 

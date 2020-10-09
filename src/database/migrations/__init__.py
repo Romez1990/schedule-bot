@@ -1,2 +1,2 @@
 from .module import MigrationsModule
-from .abstract_migration_service import AbstractMigrationService
+from .migration_service_interface import MigrationServiceInterface
