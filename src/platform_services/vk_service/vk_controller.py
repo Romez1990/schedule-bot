@@ -20,4 +20,5 @@ class VkController:
                            keyboard=MENU_VK.get_keyboard())
 
     async def help(self, event: SimpleBotEvent) -> None:
-        await event.answer(message=message_text_help())
+        await event.answer(message=message_text_help(),
+                           keyboard=MENU_VK.get_keyboard())

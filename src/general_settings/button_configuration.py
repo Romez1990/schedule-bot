@@ -21,6 +21,7 @@ buttons.add(button_start, button_help)
 # vk bot
 MENU_VK = Keyboard()
 MENU_VK.add_text_button(text='/start', payload={"command": "start"})
+MENU_VK.add_text_button(text='/help', payload={"command": "help"})
 
 
 """
