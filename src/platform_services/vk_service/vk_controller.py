@@ -7,18 +7,21 @@ from ...general_settings.messages_text import (
 )
 
 from ...general_settings.button_configuration import (
-    MENU_VK,
+    ButtonConfiguration
 )
 
 
 class VkController:
-    def __init__(self, bot: VkBot) -> None:
+    def __init__(self, bot: VkBot, vk_button: ButtonConfiguration) -> None:
         self.__bot = bot
+        self.vk_button = vk_button
 
     async def welcome(self, event: SimpleBotEvent) -> None:
+        button = self.vk_button.vk_buttons()
         await event.answer(message=message_text_start(),
-                           keyboard=MENU_VK.get_keyboard())
+                           keyboard=button.get_keyboard())
 
     async def help(self, event: SimpleBotEvent) -> None:
+        button = self.vk_button.vk_buttons()
         await event.answer(message=message_text_help(),
-                           keyboard=MENU_VK.get_keyboard())
+                           keyboard=button.get_keyboard())
