@@ -6,11 +6,22 @@ from aiogram.types import (
     # InlineKeyboardButton,
 )
 
+from vkwave.bots import (
+    Keyboard,
+    ButtonColor
+)
+
+# telegram bot
 button_start = KeyboardButton('/start')
 button_help = KeyboardButton('/help')
 
 buttons = ReplyKeyboardMarkup()
 buttons.add(button_start, button_help)
+
+# vk bot
+MENU_VK = Keyboard()
+MENU_VK.add_text_button(text='/start', payload={"command": "start"})
+
 
 """
 Here I will take the ReplyKeyboardMarkup button and import them into other .py files.
