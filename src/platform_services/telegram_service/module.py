@@ -1,11 +1,11 @@
-from src.ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, Container
 from .telegram_service import TelegramService
 from .telegram_bot import TelegramBot
 from .telegram_controller import TelegramController
 
 
 class TelegramServiceModule(Module):
-    def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(TelegramService).to_self()
-        builder.bind(TelegramBot).to_self()
-        builder.bind(TelegramController).to_self()
+    def _load(self, container: Container) -> None:
+        container.bind(TelegramService).to_self()
+        container.bind(TelegramBot).to_self()
+        container.bind(TelegramController).to_self()

@@ -1,9 +1,9 @@
-from src.ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, Container
 from .telegram_service import TelegramServiceModule
 from .vk_service import VkServiceModule
 
 
 class PlatformServicesModule(Module):
-    def _load(self, builder: ContainerBuilder) -> None:
-        builder.register_module(TelegramServiceModule)
-        builder.register_module(VkServiceModule)
+    def _load(self, container: Container) -> None:
+        container.register_module(TelegramServiceModule)
+        container.register_module(VkServiceModule)
