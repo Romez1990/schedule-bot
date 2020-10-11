@@ -9,10 +9,8 @@ from src.bot_services import (
     SubscriptionServiceInterface,
 )
 from .telegram_bot import TelegramBot
-from src.general_settings.messages_text import message_text_start, message_text_help
-from src.general_settings.button_configuration import buttons
-from src.general_settings.messages_text import MessageText
-from src.general_settings.button_configuration import ButtonConfiguration
+from src.platform_services.messages_text import MessageText
+from src.platform_services.button_configuration import ButtonConfiguration
 
 
 class TelegramController:
