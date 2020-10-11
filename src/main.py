@@ -1,6 +1,7 @@
 from asyncio import get_event_loop, AbstractEventLoop
 
-from src.app_container_builder import AppContainerBuilder
+from src.ioc_container import Container
+from src.app_module import AppModule
 from src.env import EnvironmentInterface
 from src.database import Database
 from src.platform_services import TelegramService, VkService
@@ -11,8 +12,8 @@ async def main(loop: AbstractEventLoop) -> None:
     This function for init then we transfer it to main.py in root directory
     :return: None
     """
-    container_builder = AppContainerBuilder()
-    container = container_builder.build()
+    container = Container()
+    container.register_module(AppModule)
 
     env = container.get(EnvironmentInterface)
     database = container.get(Database)
