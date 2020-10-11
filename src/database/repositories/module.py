@@ -1,4 +1,4 @@
-from src.ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, Container
 from .user_repository_interface import UserRepositoryInterface
 from .user_repository import UserRepository
 from .user_settings_repository_interface import UserSettingsRepositoryInterface
@@ -8,7 +8,7 @@ from .subscription_repository import SubscriptionRepository
 
 
 class RepositoriesModule(Module):
-    def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(UserRepository).to(UserRepositoryInterface)
-        builder.bind(UserSettingsRepository).to(UserSettingsRepositoryInterface)
-        builder.bind(SubscriptionRepository).to(SubscriptionRepositoryInterface)
+    def _load(self, container: Container) -> None:
+        container.bind(UserRepository).to(UserRepositoryInterface)
+        container.bind(UserSettingsRepository).to(UserSettingsRepositoryInterface)
+        container.bind(SubscriptionRepository).to(SubscriptionRepositoryInterface)
