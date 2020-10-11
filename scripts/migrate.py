@@ -1,13 +1,14 @@
 from asyncio import run
 
-from src.app_container_builder import AppContainerBuilder
+from src.ioc_container import Container
+from src.app_module import AppModule
 from src.database import Database, MigrationServiceInterface
 from src.env import EnvironmentInterface
 
 
 async def main() -> None:
-    container_builder = AppContainerBuilder()
-    container = container_builder.build()
+    container = Container()
+    container.register_module(AppModule)
 
     env = container.get(EnvironmentInterface)
     database = container.get(Database)

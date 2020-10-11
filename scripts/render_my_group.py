@@ -1,7 +1,8 @@
 from asyncio import run
 from io import BytesIO
 
-from src.app_container_builder import AppContainerBuilder
+from src.ioc_container import Container
+from src.app_module import AppModule
 from src.schedule import (
     GroupParserInterface,
 )
@@ -12,8 +13,8 @@ from src.schedule_services import (
 
 
 async def main() -> None:
-    container_builder = AppContainerBuilder()
-    container = container_builder.build()
+    container = Container()
+    container.register_module(AppModule)
 
     group_parser = container.get(GroupParserInterface)
     schedule_scraper = container.get(ScheduleScraperInterface)
