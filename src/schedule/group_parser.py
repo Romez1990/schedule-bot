@@ -11,17 +11,17 @@ from .group_parser_interface import GroupParserInterface
 from .group import Group
 from .university_group import UniversityGroup
 from .college_group import CollegeGroup
-from .errors import GroupNameParsingException
+from .errors import GroupNameParsingError
 
 
 class GroupParser(GroupParserInterface):
-    def parse(self, group_name: str) -> Result[Group, GroupNameParsingException]:
+    def parse(self, group_name: str) -> Result[Group, GroupNameParsingError]:
         parsers: List[Callable[[], Maybe[Group]]] = [
             lambda: self.__parse_university_group(group_name),
             lambda: self.__parse_college_group(group_name),
         ]
         group = reduce(self.__rescue, parsers, Nothing)
-        return Success(group.unwrap()) if group != Nothing else Failure(GroupNameParsingException(group_name))
+        return Success(group.unwrap()) if group != Nothing else Failure(GroupNameParsingError(group_name))
 
     def __rescue(self, group: Maybe[Group], get_next_group: Callable[[], Maybe[Group]]) -> Maybe[Group]:
         return group if group != Nothing else get_next_group()
