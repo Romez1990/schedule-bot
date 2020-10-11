@@ -7,5 +7,5 @@ from .dot_env_environment_driver import DotEnvEnvironmentDriver
 
 class EnvModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(EnvironmentInterface).to(Environment)
-        builder.bind(EnvironmentDriver).to(DotEnvEnvironmentDriver)
+        builder.bind(Environment).to(EnvironmentInterface)
+        builder.bind(DotEnvEnvironmentDriver).to(EnvironmentDriver)
