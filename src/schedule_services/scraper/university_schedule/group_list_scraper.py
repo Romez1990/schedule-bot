@@ -4,7 +4,7 @@ from typing import (
 )
 
 from src.schedule import Group, GroupParserInterface
-from ..parser import (
+from src.schedule_services.parser import (
     PageParserInterface,
     Tag,
 )

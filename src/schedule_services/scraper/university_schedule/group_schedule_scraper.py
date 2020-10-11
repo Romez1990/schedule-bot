@@ -7,7 +7,7 @@ from returns.maybe import Maybe, Some, Nothing
 
 from src.schedule import GroupSchedule, DayOfWeek, DaySchedule, Entry
 from src.utilities import ListHelper
-from ..parser import (
+from src.schedule_services.parser import (
     PageParserInterface,
     Tag,
 )
