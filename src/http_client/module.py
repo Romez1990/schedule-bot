@@ -5,4 +5,4 @@ from .aio_http_client import AioHttpClient
 
 class HttpModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(AsyncHttpClient).to(AioHttpClient)
+        builder.bind(AioHttpClient).to(AsyncHttpClient)
