@@ -1,4 +1,4 @@
-from src.ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, Container
 from .user_service_interface import UserServiceInterface
 from .user_service import UserService
 from .user_settings_service_interface import UserSettingsServiceInterface
@@ -8,7 +8,7 @@ from .subscription_service import SubscriptionService
 
 
 class BotServicesModule(Module):
-    def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(UserService).to(UserServiceInterface)
-        builder.bind(UserSettingsService).to(UserSettingsServiceInterface)
-        builder.bind(SubscriptionService).to(SubscriptionServiceInterface)
+    def _load(self, container: Container) -> None:
+        container.bind(UserService).to(UserServiceInterface)
+        container.bind(UserSettingsService).to(UserSettingsServiceInterface)
+        container.bind(SubscriptionService).to(SubscriptionServiceInterface)
