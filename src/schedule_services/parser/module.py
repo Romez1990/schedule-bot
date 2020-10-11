@@ -7,5 +7,5 @@ from .beautiful_soup_document_factory import BeautifulSoupDocumentFactory
 
 class ParserModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(PageParserInterface).to(PageParser)
-        builder.bind(DocumentFactory).to(BeautifulSoupDocumentFactory)
+        builder.bind(PageParser).to(PageParserInterface)
+        builder.bind(BeautifulSoupDocumentFactory).to(DocumentFactory)

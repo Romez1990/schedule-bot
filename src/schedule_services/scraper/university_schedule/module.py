@@ -11,7 +11,7 @@ from .schedule_post_processor import SchedulePostProcessor
 
 class UniversityScheduleScraperModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(UniversityScheduleScraperInterface).to(UniversityScheduleScraper)
-        builder.bind(GroupListScraperInterface).to(GroupListScraper)
-        builder.bind(GroupScheduleScraperInterface).to(GroupScheduleScraper)
-        builder.bind(SchedulePostProcessorInterface).to(SchedulePostProcessor)
+        builder.bind(UniversityScheduleScraper).to(UniversityScheduleScraperInterface)
+        builder.bind(GroupListScraper).to(GroupListScraperInterface)
+        builder.bind(GroupScheduleScraper).to(GroupScheduleScraperInterface)
+        builder.bind(SchedulePostProcessor).to(SchedulePostProcessorInterface)

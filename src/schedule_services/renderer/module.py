@@ -5,4 +5,4 @@ from .schedule_renderer import ScheduleRenderer
 
 class RendererModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(ScheduleRendererInterface).to(ScheduleRenderer)
+        builder.bind(ScheduleRenderer).to(ScheduleRendererInterface)

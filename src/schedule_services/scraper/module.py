@@ -7,4 +7,4 @@ from .schedule_scraper import ScheduleScraper
 class ScraperModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
         builder.register_module(UniversityScheduleScraperModule)
-        builder.bind(ScheduleScraperInterface).to(ScheduleScraper)
+        builder.bind(ScheduleScraper).to(ScheduleScraperInterface)
