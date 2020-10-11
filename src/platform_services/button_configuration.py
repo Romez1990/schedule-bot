@@ -13,9 +13,6 @@ from vkwave.bots import (
 
 
 class ButtonConfiguration:
-    def __init__(self):
-        pass
-
     def vk_buttons(self) -> Keyboard:
         MENU_VK = Keyboard()
         MENU_VK.add_text_button(text='/start', payload={"command": "start"})
@@ -32,11 +29,11 @@ class ButtonConfiguration:
 
 
 # telegram bot
-button_start = KeyboardButton('/start')
-button_help = KeyboardButton('/help')
-
-buttons = ReplyKeyboardMarkup()
-buttons.add(button_start, button_help)
+# button_start = KeyboardButton('/start')
+# button_help = KeyboardButton('/help')
+#
+# buttons = ReplyKeyboardMarkup()
+# buttons.add(button_start, button_help)
 
 """
 Here I will take the ReplyKeyboardMarkup button and import them into other .py files.
