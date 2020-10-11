@@ -9,6 +9,6 @@ from .subscription_repository import SubscriptionRepository
 
 class RepositoriesModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(UserRepositoryInterface).to(UserRepository)
-        builder.bind(UserSettingsRepositoryInterface).to(UserSettingsRepository)
-        builder.bind(SubscriptionRepositoryInterface).to(SubscriptionRepository)
+        builder.bind(UserRepository).to(UserRepositoryInterface)
+        builder.bind(UserSettingsRepository).to(UserSettingsRepositoryInterface)
+        builder.bind(SubscriptionRepository).to(SubscriptionRepositoryInterface)

@@ -9,4 +9,4 @@ class DatabaseModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
         builder.register_module(RepositoriesModule)
         builder.register_module(MigrationsModule)
-        builder.bind(Database).to(PostgresDatabase)
+        builder.bind(PostgresDatabase).to(Database)

@@ -9,6 +9,6 @@ from .migration_runner import MigrationRunner
 
 class MigrationsModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(MigrationServiceInterface).to(MigrationService)
-        builder.bind(MigrationRepositoryInterface).to(MigrationRepository)
-        builder.bind(MigrationRunnerInterface).to(MigrationRunner)
+        builder.bind(MigrationService).to(MigrationServiceInterface)
+        builder.bind(MigrationRepository).to(MigrationRepositoryInterface)
+        builder.bind(MigrationRunner).to(MigrationRunnerInterface)
