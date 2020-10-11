@@ -62,6 +62,7 @@ class Container:
 
     def __instantiate_type(self, type: Type) -> object:
         type_hints = self.__get_constructor_type_hints(type)
+        parameter_type: Type[object]
         return type(**{parameter_name: self.get(parameter_type)
                        for parameter_name, parameter_type in type_hints.items()})
 
