@@ -20,13 +20,13 @@ class ContainerBuilder:
         self.__types: Dict[Type, Type] = {}
         self.__objects: Dict[Type, object] = {}
 
-    def bind(self, base_type: Type) -> BindingBuilder:
-        return BindingBuilder(base_type, self.__create_binding_callback(base_type))
+    def bind(self, type: Type) -> BindingBuilder:
+        return BindingBuilder(type, self.__create_binding_callback(type))
 
-    def __create_binding_callback(self, base_type: Type) -> Callable[[Type], None]:
-        return lambda type: self.__bind_type(base_type, type)
+    def __create_binding_callback(self, type: Type) -> Callable[[Type], None]:
+        return lambda base_type: self.__bind_type(type, base_type)
 
-    def __bind_type(self, base_type: Type, type: Type) -> None:
+    def __bind_type(self, type: Type, base_type: Type) -> None:
         if not issubclass(type, base_type):
             raise Exception()
         if base_type in self.__types:
