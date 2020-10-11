@@ -1,4 +1,4 @@
-from src.ioc_container import Module, ContainerBuilder
+from src.ioc_container import Module, Container
 from .university_schedule_scraper_interface import UniversityScheduleScraperInterface
 from .university_schedule_scraper import UniversityScheduleScraper
 from .group_list_scraper_interface import GroupListScraperInterface
@@ -10,8 +10,8 @@ from .schedule_post_processor import SchedulePostProcessor
 
 
 class UniversityScheduleScraperModule(Module):
-    def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(UniversityScheduleScraper).to(UniversityScheduleScraperInterface)
-        builder.bind(GroupListScraper).to(GroupListScraperInterface)
-        builder.bind(GroupScheduleScraper).to(GroupScheduleScraperInterface)
-        builder.bind(SchedulePostProcessor).to(SchedulePostProcessorInterface)
+    def _load(self, container: Container) -> None:
+        container.bind(UniversityScheduleScraper).to(UniversityScheduleScraperInterface)
+        container.bind(GroupListScraper).to(GroupListScraperInterface)
+        container.bind(GroupScheduleScraper).to(GroupScheduleScraperInterface)
+        container.bind(SchedulePostProcessor).to(SchedulePostProcessorInterface)
