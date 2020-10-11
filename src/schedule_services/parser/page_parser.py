@@ -1,4 +1,4 @@
-from src.http import AsyncHttpClient
+from src.http_client import AsyncHttpClient
 from .page_parser_interface import PageParserInterface
 from .document_factory import DocumentFactory
 from .document import Document

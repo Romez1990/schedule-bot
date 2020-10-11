@@ -1,7 +1,7 @@
 from .ioc_container import ContainerBuilder, Container
 from .env import EnvModule
 from .database import DatabaseModule
-from .http import HttpModule
+from .http_client import HttpModule
 from .schedule import ScheduleModule
 from .schedule_services import ScheduleServicesModule
 from .bot_services import BotServicesModule
