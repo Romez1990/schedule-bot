@@ -2,6 +2,7 @@ from typing import (
     Tuple,
     Dict,
 )
+from pfun import List
 
 from src.schedule import (
     UniversityGroup,
@@ -21,8 +22,9 @@ class GroupListScraper(GroupListScraperInterface):
 
     async def get_groups_and_links(self) -> Dict[UniversityGroup, str]:
         document = await self.__page_parser.parse('http://www.viti-mephi.ru/raspisanie')
-        groups_and_links = [self.__get_group_and_link(group_tag)
-                            for group_tag in document.select_all('.table_raspisanie a')]
+        groups_and_links = List(document.select_all('.table_raspisanie a')) \
+            .map(self.__get_group_and_link) \
+            .filter(self.__is_university_group_acceptable)
         return {group: link for group, link in groups_and_links}
 
     def __get_group_and_link(self, group_tag: Tag) -> Tuple[UniversityGroup, str]:
@@ -30,3 +32,7 @@ class GroupListScraper(GroupListScraperInterface):
         group = self.__group_parser.parse_university_group(group_name).unwrap()
         group_link = group_tag.get_attribute('href')
         return group, group_link
+
+    def __is_university_group_acceptable(self, t: Tuple[UniversityGroup, str]) -> bool:
+        group = t[0]
+        return not str(group.form).startswith('З')
