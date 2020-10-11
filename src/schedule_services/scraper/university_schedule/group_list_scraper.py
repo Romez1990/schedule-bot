@@ -3,7 +3,10 @@ from typing import (
     Dict,
 )
 
-from src.schedule import Group, GroupParserInterface
+from src.schedule import (
+    UniversityGroup,
+    GroupParserInterface,
+)
 from src.schedule_services.parser import (
     PageParserInterface,
     Tag,
@@ -16,14 +19,14 @@ class GroupListScraper(GroupListScraperInterface):
         self.__page_parser = page_parser
         self.__group_parser = group_parser
 
-    async def get_groups_and_links(self) -> Dict[Group, str]:
+    async def get_groups_and_links(self) -> Dict[UniversityGroup, str]:
         document = await self.__page_parser.parse('http://www.viti-mephi.ru/raspisanie')
         groups_and_links = [self.__get_group_and_link(group_tag)
                             for group_tag in document.select_all('.table_raspisanie a')]
         return {group: link for group, link in groups_and_links}
 
-    def __get_group_and_link(self, group_tag: Tag) -> Tuple[Group, str]:
+    def __get_group_and_link(self, group_tag: Tag) -> Tuple[UniversityGroup, str]:
         group_name = group_tag.text.strip()
-        group = self.__group_parser.parse(group_name)
+        group = self.__group_parser.parse_university_group(group_name).unwrap()
         group_link = group_tag.get_attribute('href')
-        return group.unwrap(), group_link
+        return group, group_link
