@@ -62,9 +62,8 @@ class Container:
 
     def __instantiate_type(self, type: Type) -> object:
         type_hints = self.__get_constructor_type_hints(type)
-        required_parameters: Dict[str, object] = {parameter_name: self.get(parameter_type)
-                                                  for parameter_name, parameter_type in type_hints.items()}
-        return type(**required_parameters)
+        return type(**{parameter_name: self.get(parameter_type)
+                       for parameter_name, parameter_type in type_hints.items()})
 
     def __get_constructor_type_hints(self, type_: Type) -> TypeHints:
         constructor = type_.__init__
