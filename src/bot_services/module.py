@@ -9,6 +9,6 @@ from .subscription_service import SubscriptionService
 
 class BotServicesModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(UserServiceInterface).to(UserService)
-        builder.bind(UserSettingsServiceInterface).to(UserSettingsService)
-        builder.bind(SubscriptionServiceInterface).to(SubscriptionService)
+        builder.bind(UserService).to(UserServiceInterface)
+        builder.bind(UserSettingsService).to(UserSettingsServiceInterface)
+        builder.bind(SubscriptionService).to(SubscriptionServiceInterface)
