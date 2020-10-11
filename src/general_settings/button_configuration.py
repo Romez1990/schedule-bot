@@ -22,6 +22,14 @@ class ButtonConfiguration:
         MENU_VK.add_text_button(text='/help', payload={"command": "help"})
         return MENU_VK
 
+    def telegram_buttons(self) -> ReplyKeyboardMarkup:
+        button_start = KeyboardButton('/start')
+        button_help = KeyboardButton('/help')
+
+        buttons = ReplyKeyboardMarkup()
+        buttons.add(button_start, button_help)
+        return buttons
+
 
 # telegram bot
 button_start = KeyboardButton('/start')
