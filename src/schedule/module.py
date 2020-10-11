@@ -7,5 +7,5 @@ from .day_of_week_translator import DayOfWeekTranslator
 
 class ScheduleModule(Module):
     def _load(self, builder: ContainerBuilder) -> None:
-        builder.bind(GroupParserInterface).to(GroupParser)
-        builder.bind(DayOfWeekTranslatorInterface).to(DayOfWeekTranslator)
+        builder.bind(GroupParser).to(GroupParserInterface)
+        builder.bind(DayOfWeekTranslator).to(DayOfWeekTranslatorInterface)
