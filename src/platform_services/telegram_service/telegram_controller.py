@@ -34,13 +34,13 @@ class TelegramController:
     async def welcome(self, message: Message) -> None:
         telegram_id = self.__get_telegram_id(message)
         await self.__user_service.create_if_not_exists(self.__platform, telegram_id)
-        await self.__bot.send_message(telegram_id, self.__message_text.message_text_start(),
+        await self.__bot.send_message(telegram_id, self.__message_text.message_text_start('telegram'),
                                       reply_markup=self.__button_configuration.telegram_buttons(),
                                       parse_mode=ParseMode.HTML)
 
     async def help(self, message: Message) -> None:
         telegram_id = self.__get_telegram_id(message)
-        await self.__bot.send_message(telegram_id, self.__message_text.message_text_help(),
+        await self.__bot.send_message(telegram_id, self.__message_text.message_text_help('telegram'),
                                       reply_markup=self.__button_configuration.telegram_buttons(),
                                       parse_mode=ParseMode.HTML)
 
