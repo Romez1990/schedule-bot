@@ -17,18 +17,18 @@ class TelegramController:
     def __init__(
             self,
             bot: TelegramBot,
+            button_configuration: ButtonConfiguration,
+            message_text: MessageText,
             user_service_factory: UserServiceFactoryInterface,
             user_settings_service: UserSettingsServiceInterface,
             subscription_service: SubscriptionServiceInterface,
-            button_configuration: ButtonConfiguration,
-            message_text: MessageText,
     ) -> None:
         self.__bot = bot
+        self.__button_configuration = button_configuration
+        self.__message_text = message_text
         self.__user_service = user_service_factory.create('telegram')
         self.__user_settings_service = user_settings_service
         self.__subscription_service = subscription_service
-        self.__button_configuration = button_configuration
-        self.__message_text = message_text
 
     async def welcome(self, message: Message) -> None:
         telegram_id = self.__get_telegram_id(message)
