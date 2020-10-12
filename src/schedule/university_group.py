@@ -29,7 +29,7 @@ class UniversityGroup(Group):
         return self.__number
 
     def __eq__(self, other: object) -> bool:
-        if isinstance(other, UniversityGroup):
+        if type(other) == UniversityGroup:
             return self.speciality == other.speciality and \
                    self.year == other.year and \
                    self.form == other.form and \
