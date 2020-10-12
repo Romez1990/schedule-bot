@@ -21,7 +21,7 @@ class TelegramController:
             user_settings_service: UserSettingsServiceInterface,
             subscription_service: SubscriptionServiceInterface,
             button_configuration: ButtonConfiguration,
-            message_text: MessageText
+            message_text: MessageText,
     ) -> None:
         self.__bot = bot
         self.__user_service = user_service_factory.create('telegram')
