@@ -15,7 +15,7 @@ class SubscriptionRepository(SubscriptionRepositoryInterface):
         await self.__database.execute('''
             INSERT INTO subscriptions (user_id, "group")
             VALUES ($1, $2)
-        ''', subscription.user.id, subscription.group)
+        ''', subscription.user.id, str(subscription.group))
         return subscription
 
     async def delete(self, subscription: Subscription) -> None:
