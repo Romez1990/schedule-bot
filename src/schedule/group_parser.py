@@ -23,11 +23,14 @@ class GroupParser(GroupParserInterface):
             lambda: self.parse_university_group(group_name),
             lambda: self.parse_college_group(group_name),
         ]
-        maybe_group = reduce(self.__rescue, parsers, Nothing)
-        return self.__maybe_to_result(group_name, maybe_group)
+        return reduce(self.__rescue, parsers, Failure(None))
 
-    def __rescue(self, group: Maybe[Group], get_next_group: Callable[[], Maybe[Group]]) -> Maybe[Group]:
-        return group if group != Nothing else get_next_group()
+    def __rescue(
+            self,
+            group_result: Result[Group, GroupNameParsingError],
+            get_next_group: Callable[[], Result[Group, GroupNameParsingError]],
+    ) -> Result[Group, GroupNameParsingError]:
+        return group_result.rescue(lambda _: get_next_group())
 
     def parse_university_group(self, group_name: str) -> Result[UniversityGroup, GroupNameParsingError]:
         match = search(
