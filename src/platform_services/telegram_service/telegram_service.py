@@ -19,4 +19,5 @@ class TelegramService(PlatformService):
         dispatcher = self.__bot.register(Dispatcher)
         dispatcher.message_handler(commands=['start'])(self.__controller.welcome)
         dispatcher.message_handler(commands=['help'])(self.__controller.help)
+        await dispatcher.skip_updates()
         await dispatcher.start_polling()
