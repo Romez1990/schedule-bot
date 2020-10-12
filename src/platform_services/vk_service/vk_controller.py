@@ -10,13 +10,12 @@ class VkController:
         self.__bot = bot
         self.__vk_button = vk_button
         self.__message_text = message_text
+        self.__button = vk_button.vk_buttons()
 
     async def welcome(self, event: SimpleBotEvent) -> None:
-        button = self.__vk_button.vk_buttons()
         await event.answer(message=self.__message_text.message_text_start(),
-                           keyboard=button.get_keyboard())
+                           keyboard=self.__button.get_keyboard())
 
     async def help(self, event: SimpleBotEvent) -> None:
-        button = self.__vk_button.vk_buttons()
         await event.answer(message=self.__message_text.message_text_help(),
-                           keyboard=button.get_keyboard())
+                           keyboard=self.__button.get_keyboard())
