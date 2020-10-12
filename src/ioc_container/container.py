@@ -73,8 +73,7 @@ class Container:
         type_hints = get_type_hints(constructor)
         if 'return' in type_hints:
             del type_hints['return']
-        parameter_names: List[str] = [parameter_name for parameter_name in constructor.__code__.co_varnames
-                                      if parameter_name != 'self']
+        parameter_names = self.__get_function_parameters(constructor)
         if len(type_hints) != len(parameter_names):
             parameters_with_no_type_hint = [parameter_name for parameter_name in parameter_names
                                             if parameter_name not in type_hints]
@@ -83,3 +82,8 @@ class Container:
 
     def __is_constructor_empty(self, constructor: Callable) -> bool:
         return type(constructor) == wrapper_descriptor
+
+    def __get_function_parameters(self, func: Callable) -> List[str]:
+        number_of_parameters = func.__code__.co_argcount
+        self_parameter = 1
+        return list(func.__code__.co_varnames[self_parameter:number_of_parameters])
