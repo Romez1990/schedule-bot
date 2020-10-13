@@ -11,10 +11,6 @@ class TelegramService(PlatformService):
         self.__controller = controller
 
     async def start(self) -> None:
-        """
-        This function return dispatcher start
-        :return: None
-        """
         self.__bot.init()
         dispatcher = self.__bot.register(Dispatcher)
         dispatcher.message_handler(commands=['start'])(self.__controller.welcome)

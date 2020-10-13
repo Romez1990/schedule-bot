@@ -8,10 +8,6 @@ from src.platform_services import TelegramService, VkService
 
 
 async def main(loop: AbstractEventLoop) -> None:
-    """
-    This function for init then we transfer it to main.py in root directory
-    :return: None
-    """
     container = Container()
     container.register_module(AppModule)
 
