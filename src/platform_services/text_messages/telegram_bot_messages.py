@@ -1,5 +1,5 @@
-from .bot_text_messages import BotTextMessages
 from .telegram_bot_messages_interface import TelegramBotMessagesInterface
+from .bot_text_messages import BotTextMessages
 
 
 class TelegramBotMessages(TelegramBotMessagesInterface):
