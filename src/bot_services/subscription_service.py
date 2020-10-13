@@ -15,15 +15,21 @@ class SubscriptionService(SubscriptionServiceInterface):
         self.__group_parser = group_parser
 
     def create(self, user: User, group_name: str) -> FutureResult[None, GroupNameParsingError]:
-        group_parse_result = self.__group_parser.parse(group_name)
-        return FutureResult.from_result(group_parse_result) \
-            .bind_awaitable(lambda group: self.__create_and_save_subscription(user, group))
+        group_result = self.__group_parser.parse(group_name)
+        return FutureResult.from_result(group_result) \
+            .bind_awaitable(lambda group: self.__save_subscription(user, group))
 
-    async def __create_and_save_subscription(self, user: User, group: Group) -> None:
+    def delete(self, user: User, group_name: str) -> FutureResult[None, GroupNameParsingError]:
+        group_result = self.__group_parser.parse(group_name)
+        return FutureResult.from_result(group_result) \
+            .bind_awaitable(lambda group: self.__delete_subscription(user, group))
+
+    async def __save_subscription(self, user: User, group: Group) -> None:
         subscription = Subscription(user, group)
         await self.__subscriptions.save(subscription)
 
-    async def delete(self, subscription: Subscription) -> None:
+    async def __delete_subscription(self, user: User, group: Group) -> None:
+        subscription = Subscription(user, group)
         await self.__subscriptions.delete(subscription)
 
     async def find(self, user: User) -> List[Subscription]:

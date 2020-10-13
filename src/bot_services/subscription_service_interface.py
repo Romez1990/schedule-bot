@@ -11,7 +11,7 @@ class SubscriptionServiceInterface:
     def create(self, user: User, group_name: str) -> FutureResult[None, GroupNameParsingError]:
         raise NotImplementedError
 
-    async def delete(self, subscription: Subscription) -> None:
+    def delete(self, user: User, group_name: str) -> FutureResult[None, GroupNameParsingError]:
         raise NotImplementedError
 
     async def find(self, user: User) -> List[Subscription]:
