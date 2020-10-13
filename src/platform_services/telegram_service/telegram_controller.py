@@ -2,6 +2,7 @@ from aiogram.types import (
     Message,
     ParseMode,
 )
+from returns.unsafe import unsafe_perform_io
 
 from src.bot_services import (
     UserServiceFactoryInterface,
@@ -42,6 +43,26 @@ class TelegramController:
         await self.__bot.send_message(telegram_id, self.__message_text.message_text_help('telegram'),
                                       reply_markup=self.__button_configuration.telegram_buttons(),
                                       parse_mode=ParseMode.HTML)
+
+    async def subscribe(self, message: Message) -> None:
+        telegram_id = self.__get_telegram_id(message)
+        user = await self.__user_service.find_user(telegram_id)
+        group_name = message.text.lstrip('/subscribe ')
+        result = await (self.__subscription_service.create(user, group_name)
+                        .map(lambda _: self.__bot.send_message(telegram_id, 'ok'))
+                        .fix(lambda _: self.__bot.send_message(telegram_id, 'wrong group'))
+                        .awaitable())
+        await unsafe_perform_io(result.unwrap())
+
+    async def unsubscribe(self, message: Message) -> None:
+        telegram_id = self.__get_telegram_id(message)
+        user = await self.__user_service.find_user(telegram_id)
+        group_name = message.text.lstrip('/unsubscribe ')
+        result = await (self.__subscription_service.delete(user, group_name)
+                        .map(lambda _: self.__bot.send_message(telegram_id, 'ok'))
+                        .fix(lambda _: self.__bot.send_message(telegram_id, 'wrong group'))
+                        .awaitable())
+        await unsafe_perform_io(result.unwrap())
 
     def __get_telegram_id(self, message: Message) -> str:
         return str(message.from_user.id)
