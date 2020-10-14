@@ -27,3 +27,5 @@ pillow = "*"
 
 [dev-packages]
 mypy = "*"
+pytest = "*"
+pytest-asyncio = "*"
