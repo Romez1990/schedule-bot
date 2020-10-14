@@ -6,9 +6,9 @@ class BotTextMessages:
         Напиши мне: /подписаться [Название_Группы] (без квадратной скобки)
                             '''
 
-    def message_text_help(self,) -> str:
+    def message_text_help(self) -> str:
         return '''
-       /start - <strong>команда для старта бота (по умолчанию включен)\n
+       /start - команда для старта бота (по умолчанию включен)\n
        /подписаться [Название_Группы] - подписаться на рассылку расписание\n
        /отписаться [Название_Группы] - отписаться от рассылки расписание\n
        /тема [тёмная/светлая] - получаться рассылку расписание в тёмной или светлой теме\n
@@ -22,8 +22,7 @@ class BotTextMessages:
 
     def __messages_subscribe(self, username_group: str, sub_or_unsub: bool) -> str:
         subscribe = 'подписаться' if sub_or_unsub else 'отписаться'
-        return f'<strong>Вы успешно {subscribe} на рассылку группы <em>{username_group}' \
-               f'</em></strong>'
+        return f'Вы успешно {subscribe} на рассылку группы {username_group}'
 
     def message_theme(self, theme: str) -> str:
-        return f'<strong>Вы успешно выбрали рассылку темы: <em>{theme}</em></strong>'
+        return f'Вы успешно выбрали рассылку темы: {theme}'
