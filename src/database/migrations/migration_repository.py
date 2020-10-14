@@ -5,6 +5,9 @@ from typing import (
     List,
 )
 
+from .errors import (
+    MigrationNotFoundError,
+)
 from .migration_repository_interface import MigrationRepositoryInterface
 from .migration import Migration
 
@@ -28,7 +31,7 @@ class MigrationRepository(MigrationRepositoryInterface):
         elements = [element for element in dir(module)
                     if not element.startswith('_') and self.__match_migration(element)]
         if not elements:
-            raise Exception(f'module {module_name} does not contain migration')
+            raise MigrationNotFoundError(module.__name__)
         migration_name = elements[0]
         migration = getattr(module, migration_name)
         if not issubclass(migration, Migration):
