@@ -81,7 +81,7 @@ class Container:
         return TypeHints(type_hints)
 
     def __is_constructor_empty(self, constructor: Callable) -> bool:
-        return type(constructor) == wrapper_descriptor
+        return isinstance(constructor, wrapper_descriptor)
 
     def __get_function_parameters(self, func: Callable) -> List[str]:
         number_of_parameters = func.__code__.co_argcount
