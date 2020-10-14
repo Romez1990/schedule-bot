@@ -9,7 +9,7 @@ class EducationForm:
         self.__form = form
 
     def __eq__(self, other: object) -> bool:
-        if type(other) == EducationForm:
+        if isinstance(other, EducationForm):
             return str(self) == str(other)
 
         raise NotImplemented
