@@ -9,7 +9,6 @@ from returns.maybe import Maybe
 
 from src.env import EnvironmentInterface
 from .database import Database
-from .database_error import DatabaseError
 
 
 class PostgresDatabase(Database):
@@ -25,36 +24,23 @@ class PostgresDatabase(Database):
         self.__connection = await connect(host=host, database=name, user=user, password=password)
 
     async def disconnect(self) -> None:
-        if self.__connection is None:
-            self.__raise_connection_error()
         await self.__connection.close()
         self.__connection = None
 
     async def execute(self, query: str, *args: Any) -> None:
-        if self.__connection is None:
-            self.__raise_connection_error()
         await self.__connection.execute(query, *args)
 
     async def fetch(self, query: str, *args: Any) -> List[Dict[str, Any]]:
-        if self.__connection is None:
-            self.__raise_connection_error()
         records = await self.__connection.fetch(query, *args)
         return [self.__record_to_dict(record) for record in records]
 
     async def fetch_row(self, query: str, *args: Any) -> Maybe[Dict[str, Any]]:
-        if self.__connection is None:
-            self.__raise_connection_error()
         record = await self.__connection.fetchrow(query, *args)
         maybe_record = Maybe.from_value(record)
         return maybe_record.map(self.__record_to_dict)
 
     async def fetch_value(self, query: str, *args: Any) -> Any:
-        if self.__connection is None:
-            self.__raise_connection_error()
         return await self.__connection.fetchval(query, *args)
-
-    def __raise_connection_error(self) -> None:
-        raise DatabaseError('database is not connected')
 
     def __record_to_dict(self, record: Record) -> Dict[str, Any]:
         return {**record}
