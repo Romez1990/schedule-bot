@@ -30,9 +30,9 @@ class BeautifulSoupTag(Tag):
         return [self.__resolve_child(element) for element in self.__tag.contents]
 
     def __resolve_child(self, element: Union[BSTag, NavigableString]) -> Union[Tag, str]:
-        if type(element) == BSTag:
+        if isinstance(element, BSTag):
             return BeautifulSoupTag(element)
-        if type(element) == NavigableString:
+        if isinstance(element, NavigableString):
             return str(element)
         raise ValueError(f'element is unexpected type {type(element).__name__}')
 
