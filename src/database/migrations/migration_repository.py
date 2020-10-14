@@ -7,6 +7,7 @@ from typing import (
 
 from .errors import (
     MigrationNotFoundError,
+    ClassIsNotMigrationError,
 )
 from .migration_repository_interface import MigrationRepositoryInterface
 from .migration import Migration
@@ -35,7 +36,7 @@ class MigrationRepository(MigrationRepositoryInterface):
         migration_name = elements[0]
         migration = getattr(module, migration_name)
         if not issubclass(migration, Migration):
-            raise Exception(f'{migration.__name__} is not a migration')
+            raise ClassIsNotMigrationError(migration.__name__)
         return migration()
 
     def __match_migration(self, element_name: str) -> bool:
