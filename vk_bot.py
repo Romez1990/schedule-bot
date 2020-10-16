@@ -4,7 +4,7 @@ from time import sleep
 from datetime import datetime
 from os import getenv as env
 from dotenv import load_dotenv
-from vk_api import VkApi
+from vk_api import VkApi, VkUpload
 from vk_api.utils import get_random_id
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
@@ -66,7 +66,7 @@ def send_message(user_id: int, user: User, message: str):
 def send_picture(user_id: int, user: User, message: str, picture_bytes: BytesIO):
     keyboard = build_keyboard(user)
     attachments = []
-    upload = vk_api.VkUpload(vk_session)
+    upload = VkUpload(vk_session)
     photo = upload.photo_messages(photos=picture_bytes)[0]
     attachments.append('photo{}_{}'.format(photo['owner_id'], photo['id']))
     vk_session.method('messages.send', {'user_id': user_id, 'random_id': get_random_id(), 'message': message, 'keyboard': keyboard.get_keyboard(), 'attachment': ','.join(attachments)})
@@ -187,7 +187,7 @@ def update():
                 DBHelper.add_group_to_hashtable(group_name, 0, 0)  # добавить ее
 
             group_hash = DBHelper.get_group_hashes(group_name)
-            cur_hash = 0  # make_hash(group)  # высчитать хэш расписания
+            cur_hash = hash(schedule[Group(group_name)])  # make_hash(group)  # высчитать хэш расписания
 
             if group_hash.old_hash == 0:  # если старый хэш не существует
                 group_hash.old_hash = cur_hash  # старый занести в базу
@@ -230,19 +230,18 @@ def update():
         groups_to_send.clear()
         users_sent.clear()
 
-        sleep(300)  # сон 5 минут
-        # sleep(1800)  # сон 30 минут
+        sleep(1800)  # сон 30 минут
 
 
 if __name__ == '__main__':
-    run(fetch_schedule())
-    groups = schedule.groups
-    for group in groups:
-        name = str(group)
-        sched = schedule[Group(name)]
-        print(f'{name} {hash(sched)}')
+    # run(fetch_schedule())
+    # groups = schedule.groups
+    # for group in groups:
+    #     name = str(group)
+    #     sched = schedule[Group(name)]
+    #     print(f'{name} {hash(sched)}')
 
-    # update_thread = Thread(target=update)
-    # bot_thread = Thread(target=main)
-    # update_thread.start()
-    # bot_thread.start()
+    update_thread = Thread(target=update)
+    bot_thread = Thread(target=main)
+    update_thread.start()
+    bot_thread.start()
