@@ -6,6 +6,9 @@ verify_ssl = true
 [requires]
 python_version = "3.8"
 
+[scripts]
+main = "python scripts/run.py src/main.py"
+
 [packages]
 python-dotenv = "*"
 returns = "*"
