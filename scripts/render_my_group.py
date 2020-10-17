@@ -1,4 +1,5 @@
 from asyncio import run
+from pathlib import Path
 from io import BytesIO
 
 from src.ioc_container import Container
@@ -31,7 +32,8 @@ async def main() -> None:
 
 
 def save(bytes_io: BytesIO, filename: str) -> None:
-    with open(filename, 'wb') as file:
+    scripts_path = Path(__file__).parent
+    with open(scripts_path / filename, 'wb') as file:
         file.write(bytes_io.read())
 
 
