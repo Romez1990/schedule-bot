@@ -8,6 +8,8 @@ python_version = "3.8"
 
 [scripts]
 main = "python scripts/run.py src/main.py"
+migrate = "python scripts/run.py scripts/migrate.py"
+render-my-group = "python scripts/run.py scripts/render_my_group.py"
 
 [packages]
 python-dotenv = "*"
