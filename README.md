@@ -1,48 +1,44 @@
 # Schedule bot
 
-Schedule bot was created to give out timetables to students who study in Mephi
+Schedule bot is VK and Telegram bot for notifying students about their schedule changing
 
-## Installation
+## Getting started
+These instructions will get you a copy of the project up and running on your
+machine
 
-Use git clone for installing.
+### Prerequisites
+What things you need to have globally installed:
+- Python 3.8 or higher
+- Pipenv
+- PostgreSQL
 
-```bash
-git clone https://github.com/DiZiNnEs/schedule-bot-dizzinnes.git
-cd schedule-bot-dizzinnes
+### Installing
+Install project dependencies.
+```shell script
 pipenv install
 ```
 
-## Usage
-
-```bash
-python3 runner.py
+Run database migrations.
+```shell script
+pipenv run migrate
 ```
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Copy .env.example to .env. Specify server
+host, client url, database and Telegram and VK bot tokens.
+```shell script
+cp .env.example .env
+```
+Or instead of .env file you can set environment variables in your system.
 
-
-# Schedule Бот
-
-Schedule бот создается для людей которые учаться в Mephi и хотят получать расписание.
-
-## Установка
-
-Используйте git clone для установки.
-
-```bash
-git clone https://github.com/DiZiNnEs/schedule-bot-dizzinnes.git
-cd schedule-bot-dizzinnes
-pipenv install
+Run project.
+```shell script
+pipenv run main
 ```
 
-## Использование
-
-```bash
-python3 runner.py
-```
-
-## Сотрудничество
-Запросы на pull request приветствуются. В случае серьезных изменений сначала откройте вопрос, чтобы обсудить, что вы хотите изменить.
-
-
+## Built With
+- [AIOHTTP](https://docs.aiohttp.org) - Asynchronous HTTP Client/Server
+- [asyncpg](https://magicstack.github.io/asyncpg/) - Asynchronous PostgreSQL database client
+- [AIOGram](https://docs.aiogram.dev) - Asynchronous Telegram API library
+- [VKWave](https://fscdev.github.io/vkwave/) - Asynchronous VK API library
+- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) - Library for pulling data out of HTML and XML
+- [Pillow](https://pillow.readthedocs.io/) - Imaging library
