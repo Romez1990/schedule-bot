@@ -1,4 +1,4 @@
-from ._theme import Theme
-from ._importer import import_themes
-
-themes = import_themes()
+from .module import ThemesModule
+from .theme_repository_interface import ThemeRepositoryInterface
+from .theme import Theme
+from .color import Color

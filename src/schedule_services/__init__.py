@@ -1,3 +1,7 @@
 from .module import ScheduleServicesModule
 from .scraper import ScheduleScraperInterface
-from .renderer import ScheduleRendererInterface
+from .renderer import (
+    ScheduleRendererInterface,
+    ThemeRepositoryInterface,
+    Theme,
+)

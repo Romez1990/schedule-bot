@@ -16,12 +16,17 @@ from src.schedule import (
 from src.utilities.paths_interface import PathsInterface
 from .schedule_renderer_interface import ScheduleRendererInterface
 from .image import Image
-from .themes import themes, Theme
+from .themes import (
+    ThemeRepositoryInterface,
+    Theme,
+)
 from .schedule_metrics import ScheduleMetrics
 
 
 class ScheduleRenderer(ScheduleRendererInterface):
-    def __init__(self, day_of_week_translator: DayOfWeekTranslatorInterface, paths: PathsInterface) -> None:
+    def __init__(self, themes: ThemeRepositoryInterface, day_of_week_translator: DayOfWeekTranslatorInterface,
+                 paths: PathsInterface) -> None:
+        self.__themes = themes
         self.__day_of_week_translator = day_of_week_translator
         self.__paths = paths
 
@@ -100,10 +105,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
         return self._save_image()
 
     def _set_theme(self, theme_name: str) -> None:
-        try:
-            self._theme = themes[theme_name]
-        except KeyError:
-            raise ValueError(f'Theme {theme_name} does not exists')
+        self._theme = self.__themes.get_by_name(theme_name).unwrap()
 
     def _create_image(self, schedule: Schedule) -> None:
         self._schedule_metrics = ScheduleMetrics(schedule)
@@ -117,7 +119,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
             self._separator_width *
             (len(self._schedule_metrics.days_of_week) - 1),
         )
-        self._image = Image(image_size, self._theme.text_color)
+        self._image = Image(image_size, self._theme.text_color.to_tuple())
 
     def _get_position(self, group: int = None, day_of_week: DayOfWeek = None,
                       entry: int = None) -> Tuple[int, int]:
@@ -154,9 +156,8 @@ class ScheduleRenderer(ScheduleRendererInterface):
             day_of_week: DayOfWeek = None) -> None:
         size = (self._sidebar_stripe_width,
                 self._cell_size[1] * day_length)
-        stripe_number = row_id % len(self._theme.stripes)
-        color = self._theme.stripes[stripe_number]
-        self._image.rectangle(position, size, color)
+        color = self._theme.get_nth_background_color(row_id)
+        self._image.rectangle(position, size, color.to_tuple())
 
         text = self.__day_of_week_translator.translate(day_of_week) if day_of_week is not None else ''
         if text:
@@ -174,9 +175,8 @@ class ScheduleRenderer(ScheduleRendererInterface):
             )
             size = (self._sidebar_stripe_width,
                     self._cell_size[1])
-            stripe_number = (row_id + entry_number) % len(self._theme.stripes)
-            color = self._theme.stripes[stripe_number]
-            self._image.rectangle(position, size, color)
+            color = self._theme.get_nth_background_color(row_id + entry_number)
+            self._image.rectangle(position, size, color.to_tuple())
 
             if custom_text is not None:
                 text = custom_text
@@ -185,9 +185,8 @@ class ScheduleRenderer(ScheduleRendererInterface):
             self._image.text_center(text, position, size, font)
 
     def _render_stripe(self, row_id: int, position: Tuple[int, int]) -> None:
-        stripe_number = row_id % len(self._theme.stripes)
-        color = self._theme.stripes[stripe_number]
-        self._image.rectangle(position, self._cell_size, color)
+        color = self._theme.get_nth_background_color(row_id)
+        self._image.rectangle(position, self._cell_size, color.to_tuple())
 
     def _render_header(self, groups: Iterable[Group]) -> None:
         for group_number, group in enumerate(groups):
@@ -260,7 +259,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
     def _draw_none(self, position: Tuple[int, int]) -> None:
         color = self._theme.text_color
         self._image.rectangle_center(position, self._cell_size,
-                                     self._none_size, color)
+                                     self._none_size, color.to_tuple())
 
     def _render_subject(self, subject: str, position: Tuple[int, int]) -> None:
         font = self._fonts['Times New Roman bold 9']
