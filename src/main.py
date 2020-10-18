@@ -7,7 +7,7 @@ from src.database import Database
 from src.platform_services import TelegramService, VkService
 
 
-async def main(loop: AbstractEventLoop) -> None:
+async def main(event_loop: AbstractEventLoop) -> None:
     container = Container()
     container.register_module(AppModule)
 
@@ -18,8 +18,8 @@ async def main(loop: AbstractEventLoop) -> None:
 
     env.read()
     await database.connect()
-    loop.create_task(telegram_service.start())
-    loop.create_task(vk_service.start())
+    event_loop.create_task(telegram_service.start())
+    event_loop.create_task(vk_service.start())
     print('App has been started')
 
 
