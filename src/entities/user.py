@@ -21,7 +21,7 @@ class User:
         self.__subscriptions = pvector(subscriptions) if subscriptions is not None else None
 
     @property
-    def id(self) -> int:
+    def id(self) -> Optional[int]:
         return self.__id
 
     @property
