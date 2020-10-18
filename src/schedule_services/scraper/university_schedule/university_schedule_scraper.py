@@ -7,6 +7,7 @@ from typing import (
 from src.schedule import (
     Schedule,
     Group,
+    UniversityGroup,
     GroupSchedule,
 )
 from .university_schedule_scraper_interface import UniversityScheduleScraperInterface
@@ -29,7 +30,7 @@ class UniversityScheduleScraper(UniversityScheduleScraperInterface):
         schedule = Schedule(schedule_dict)
         return self.__schedule_post_processor.process(schedule)
 
-    async def __get_group_schedules(self, groups_and_links: Dict[Group, str]) -> Dict[Group, GroupSchedule]:
+    async def __get_group_schedules(self, groups_and_links: Dict[UniversityGroup, str]) -> Dict[Group, GroupSchedule]:
         groups = [group for group in groups_and_links]
         group_schedule_coroutines = [self.__group_schedule_scraper.get_group_schedule(link)
                                      for group, link in groups_and_links.items()]

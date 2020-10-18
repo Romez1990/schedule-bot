@@ -45,7 +45,7 @@ class GroupScheduleScraper(GroupScheduleScraperInterface):
             return Nothing
         kind_and_subject = entry_tag_children[0]
         teacher_and_class_room = entry_tag_children[2]
-        if not isinstance(kind_and_subject, str) and not isinstance(teacher_and_class_room, str):
+        if not isinstance(kind_and_subject, str) or not isinstance(teacher_and_class_room, str):
             raise ValueError('unexpected children type')
         kind, subject = self.__split_kind_and_subject(kind_and_subject)
         teacher, class_room = self.__split_teacher_and_class_room(teacher_and_class_room)

@@ -5,7 +5,11 @@ from returns.future import FutureResult
 
 from src.database import SubscriptionRepositoryInterface
 from src.entities import User, Subscription
-from src.schedule import Group, GroupParserInterface, GroupNameParsingError
+from src.schedule import (
+    Group,
+    GroupParserInterface,
+    GroupNameParsingError,
+)
 from .subscription_service_interface import SubscriptionServiceInterface
 
 
