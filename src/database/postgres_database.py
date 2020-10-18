@@ -1,6 +1,5 @@
 from typing import (
     Any,
-    Optional,
     List,
     Dict,
 )
@@ -14,7 +13,8 @@ from .database import Database
 class PostgresDatabase(Database):
     def __init__(self, env: EnvironmentInterface) -> None:
         self.__env = env
-        self.__connection: Optional[Connection] = None
+
+    __connection: Connection
 
     async def connect(self) -> None:
         host = self.__env.get_str('DB_HOST')
