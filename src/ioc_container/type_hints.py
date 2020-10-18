@@ -5,14 +5,18 @@ from typing import (
     Mapping,
 )
 
+from .errors import (
+    WrongTypeHintError,
+)
+
 
 class TypeHints(Mapping[str, Type]):
     def __init__(self, type_hints: Mapping[str, Any]) -> None:
-        self.__type_hints: Mapping[str, Type] = {name: self.__check_type(type) for name, type in type_hints.items()}
+        self.__type_hints: Mapping[str, Type] = {name: self.__check_type(name, type) for name, type in type_hints.items()}
 
-    def __check_type(self, parameter_type: Any) -> Type:
+    def __check_type(self, name: str, parameter_type: Any) -> Type:
         if not isinstance(parameter_type, type):
-            raise ValueError(f'')
+            raise WrongTypeHintError(name, parameter_type)
         return parameter_type
 
     def __iter__(self) -> Iterator[str]:
