@@ -49,7 +49,7 @@ class TelegramController:
         user = await self.__user_service.find_user(telegram_id)
         group_name = message.text.lstrip('/subscribe ')
         result = await (self.__subscription_service.create(user, group_name)
-                        .map(lambda _: self.__bot.send_message(telegram_id, 'ok'))
+                        .map(lambda _: self.__bot.send_message(telegram_id, self.__text_messages.subscribe(group_name)))
                         .fix(lambda _: self.__bot.send_message(telegram_id, 'wrong group'))
                         .awaitable())
         await unsafe_perform_io(result.unwrap())
@@ -59,7 +59,8 @@ class TelegramController:
         user = await self.__user_service.find_user(telegram_id)
         group_name = message.text.lstrip('/unsubscribe ')
         result = await (self.__subscription_service.delete(user, group_name)
-                        .map(lambda _: self.__bot.send_message(telegram_id, 'ok'))
+                        .map(lambda _:
+                             self.__bot.send_message(telegram_id, self.__text_messages.unsubscribe(group_name)))
                         .fix(lambda _: self.__bot.send_message(telegram_id, 'wrong group'))
                         .awaitable())
         await unsafe_perform_io(result.unwrap())
