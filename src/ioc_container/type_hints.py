@@ -8,12 +8,12 @@ from typing import (
 
 class TypeHints(Mapping[str, Type]):
     def __init__(self, type_hints: Mapping[str, Any]) -> None:
-        [self.__check_type(type) for type in type_hints.values()]
-        self.__type_hints = type_hints
+        self.__type_hints: Mapping[str, Type] = {name: self.__check_type(type) for name, type in type_hints.items()}
 
-    def __check_type(self, parameter_type: Type) -> None:
+    def __check_type(self, parameter_type: Any) -> Type:
         if not isinstance(parameter_type, type):
             raise ValueError(f'')
+        return parameter_type
 
     def __iter__(self) -> Iterator[str]:
         return iter(self.__type_hints)
