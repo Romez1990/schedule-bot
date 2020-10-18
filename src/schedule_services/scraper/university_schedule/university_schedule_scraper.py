@@ -4,7 +4,11 @@ from typing import (
     Dict,
 )
 
-from src.schedule import Schedule, Group, GroupSchedule
+from src.schedule import (
+    Schedule,
+    Group,
+    GroupSchedule,
+)
 from .university_schedule_scraper_interface import UniversityScheduleScraperInterface
 from .group_list_scraper_interface import GroupListScraperInterface
 from .group_schedule_scraper_interface import GroupScheduleScraperInterface
