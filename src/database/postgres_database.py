@@ -36,7 +36,7 @@ class PostgresDatabase(Database):
 
     async def fetch_row(self, query: str, *args: Any) -> Maybe[Dict[str, Any]]:
         record = await self.__connection.fetchrow(query, *args)
-        maybe_record = Maybe.from_value(record)
+        maybe_record: Maybe[Record] = Maybe.from_value(record)
         return maybe_record.map(self.__record_to_dict)
 
     async def fetch_value(self, query: str, *args: Any) -> Any:
