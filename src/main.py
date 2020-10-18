@@ -20,6 +20,7 @@ async def main(loop: AbstractEventLoop) -> None:
     await database.connect()
     loop.create_task(telegram_service.start())
     loop.create_task(vk_service.start())
+    print('App has been started')
 
 
 loop = get_event_loop()
