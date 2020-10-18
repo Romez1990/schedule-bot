@@ -12,7 +12,7 @@ class TypeHints(Mapping[str, Type]):
         self.__type_hints = type_hints
 
     def __check_type(self, parameter_type: Type) -> None:
-        if type(parameter_type) == parameter_type:
+        if not isinstance(parameter_type, type):
             raise ValueError(f'')
 
     def __iter__(self) -> Iterator[str]:
