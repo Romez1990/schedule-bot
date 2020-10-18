@@ -31,7 +31,7 @@ class CollegeGroup(Group):
         return self.__admission_year
 
     def __eq__(self, other: object) -> bool:
-        if type(other) == CollegeGroup:
+        if isinstance(other, CollegeGroup):
             return self.year == other.year and \
                    self.speciality == other.speciality and \
                    self.number == other.number and \
