@@ -23,7 +23,9 @@ class Schedule(Mapping[Group, GroupSchedule]):
     __group_schedules: PMap[Group, GroupSchedule]
 
     def __iter__(self) -> Iterator[Group]:
-        return iter(sorted(self.__group_schedules))
+        groups = list(self.__group_schedules)
+        groups.sort()
+        return iter(groups)
 
     def __getitem__(self, key: Group) -> GroupSchedule:
         return self.__group_schedules[key]
