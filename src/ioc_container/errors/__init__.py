@@ -1,5 +1,6 @@
 from .subclass_error import SubclassError
 from .type_already_bound_error import TypeAlreadyBoundError
+from .type_matching_error import TypeMatchingError
 from .type_not_found_error import TypeNotFoundError
 from .missing_type_hint_error import MissingTypeHintError
 from .wrong_type_hint_error import WrongTypeHintError

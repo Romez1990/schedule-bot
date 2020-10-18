@@ -12,6 +12,7 @@ from typing import (
 from .errors import (
     SubclassError,
     TypeAlreadyBoundError,
+    TypeMatchingError,
     TypeNotFoundError,
     MissingTypeHintError,
 )
@@ -51,13 +52,19 @@ class Container:
 
     def get(self, base_type: Type[T]) -> T:
         if base_type in self.__instances:
-            return self.__instances[base_type]
+            instance = self.__instances[base_type]
+            return self.__as_type(instance, base_type)
         if base_type not in self.__types:
             raise TypeNotFoundError(base_type)
         type = self.__types[base_type]
         instance = self.__instantiate_type(type)
         del self.__types[base_type]
         self.__instances[base_type] = instance
+        return self.__as_type(instance, base_type)
+
+    def __as_type(self, instance: object, type: Type[T]) -> T:
+        if not isinstance(instance, type):
+            raise TypeMatchingError(instance, type)
         return instance
 
     def __instantiate_type(self, type: Type) -> object:
