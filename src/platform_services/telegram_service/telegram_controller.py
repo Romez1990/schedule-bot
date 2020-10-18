@@ -9,7 +9,7 @@ from src.bot_services import (
     UserSettingsServiceInterface,
     SubscriptionServiceInterface,
 )
-from ..messages_text import MessageText
+from ..text_messages import TextMessagesFactoryInterface
 from ..button_configuration import ButtonConfiguration
 from .telegram_bot import TelegramBot
 
@@ -19,14 +19,14 @@ class TelegramController:
             self,
             bot: TelegramBot,
             button_configuration: ButtonConfiguration,
-            message_text: MessageText,
+            text_messages_factory: TextMessagesFactoryInterface,
             user_service_factory: UserServiceFactoryInterface,
             user_settings_service: UserSettingsServiceInterface,
             subscription_service: SubscriptionServiceInterface,
     ) -> None:
         self.__bot = bot
         self.__button_configuration = button_configuration
-        self.__message_text = message_text
+        self.__text_messages = text_messages_factory.create_html_text_messages()
         self.__user_service = user_service_factory.create('telegram')
         self.__user_settings_service = user_settings_service
         self.__subscription_service = subscription_service
@@ -34,13 +34,13 @@ class TelegramController:
     async def welcome(self, message: Message) -> None:
         telegram_id = self.__get_telegram_id(message)
         await self.__user_service.create_if_not_exists(telegram_id)
-        await self.__bot.send_message(telegram_id, self.__message_text.message_text_start('telegram'),
+        await self.__bot.send_message(telegram_id, self.__text_messages.start,
                                       reply_markup=self.__button_configuration.telegram_buttons(),
                                       parse_mode=ParseMode.HTML)
 
     async def help(self, message: Message) -> None:
         telegram_id = self.__get_telegram_id(message)
-        await self.__bot.send_message(telegram_id, self.__message_text.message_text_help('telegram'),
+        await self.__bot.send_message(telegram_id, self.__text_messages.help,
                                       reply_markup=self.__button_configuration.telegram_buttons(),
                                       parse_mode=ParseMode.HTML)
 
