@@ -13,6 +13,7 @@ from src.schedule import (
     DayOfWeekTranslatorInterface,
     DaySchedule,
 )
+from src.utilities.paths_interface import PathsInterface
 from .schedule_renderer_interface import ScheduleRendererInterface
 from .image import Image
 from .themes import themes, Theme
@@ -20,8 +21,9 @@ from .schedule_metrics import ScheduleMetrics
 
 
 class ScheduleRenderer(ScheduleRendererInterface):
-    def __init__(self, day_of_week_translator: DayOfWeekTranslatorInterface) -> None:
+    def __init__(self, day_of_week_translator: DayOfWeekTranslatorInterface, paths: PathsInterface) -> None:
         self.__day_of_week_translator = day_of_week_translator
+        self.__paths = paths
 
         quality = 3
 
@@ -68,14 +70,13 @@ class ScheduleRenderer(ScheduleRendererInterface):
                               self._separator_width
 
         self._fonts = {
-            'Arial bold 16': self._load_font('fonts/Arial bold.ttf', 16),
-            'Arial bold 14': self._load_font('fonts/Arial bold.ttf', 14),
-            'Arial bold 8': self._load_font('fonts/Arial bold.ttf', 8),
-            'Times New Roman bold 9':
-                self._load_font('fonts/Times New Roman bold.ttf', 9),
-            'Arial 6': self._load_font('fonts/Arial.ttf', 6),
-            'Arial 7': self._load_font('fonts/Arial.ttf', 7),
-            'Arial 8': self._load_font('fonts/Arial.ttf', 8),
+            'Arial bold 16': self._load_font('Arial bold.ttf', 16),
+            'Arial bold 14': self._load_font('Arial bold.ttf', 14),
+            'Arial bold 8': self._load_font('Arial bold.ttf', 8),
+            'Times New Roman bold 9': self._load_font('Times New Roman bold.ttf', 9),
+            'Arial 6': self._load_font('Arial.ttf', 6),
+            'Arial 7': self._load_font('Arial.ttf', 7),
+            'Arial 8': self._load_font('Arial.ttf', 8),
         }
 
     def _compute_offset(self, values: Dict[Any, int]) -> Dict[Any, int]:
@@ -86,10 +87,9 @@ class ScheduleRenderer(ScheduleRendererInterface):
             current_offset += value
         return offsets
 
-    def _load_font(self, path: str, font_size: int) -> ImageFont:
-        return ImageFont.truetype(
-            str(Path(__file__).parent / Path(path)),
-            self._scale * font_size)
+    def _load_font(self, filename: str, font_size: int) -> ImageFont:
+        font_path = self.__paths.assets / 'fonts' / filename
+        return ImageFont.truetype(str(font_path), self._scale * font_size)
 
     def render(self, schedule: Schedule, theme_name: str) -> BytesIO:
         self._set_theme(theme_name)
