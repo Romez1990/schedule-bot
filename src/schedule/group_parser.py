@@ -23,7 +23,7 @@ class GroupParser(GroupParserInterface):
             lambda: self.parse_university_group(group_name),
             lambda: self.parse_college_group(group_name),
         ]
-        return reduce(self.__rescue, parsers, Failure(None))
+        return reduce(self.__rescue, parsers[1:], parsers[0]())
 
     def __rescue(
             self,
