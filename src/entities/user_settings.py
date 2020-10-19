@@ -1,8 +1,11 @@
+from src.schedule_services import (
+    Theme,
+)
 from .user import User
 
 
 class UserSettings:
-    def __init__(self, user: User, theme: str) -> None:
+    def __init__(self, user: User, theme: Theme) -> None:
         self.__user = user
         self.__theme = theme
 
@@ -11,5 +14,5 @@ class UserSettings:
         return self.__user
 
     @property
-    def theme(self) -> str:
+    def theme(self) -> Theme:
         return self.__theme
