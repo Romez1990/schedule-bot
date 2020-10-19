@@ -1,2 +1,3 @@
 from .module import TextMessagesModule
 from .text_messages_factory_interface import TextMessagesFactoryInterface
+from .text_messages_interface import TextMessagesInterface
