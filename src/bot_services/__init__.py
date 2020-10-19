@@ -1,4 +1,7 @@
 from .module import BotServicesModule
-from .user_service_factory_interface import UserServiceFactoryInterface
+from .user import (
+    UserServiceFactoryInterface,
+    UserServiceInterface,
+)
 from .user_settings_service_interface import UserSettingsServiceInterface
 from .subscription_service_interface import SubscriptionServiceInterface

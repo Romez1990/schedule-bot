@@ -1,7 +1,7 @@
 from src.database import UserRepositoryInterface
+from ..user_settings_service_interface import UserSettingsServiceInterface
+from ..subscription_service_interface import SubscriptionServiceInterface
 from .user_service_factory_interface import UserServiceFactoryInterface
-from .user_settings_service_interface import UserSettingsServiceInterface
-from .subscription_service_interface import SubscriptionServiceInterface
 from .user_service_interface import UserServiceInterface
 from .user_service import UserService
 
