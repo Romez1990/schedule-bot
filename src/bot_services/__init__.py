@@ -4,4 +4,4 @@ from .user import (
     UserServiceInterface,
 )
 from .user_settings import UserSettingsServiceInterface
-from .subscription_service_interface import SubscriptionServiceInterface
+from .subscription import SubscriptionServiceInterface
