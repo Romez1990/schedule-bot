@@ -34,11 +34,11 @@ class VkController:
         vk_id = self.__get_vk_id(event)
         await self.__user_service.create_if_not_exists(vk_id)
         await event.answer(message=self.__text_messages.start,
-                           keyboard=self.__button_configuration.vk_buttons())
+                           keyboard=self.__button_configuration.vk_buttons().get_keyboard())
 
     async def help(self, event: SimpleBotEvent) -> None:
         await event.answer(message=self.__text_messages.help,
-                           keyboard=self.__button_configuration.vk_buttons())
+                           keyboard=self.__button_configuration.vk_buttons().get_keyboard())
 
     async def subscribe(self, event: SimpleBotEvent) -> None:
         vk_id = self.__get_telegram_id(event)
