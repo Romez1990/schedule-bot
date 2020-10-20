@@ -10,10 +10,10 @@ from vkwave.bots import (
 
 class ButtonConfiguration:
 
-    def vk_buttons(self) -> Keyboard:
+    def vk_buttons(self):
         MENU_VK = Keyboard()
-        MENU_VK.add_text_button(text='/start', payload={"command": "start"})
-        MENU_VK.add_text_button(text='/help', payload={"command": "help"})
+        MENU_VK.add_text_button(text='/start')
+        MENU_VK.add_text_button(text='/help')
         return MENU_VK
 
     def telegram_buttons(self) -> ReplyKeyboardMarkup:
