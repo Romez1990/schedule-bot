@@ -1,4 +1,4 @@
-from platform_services.text_messages.text_messages_interface import TextMessagesInterface
+from .text_messages_interface import TextMessagesInterface
 
 
 class TextMessagesFactoryInterface:
