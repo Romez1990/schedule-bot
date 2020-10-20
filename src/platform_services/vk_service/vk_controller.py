@@ -41,24 +41,24 @@ class VkController:
                            keyboard=self.__button_configuration.vk_buttons().get_keyboard())
 
     async def subscribe(self, event: SimpleBotEvent) -> None:
-        vk_id = self.__get_telegram_id(event)
+        vk_id = self.__get_vk_id(event)
         user = await self.__user_service.find_user(vk_id)
-        group_name = event.text.lstrip('/subscribe ')
+        group_name = event.object.object.text.lstrip('/subscribe ')
         result = await (self.__subscription_service.create(user, group_name)
                         .map(lambda _: event.answer(self.__text_messages.subscribe(group_name)))
                         .fix(lambda _: self.__bot.message_handler(vk_id, 'wrong group'))
                         .awaitable())
-        await unsafe_perform_io(result.unwrap())
+        unsafe_perform_io(result.unwrap())
 
     async def unsubscribe(self, event: SimpleBotEvent) -> None:
-        vk_id = self.__get_telegram_id(event)
+        vk_id = self.__get_vk_id(event)
         user = await self.__user_service.find_user(vk_id)
-        group_name = event.text.lstrip('/unsubscribe ')
+        group_name = event.object.object.text.lstrip('/unsubscribe ')
         result = await (self.__subscription_service.delete(user, group_name)
                         .map(lambda _: event.answer(self.__text_messages.unsubscribe(group_name)))
                         .fix(lambda _: self.__bot.message_handler(vk_id, 'wrong group'))
                         .awaitable())
-        await unsafe_perform_io(result.unwrap())
+        unsafe_perform_io(result.unwrap())
 
     def __get_vk_id(self, event: SimpleBotEvent) -> str:
         return str(event.object.object.peer_id)

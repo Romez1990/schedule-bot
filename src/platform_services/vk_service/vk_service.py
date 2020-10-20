@@ -12,4 +12,6 @@ class VkService(PlatformService):
         self.__bot.init()
         self.__bot.message_handler(self.__bot.command_filter('start'))(self.__controller.welcome)
         self.__bot.message_handler(self.__bot.command_filter('help'))(self.__controller.help)
+        self.__bot.message_handler(self.__bot.command_filter('subscribe'))(self.__controller.subscribe)
+        self.__bot.message_handler(self.__bot.command_filter('unsubscribe'))(self.__controller.unsubscribe)
         await self.__bot.start()
