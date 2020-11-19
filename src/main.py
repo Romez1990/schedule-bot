@@ -25,4 +25,8 @@ async def main(event_loop: AbstractEventLoop) -> None:
 
 loop = get_event_loop()
 loop.create_task(main(loop))
-loop.run_forever()
+try:
+    loop.run_forever()
+finally:
+    if not loop.is_closed():
+        loop.close()
