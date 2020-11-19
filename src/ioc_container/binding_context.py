@@ -4,7 +4,7 @@ from typing import (
 )
 
 
-class BindingBuilder:
+class BindingContext:
     def __init__(self, type: Type, callback: Callable[[Type], None]) -> None:
         self.__type = type
         self.__callback = callback

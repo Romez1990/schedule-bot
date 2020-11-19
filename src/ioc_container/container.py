@@ -16,7 +16,7 @@ from .errors import (
     TypeNotFoundError,
     MissingTypeHintError,
 )
-from .binding_builder import BindingBuilder
+from .binding_context import BindingContext
 from .type_hints import TypeHints
 
 if TYPE_CHECKING:
@@ -36,8 +36,8 @@ class Container:
         module_object = module(self)
         module_object.bind()
 
-    def bind(self, type: Type) -> BindingBuilder:
-        return BindingBuilder(type, lambda base_type: self.__bind_type(type, base_type))
+    def bind(self, type: Type) -> BindingContext:
+        return BindingContext(type, lambda base_type: self.__bind_type(type, base_type))
 
     def __bind_type(self, type: Type, base_type: Type) -> None:
         if not issubclass(type, base_type):
