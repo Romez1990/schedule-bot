@@ -30,8 +30,16 @@ class Environment(EnvironmentInterface):
 
     def get_int(self, key: str) -> int:
         value = self.get_str(key)
-        return int(value)
+        try:
+            int_value = int(value)
+        except ValueError:
+            raise EnvironmentError(f'key {key} must be int')
+        return int_value
 
     def get_float(self, key: str) -> float:
         value = self.get_str(key)
-        return float(value)
+        try:
+            float_value = float(value)
+        except ValueError:
+            raise EnvironmentError(f'key {key} must be float')
+        return float_value
