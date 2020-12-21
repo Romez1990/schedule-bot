@@ -5,7 +5,7 @@ from .group import Group
 class CollegeGroup(Group):
     def __init__(self, year: int, speciality: str, number: int, a: bool, admission_year: int) -> None:
         self.__year = year
-        self.__speciality = speciality.upper()
+        self.__speciality = speciality
         self.__number = number
         self.__a = a
         self.__admission_year = admission_year
@@ -33,7 +33,7 @@ class CollegeGroup(Group):
     def __eq__(self, other: object) -> bool:
         if isinstance(other, CollegeGroup):
             return self.year == other.year and \
-                   self.speciality == other.speciality and \
+                   self.speciality.upper() == other.speciality.upper() and \
                    self.number == other.number and \
                    self.a == other.a and \
                    self.admission_year == other.admission_year
