@@ -42,8 +42,7 @@ class GroupParser(GroupParserInterface):
 
     def parse_college_group(self, group_name: str) -> Result[CollegeGroup, GroupNameParsingError]:
         match = search(
-            '^(?P<year>[1-4])(?P<specialty>[А-Яа-я]{2,4})-(?P<number>\\d{1,2})(?P<a>а?)\\.?'
-            '(?P<admission_year>\\d{2})$',
+            '^(?P<year>[1-4])(?P<specialty>[А-Яа-я]{2,4})-(?P<number>\\d{1,2})(?P<a>а?)\\.?(?P<admission_year>\\d{2})$',
             group_name)
         maybe_group = Maybe.from_optional(match) \
             .map(self.__create_college_group)
