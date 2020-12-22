@@ -30,13 +30,13 @@ class GroupParser(GroupParserInterface):
             group_result: Result[Group, GroupNameParsingError],
             get_next_group: Callable[[], Result[Group, GroupNameParsingError]],
     ) -> Result[Group, GroupNameParsingError]:
-        return group_result.rescue(lambda _: get_next_group())
+        return group_result.lash(lambda _: get_next_group())
 
     def parse_university_group(self, group_name: str) -> Result[UniversityGroup, GroupNameParsingError]:
         match = search(
             '^(?P<specialty>[А-Яа-я]{2,3})-(?P<year>\\d{2})-(?P<form>[А-Яа-я]{1,2})(?P<number>\\d?)$',
             group_name)
-        maybe_group = Maybe.from_value(match) \
+        maybe_group = Maybe.from_optional(match) \
             .map(self.__create_university_group)
         return self.__maybe_to_result(group_name, maybe_group)
 
@@ -45,7 +45,7 @@ class GroupParser(GroupParserInterface):
             '^(?P<year>[1-4])(?P<specialty>[А-Яа-я]{2,4})-(?P<number>\\d{1,2})(?P<a>а?)\\.?'
             '(?P<admission_year>\\d{2})$',
             group_name)
-        maybe_group = Maybe.from_value(match) \
+        maybe_group = Maybe.from_optional(match) \
             .map(self.__create_college_group)
         return self.__maybe_to_result(group_name, maybe_group)
 
