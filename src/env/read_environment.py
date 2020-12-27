@@ -1,5 +1,9 @@
 from .errors import (
     EnvironmentAlreadyReadError,
+    EnvironmentVariableNotFoundError,
+    BooleanEnvironmentVariableError,
+    IntegerEnvironmentVariableError,
+    FloatEnvironmentVariableError,
 )
 from .environment_state import EnvironmentState
 from .environment_driver import EnvironmentDriver
@@ -15,7 +19,7 @@ class ReadEnvironment(EnvironmentState):
     def get_str(self, key: str) -> str:
         value = self.__environment_driver.get_str(key)
         if value is None:
-            raise EnvironmentError(f'no {key} environment variable')
+            raise EnvironmentVariableNotFoundError(key)
         return value
 
     def get_bool(self, key: str) -> bool:
@@ -24,14 +28,14 @@ class ReadEnvironment(EnvironmentState):
             return True
         if value == 'false':
             return False
-        raise EnvironmentError(f'key {key} can only be true or false')
+        raise BooleanEnvironmentVariableError(key)
 
     def get_int(self, key: str) -> int:
         value = self.get_str(key)
         try:
             int_value = int(value)
         except ValueError:
-            raise EnvironmentError(f'key {key} must be int')
+            raise IntegerEnvironmentVariableError(key)
         return int_value
 
     def get_float(self, key: str) -> float:
@@ -39,5 +43,5 @@ class ReadEnvironment(EnvironmentState):
         try:
             float_value = float(value)
         except ValueError:
-            raise EnvironmentError(f'key {key} must be float')
+            raise FloatEnvironmentVariableError(key)
         return float_value
