@@ -4,7 +4,10 @@ from typing import (
     Optional,
     Iterable,
 )
-from pyrsistent import pvector, PVector
+
+from src.immutable_collections import (
+    List,
+)
 
 if TYPE_CHECKING:
     from .user_settings import UserSettings
@@ -18,7 +21,7 @@ class User:
         self.__platform = platform
         self.__platform_id = platform_id
         self.__settings = settings
-        self.__subscriptions = pvector(subscriptions) if subscriptions is not None else None
+        self.__subscriptions = List(subscriptions) if subscriptions is not None else None
 
     @property
     def id(self) -> Optional[int]:
@@ -37,5 +40,5 @@ class User:
         return self.__settings
 
     @property
-    def subscriptions(self) -> Optional[PVector[Subscription]]:
+    def subscriptions(self) -> Optional[List[Subscription]]:
         return self.__subscriptions
