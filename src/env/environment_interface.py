@@ -1,15 +1,7 @@
-class EnvironmentInterface:
-    def read(self) -> None:
-        raise NotImplementedError
+from abc import ABCMeta
 
-    def get_str(self, key: str) -> str:
-        raise NotImplementedError
+from .environment_state import EnvironmentState
 
-    def get_bool(self, key: str) -> bool:
-        raise NotImplementedError
 
-    def get_int(self, key: str) -> int:
-        raise NotImplementedError
-
-    def get_float(self, key: str) -> float:
-        raise NotImplementedError
+class EnvironmentInterface(EnvironmentState, metaclass=ABCMeta):
+    pass
