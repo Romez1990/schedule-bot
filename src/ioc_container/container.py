@@ -2,8 +2,6 @@ from __future__ import annotations
 from typing import (
     get_type_hints,
     Type,
-    List,
-    Dict,
     Callable,
     TypeVar,
     TYPE_CHECKING,
@@ -29,8 +27,8 @@ wrapper_descriptor = type(object.__init__)
 
 class Container:
     def __init__(self) -> None:
-        self.__types: Dict[Type, Type] = {}
-        self.__instances: Dict[Type, object] = {}
+        self.__types: dict[Type, Type] = {}
+        self.__instances: dict[Type, object] = {}
 
     def register_module(self, module: Type[Module]) -> None:
         module_object = module(self)
@@ -90,7 +88,7 @@ class Container:
     def __is_constructor_empty(self, constructor: Callable) -> bool:
         return isinstance(constructor, wrapper_descriptor)
 
-    def __get_function_parameters(self, func: Callable) -> List[str]:
+    def __get_function_parameters(self, func: Callable) -> list[str]:
         number_of_parameters = func.__code__.co_argcount
         self_parameter = 1
         return list(func.__code__.co_varnames[self_parameter:number_of_parameters])
