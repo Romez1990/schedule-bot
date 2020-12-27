@@ -71,8 +71,8 @@ class Container:
         return type(**{parameter_name: self.get(parameter_type)
                        for parameter_name, parameter_type in type_hints.items()})
 
-    def __get_constructor_type_hints(self, type_: Type) -> TypeHints:
-        constructor = type_.__init__
+    def __get_constructor_type_hints(self, type: Type) -> TypeHints:
+        constructor = type.__init__
         if self.__is_constructor_empty(constructor):
             return TypeHints({})
         type_hints = get_type_hints(constructor)
@@ -82,7 +82,7 @@ class Container:
         if len(type_hints) != len(parameter_names):
             parameters_with_no_type_hint = [parameter_name for parameter_name in parameter_names
                                             if parameter_name not in type_hints]
-            raise MissingTypeHintError(type_, parameters_with_no_type_hint)
+            raise MissingTypeHintError(type, parameters_with_no_type_hint)
         return TypeHints(type_hints)
 
     def __is_constructor_empty(self, constructor: Callable) -> bool:
