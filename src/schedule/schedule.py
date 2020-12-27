@@ -1,16 +1,14 @@
 from __future__ import annotations
 from typing import (
     Optional,
-    Tuple,
     Callable,
     Iterable,
     Iterator,
     Mapping,
 )
-from pyrsistent import PMap, pmap
-from pfun import List
 from returns.maybe import Maybe
 
+from src.collection import List, Dict
 from .group import Group
 from .group_schedule import GroupSchedule
 from .day_of_week import DayOfWeek
@@ -18,9 +16,7 @@ from .day_of_week import DayOfWeek
 
 class Schedule(Mapping[Group, GroupSchedule]):
     def __init__(self, group_schedules: Mapping[Group, GroupSchedule]) -> None:
-        self.__group_schedules = pmap(group_schedules)
-
-    __group_schedules: PMap[Group, GroupSchedule]
+        self.__group_schedules = Dict(group_schedules)
 
     def __iter__(self) -> Iterator[Group]:
         groups = list(self.__group_schedules)
@@ -46,7 +42,7 @@ class Schedule(Mapping[Group, GroupSchedule]):
     def __group_exists(self, group: Group) -> bool:
         return group in self.__group_schedules
 
-    def __get_group_schedule(self, group: Group) -> Tuple[Group, GroupSchedule]:
+    def __get_group_schedule(self, group: Group) -> tuple[Group, GroupSchedule]:
         return group, self.__group_schedules[group]
 
     def __try_select_day(self, group_schedule: GroupSchedule, day_of_week: Optional[DayOfWeek]) -> GroupSchedule:

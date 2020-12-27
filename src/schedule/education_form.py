@@ -1,7 +1,4 @@
 from __future__ import annotations
-from typing import (
-    Tuple,
-)
 
 
 class EducationForm:
@@ -24,7 +21,7 @@ class EducationForm:
 
     __forms = ['Д', 'В']
 
-    def __get_compare_indexes(self, other: EducationForm) -> Tuple[int, int]:
+    def __get_compare_indexes(self, other: EducationForm) -> tuple[int, int]:
         self_char = str(self)[0].upper()
         other_char = str(other)[0].upper()
         self_index = self.__forms.index(self_char)

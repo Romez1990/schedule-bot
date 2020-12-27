@@ -1,7 +1,6 @@
 from functools import reduce
 from re import search, Match
 from typing import (
-    List,
     Callable,
     TypeVar,
 )
@@ -19,7 +18,7 @@ T = TypeVar('T', bound=Group)
 
 class GroupParser(GroupParserInterface):
     def parse(self, group_name: str) -> Result[Group, GroupNameParsingError]:
-        parsers: List[Callable[[], Result[Group, GroupNameParsingError]]] = [
+        parsers: list[Callable[[], Result[Group, GroupNameParsingError]]] = [
             lambda: self.parse_university_group(group_name),
             lambda: self.parse_college_group(group_name),
         ]
