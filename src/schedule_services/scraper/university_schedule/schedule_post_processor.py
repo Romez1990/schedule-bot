@@ -1,6 +1,5 @@
 from itertools import dropwhile
 from returns.maybe import Nothing
-from pfun.functions import compose
 
 from src.schedule import (
     Schedule,
@@ -8,16 +7,19 @@ from src.schedule import (
     DaySchedule,
     DayOfWeek,
 )
+from src.functions import (
+    pipe2,
+)
 from .schedule_post_processor_interface import SchedulePostProcessorInterface
 
 
 class SchedulePostProcessor(SchedulePostProcessorInterface):
     def process(self, schedule: Schedule) -> Schedule:
-        process = compose(
+        return pipe2(
+            schedule,
             self.__remove_trailing_nothing_entries,
             self.__remove_weekend_if_empty,
         )
-        return process(schedule)
 
     def __remove_trailing_nothing_entries(self, schedule: Schedule) -> Schedule:
         return schedule.map(self.__remove_trailing_nothing_entries_from_group_schedule)
@@ -36,11 +38,11 @@ class SchedulePostProcessor(SchedulePostProcessorInterface):
         return schedule.map(self.__remove_weekend_if_empty_from_group_schedule)
 
     def __remove_weekend_if_empty_from_group_schedule(self, group_schedule: GroupSchedule) -> GroupSchedule:
-        remove_weekend_if_empty = compose(
+        return pipe2(
+            group_schedule,
             lambda schedule: self.__remove_day_if_empty(schedule, DayOfWeek.saturday),
             lambda schedule: self.__remove_day_if_empty(schedule, DayOfWeek.sunday),
         )
-        return remove_weekend_if_empty(group_schedule)
 
     def __remove_day_if_empty(self, group_schedule: GroupSchedule, weekday: DayOfWeek) -> GroupSchedule:
         day_schedule = group_schedule.get(weekday)
