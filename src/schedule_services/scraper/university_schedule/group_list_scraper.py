@@ -1,8 +1,9 @@
-from pfun import List
-
 from src.schedule import (
     UniversityGroup,
     GroupParserInterface,
+)
+from src.immutable_collections import (
+    List,
 )
 from src.schedule_services.parser import (
     PageParserInterface,
