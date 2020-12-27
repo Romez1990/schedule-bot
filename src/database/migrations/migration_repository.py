@@ -1,9 +1,6 @@
 from pathlib import Path
 from importlib import import_module
 from re import compile as compile_regex
-from typing import (
-    List,
-)
 
 from .errors import (
     MigrationNotFoundError,
@@ -19,7 +16,7 @@ class MigrationRepository(MigrationRepositoryInterface):
         self.__current_package = '.'.join(__name__.split('.')[:-1])
         self.__module_regex = compile_regex(r'^\w+Migration$')
 
-    def get_all(self) -> List[Migration]:
+    def get_all(self) -> list[Migration]:
         directory = Path(__file__).parent / self.__target_package
         return [self.__get_migration(path) for path in directory.iterdir() if self.__filter_path(path)]
 

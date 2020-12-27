@@ -1,7 +1,3 @@
-from typing import (
-    List,
-)
-
 from src.entities import User, Subscription
 from ..database import Database
 from .subscription_repository_interface import SubscriptionRepositoryInterface
@@ -24,7 +20,7 @@ class SubscriptionRepository(SubscriptionRepositoryInterface):
             WHERE user_id = $1 AND "group" = $2
         ''', subscription.user.id, subscription.group)
 
-    async def find_by_user(self, user: User) -> List[Subscription]:
+    async def find_by_user(self, user: User) -> list[Subscription]:
         records = await self.__database.fetch('''
             SELECT "group" FROM subscriptions
             WHERE user_id = $1
