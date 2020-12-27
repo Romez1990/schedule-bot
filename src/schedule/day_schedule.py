@@ -24,4 +24,4 @@ class DaySchedule(Reversible[Maybe[Entry]], Sized):
         return iter(reversed(self.__entries))
 
     def __bool__(self) -> bool:
-        return not all(entry == Nothing for entry in self.__entries)
+        return any(entry != Nothing for entry in self.__entries)
