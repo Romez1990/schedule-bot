@@ -1,5 +1,6 @@
-from pfun import List
-
+from src.immutable_collections import (
+    List,
+)
 from ..primitives import (
     TextComponent,
     Message,
