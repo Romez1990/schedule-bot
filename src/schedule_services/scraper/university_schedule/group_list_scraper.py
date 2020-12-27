@@ -18,7 +18,7 @@ class GroupListScraper(GroupListScraperInterface):
         self.__group_parser = group_parser
 
     async def get_groups_and_links(self) -> dict[UniversityGroup, str]:
-        document = await self.__page_parser.parse('http://www.viti-mephi.ru/raspisanie')
+        document = await self.__page_parser.parse('http://viti-mephi.ru/raspisanie')
         groups_and_links = List(document.select_all('.table_raspisanie a')) \
             .map(self.__get_group_and_link) \
             .filter(self.__is_university_group_acceptable)
