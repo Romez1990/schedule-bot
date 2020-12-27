@@ -1,5 +1,4 @@
 from typing import (
-    Tuple,
     Callable,
 )
 from vkwave.bots import (
@@ -27,7 +26,7 @@ class VkBot:
         return self.__bot.message_handler(*filters)
 
     def command_filter(self, commands: str,
-                       prefixes: Tuple[str, ...] = ("/", "!"),
+                       prefixes: tuple[str, ...] = ("/", "!"),
                        ignore_case: bool = True) -> CommandsFilter:
         return self.__bot.command_filter(commands, prefixes, ignore_case)
 
