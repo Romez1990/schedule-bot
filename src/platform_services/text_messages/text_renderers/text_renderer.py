@@ -28,12 +28,12 @@ class TextRenderer(TextRendererInterface):
     def __render_message(self, message: Message) -> str:
         return List(message.children) \
             .map(self.render) \
-            .reduce(self.__join_paragraphs, '')
+            .reduce(self.__join_paragraphs)
 
     def __render_paragraph(self, paragraph: Paragraph) -> str:
         return List(paragraph.children) \
             .map(self.render) \
-            .reduce(self.__join_spans, '')
+            .reduce(self.__join_spans)
 
     def __join_paragraphs(self, paragraph1: str, paragraph2: str) -> str:
         return paragraph1 + '\n' + paragraph2
