@@ -15,7 +15,6 @@ render-my-group = "python scripts/run.py scripts/render_my_group.py"
 [packages]
 python-dotenv = "*"
 returns = "*"
-pyrsistent = "*"
 aiohttp = "*"
 asyncpg = "*"
 aiogram = "*"
