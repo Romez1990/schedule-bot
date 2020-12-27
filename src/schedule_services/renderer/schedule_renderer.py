@@ -1,5 +1,4 @@
 from __future__ import annotations
-from pathlib import Path
 from io import BytesIO
 from typing import Tuple, Dict, Iterable, Any
 from PIL import ImageFont
