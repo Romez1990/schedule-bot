@@ -8,7 +8,10 @@ from typing import (
 )
 from returns.maybe import Maybe
 
-from src.collection import List, Dict
+from src.immutable_collections import (
+    List,
+    Dict,
+)
 from .group import Group
 from .group_schedule import GroupSchedule
 from .day_of_week import DayOfWeek

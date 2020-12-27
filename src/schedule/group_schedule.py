@@ -4,17 +4,17 @@ from typing import (
     Iterator,
     Mapping,
 )
-from pyrsistent import pmap, PMap
 
+from src.immutable_collections import (
+    Dict,
+)
 from .day_of_week import DayOfWeek
 from .day_schedule import DaySchedule
 
 
 class GroupSchedule(Mapping[DayOfWeek, DaySchedule]):
     def __init__(self, day_schedules: Mapping[DayOfWeek, DaySchedule]) -> None:
-        self.__day_schedules = pmap(day_schedules)
-
-    __day_schedules: PMap[DayOfWeek, DaySchedule]
+        self.__day_schedules = Dict(day_schedules)
 
     def __iter__(self) -> Iterator[DayOfWeek]:
         return iter(self.__day_schedules)

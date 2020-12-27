@@ -4,15 +4,17 @@ from typing import (
     Reversible,
     Sized,
 )
-from pyrsistent import pvector
 from returns.maybe import Maybe, Nothing
 
+from src.immutable_collections import (
+    List,
+)
 from .entry import Entry
 
 
 class DaySchedule(Reversible[Maybe[Entry]], Sized):
     def __init__(self, entries: Iterable[Maybe[Entry]]) -> None:
-        self.__entries = pvector(entries)
+        self.__entries = List(entries)
 
     def __iter__(self) -> Iterator[Maybe[Entry]]:
         return iter(self.__entries)

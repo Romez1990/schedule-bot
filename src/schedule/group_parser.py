@@ -1,4 +1,3 @@
-from functools import reduce
 from re import search, Match
 from typing import (
     Callable,
@@ -7,6 +6,10 @@ from typing import (
 from returns.maybe import Maybe, Some, Nothing
 from returns.result import Result, Success, Failure
 
+from src.immutable_collections import (
+    List,
+    lazy_reduce,
+)
 from .group_parser_interface import GroupParserInterface
 from .group import Group
 from .university_group import UniversityGroup
@@ -18,11 +21,11 @@ T = TypeVar('T', bound=Group)
 
 class GroupParser(GroupParserInterface):
     def parse(self, group_name: str) -> Result[Group, GroupNameParsingError]:
-        parsers: list[Callable[[], Result[Group, GroupNameParsingError]]] = [
+        parsers: List[Callable[[], Result[Group, GroupNameParsingError]]] = List([
             lambda: self.parse_university_group(group_name),
             lambda: self.parse_college_group(group_name),
-        ]
-        return reduce(self.__rescue, parsers[1:], parsers[0]())
+        ])
+        return lazy_reduce(self.__rescue, parsers)
 
     def __rescue(
             self,
