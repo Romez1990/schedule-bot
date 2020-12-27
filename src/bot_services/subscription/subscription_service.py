@@ -1,6 +1,3 @@
-from typing import (
-    List,
-)
 from returns.future import FutureResult
 
 from src.database import SubscriptionRepositoryInterface
@@ -36,5 +33,5 @@ class SubscriptionService(SubscriptionServiceInterface):
         subscription = Subscription(user, group)
         await self.__subscriptions.delete(subscription)
 
-    async def find(self, user: User) -> List[Subscription]:
+    async def find(self, user: User) -> list[Subscription]:
         return await self.__subscriptions.find_by_user(user)

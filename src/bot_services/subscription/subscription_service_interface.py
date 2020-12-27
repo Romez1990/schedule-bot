@@ -1,6 +1,3 @@
-from typing import (
-    List,
-)
 from returns.future import FutureResult
 
 from src.schedule import GroupNameParsingError
@@ -14,5 +11,5 @@ class SubscriptionServiceInterface:
     def delete(self, user: User, group_name: str) -> FutureResult[None, GroupNameParsingError]:
         raise NotImplementedError
 
-    async def find(self, user: User) -> List[Subscription]:
+    async def find(self, user: User) -> list[Subscription]:
         raise NotImplementedError
