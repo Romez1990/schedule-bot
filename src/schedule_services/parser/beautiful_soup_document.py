@@ -1,6 +1,3 @@
-from typing import (
-    List,
-)
 from bs4 import (
     BeautifulSoup,
 )
@@ -21,7 +18,7 @@ class BeautifulSoupDocument(Document):
         tag = self.__soup.select_one(selector)
         return self.__create_beautiful_soup_tag(tag)
 
-    def select_all(self, selector: str) -> List[Tag]:
+    def select_all(self, selector: str) -> list[Tag]:
         tags = self.__soup.select(selector)
         return [self.__create_beautiful_soup_tag(tag) for tag in tags]
 

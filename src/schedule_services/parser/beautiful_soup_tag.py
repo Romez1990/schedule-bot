@@ -1,6 +1,5 @@
 from typing import (
     Union,
-    List,
 )
 from bs4.element import (
     Tag as BSTag,
@@ -18,7 +17,7 @@ class BeautifulSoupTag(Tag):
         tag = self.__tag.select_one(selector)
         return self.__create_beautiful_soup_tag(tag)
 
-    def select_all(self, selector: str) -> List[Tag]:
+    def select_all(self, selector: str) -> list[Tag]:
         tags = self.__tag.select(selector)
         return [self.__create_beautiful_soup_tag(tag) for tag in tags]
 
@@ -26,7 +25,7 @@ class BeautifulSoupTag(Tag):
         return BeautifulSoupTag(tag)
 
     @property
-    def children(self) -> List[Union[Tag, str]]:
+    def children(self) -> list[Union[Tag, str]]:
         return [self.__resolve_child(element) for element in self.__tag.contents]
 
     def __resolve_child(self, element: Union[BSTag, NavigableString]) -> Union[Tag, str]:

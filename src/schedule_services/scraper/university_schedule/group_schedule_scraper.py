@@ -1,8 +1,3 @@
-from typing import (
-    List,
-    Dict,
-    Tuple,
-)
 from returns.maybe import Maybe, Some, Nothing
 
 from src.schedule import (
@@ -65,14 +60,14 @@ class GroupScheduleScraper(GroupScheduleScraperInterface):
         'КР/КП',
     ]
 
-    def __split_kind_and_subject(self, kind_and_subject: str) -> Tuple[str, str]:
+    def __split_kind_and_subject(self, kind_and_subject: str) -> tuple[str, str]:
         result = self.__list_helper.find_first_map(
             self.__kind_and_subject_splitters, lambda splitter: self.__split_string(kind_and_subject, splitter))
         if result != Nothing:
             return result.unwrap()
         return '', kind_and_subject
 
-    def __split_string(self, string: str, splitter: str) -> Maybe[Tuple[str, str]]:
+    def __split_string(self, string: str, splitter: str) -> Maybe[tuple[str, str]]:
         try:
             split_index = string.index(splitter) + len(splitter)
         except ValueError:
@@ -81,7 +76,7 @@ class GroupScheduleScraper(GroupScheduleScraperInterface):
         second_part = string[split_index:].strip()
         return Some((first_part, second_part))
 
-    def __split_teacher_and_class_room(self, teacher_and_class_room: str) -> Tuple[str, str]:
+    def __split_teacher_and_class_room(self, teacher_and_class_room: str) -> tuple[str, str]:
         split_str = 'а.'
         split_index = teacher_and_class_room.index(split_str)
         teacher = teacher_and_class_room[:split_index].strip()

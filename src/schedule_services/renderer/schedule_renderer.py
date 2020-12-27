@@ -1,6 +1,8 @@
 from __future__ import annotations
 from io import BytesIO
-from typing import Tuple, Dict, Iterable, Any
+from typing import (
+    Iterable,
+)
 from PIL import ImageFont
 from returns.maybe import Nothing
 
@@ -48,7 +50,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
             'kind': self._scale * 9,
             'teacher': self._scale * 10,
         }
-        self._rows_position: Dict[str, int] = \
+        self._rows_position: dict[str, int] = \
             self._compute_offset(self._rows_width)
 
         self._cell_size = (
@@ -83,8 +85,8 @@ class ScheduleRenderer(ScheduleRendererInterface):
             'Arial 8': self._load_font('Arial.ttf', 8),
         }
 
-    def _compute_offset(self, values: Dict[Any, int]) -> Dict[Any, int]:
-        offsets: Dict[Any, int] = {}
+    def _compute_offset(self, values: dict[any, int]) -> dict[any, int]:
+        offsets: dict[any, int] = {}
         current_offset = 0
         for key, value in values.items():
             offsets[key] = current_offset
@@ -121,7 +123,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
         self._image = Image(image_size, self._theme.text_color.to_tuple())
 
     def _get_position(self, group: int = None, day_of_week: DayOfWeek = None,
-                      entry: int = None) -> Tuple[int, int]:
+                      entry: int = None) -> tuple[int, int]:
         x_position = y_position = 0
         if group is not None:
             x_position += self._sidebar_width + group * \
@@ -151,7 +153,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
                 self._schedule_metrics[day_of_week])
 
     def _render_sidebar_day_of_week(
-            self, row_id: int, position: Tuple[int, int], day_length: int,
+            self, row_id: int, position: tuple[int, int], day_length: int,
             day_of_week: DayOfWeek = None) -> None:
         size = (self._sidebar_stripe_width,
                 self._cell_size[1] * day_length)
@@ -164,7 +166,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
             self._image.text_center_rotate(text, position, size, font)
 
     def _render_sidebar_entry_numbers(
-            self, row_id: int, start_position: Tuple[int, int],
+            self, row_id: int, start_position: tuple[int, int],
             day_length: int, custom_text: str = None) -> None:
         font = self._fonts['Arial 8']
         for entry_number in range(day_length):
@@ -183,7 +185,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
                 text = str(entry_number + 1)
             self._image.text_center(text, position, size, font)
 
-    def _render_stripe(self, row_id: int, position: Tuple[int, int]) -> None:
+    def _render_stripe(self, row_id: int, position: tuple[int, int]) -> None:
         color = self._theme.get_nth_background_color(row_id)
         self._image.rectangle(position, self._cell_size, color.to_tuple())
 
@@ -197,11 +199,11 @@ class ScheduleRenderer(ScheduleRendererInterface):
             self._render_class_header(position)
             self._render_class_room_header(position)
 
-    def _render_group(self, group: str, position: Tuple[int, int]) -> None:
+    def _render_group(self, group: str, position: tuple[int, int]) -> None:
         font = self._fonts['Arial bold 16']
         self._image.text_center(group, position, self._cell_size, font)
 
-    def _render_class_header(self, position: Tuple[int, int]) -> None:
+    def _render_class_header(self, position: tuple[int, int]) -> None:
         text = 'Дисциплина, вид занятия, преподаватель'
         font = self._fonts['Arial bold 8']
         position = (
@@ -213,7 +215,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
         _, line_height = font.getsize(text)
         self._image.text_wrap_center(text, position, size, line_height, font)
 
-    def _render_class_room_header(self, position: Tuple[int, int]) -> None:
+    def _render_class_room_header(self, position: tuple[int, int]) -> None:
         text = 'Ауд.'
         font = self._fonts['Arial bold 8']
         position = (
@@ -255,12 +257,12 @@ class ScheduleRenderer(ScheduleRendererInterface):
                 self._render_teacher(entry.teacher, position)
                 self._render_class_room(entry.class_room, position)
 
-    def _draw_none(self, position: Tuple[int, int]) -> None:
+    def _draw_none(self, position: tuple[int, int]) -> None:
         color = self._theme.text_color
         self._image.rectangle_center(position, self._cell_size,
                                      self._none_size, color.to_tuple())
 
-    def _render_subject(self, subject: str, position: Tuple[int, int]) -> None:
+    def _render_subject(self, subject: str, position: tuple[int, int]) -> None:
         font = self._fonts['Times New Roman bold 9']
         position = (
             position[0] + self._columns_position['class'],
@@ -270,7 +272,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
                      self._rows_width['subject'])
         self._image.text_center(subject, position, cell_size, font)
 
-    def _render_kind(self, kind: str, position: Tuple[int, int]) -> None:
+    def _render_kind(self, kind: str, position: tuple[int, int]) -> None:
         font = self._fonts['Arial 6']
         position = (
             position[0] + self._columns_position['class'],
@@ -280,7 +282,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
                      self._rows_width['kind'])
         self._image.text_center(kind, position, cell_size, font)
 
-    def _render_teacher(self, teacher: str, position: Tuple[int, int]) -> None:
+    def _render_teacher(self, teacher: str, position: tuple[int, int]) -> None:
         font = self._fonts['Arial 7']
         position = (
             position[0] + self._columns_position['class'],
@@ -291,7 +293,7 @@ class ScheduleRenderer(ScheduleRendererInterface):
         self._image.text_center(teacher, position, cell_size, font)
 
     def _render_class_room(self, class_room: str,
-                           position: Tuple[int, int]) -> None:
+                           position: tuple[int, int]) -> None:
         font = self._fonts['Arial 8']
         position = (
             position[0] + self._columns_position['class_room'],

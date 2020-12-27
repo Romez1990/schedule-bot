@@ -1,5 +1,3 @@
-from typing import Dict, List
-
 from src.schedule import (
     Schedule,
     DayOfWeek,
@@ -9,8 +7,8 @@ from src.schedule import (
 class ScheduleMetrics:
     def __init__(self, schedule: Schedule):
         self.groups = len(schedule)
-        self._days_length: Dict[DayOfWeek, int] = {}
-        self.days_offsets: Dict[DayOfWeek, int] = {}
+        self._days_length: dict[DayOfWeek, int] = {}
+        self.days_offsets: dict[DayOfWeek, int] = {}
         self._compute_days_metrics(schedule)
         self.entries = sum(self._days_length.values())
 
@@ -32,7 +30,7 @@ class ScheduleMetrics:
                 current_offset += max_day_length
 
     @property
-    def days_of_week(self) -> List[DayOfWeek]:
+    def days_of_week(self) -> list[DayOfWeek]:
         return list(self._days_length.keys())
 
     def __getitem__(self, day: DayOfWeek) -> int:

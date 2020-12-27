@@ -1,8 +1,4 @@
 from asyncio import gather
-from typing import (
-    List,
-    Dict,
-)
 
 from src.schedule import (
     Schedule,
@@ -30,10 +26,10 @@ class UniversityScheduleScraper(UniversityScheduleScraperInterface):
         schedule = Schedule(schedule_dict)
         return self.__schedule_post_processor.process(schedule)
 
-    async def __get_group_schedules(self, groups_and_links: Dict[UniversityGroup, str]) -> Dict[Group, GroupSchedule]:
+    async def __get_group_schedules(self, groups_and_links: dict[UniversityGroup, str]) -> dict[Group, GroupSchedule]:
         groups = [group for group in groups_and_links]
         group_schedule_coroutines = [self.__group_schedule_scraper.get_group_schedule(link)
                                      for group, link in groups_and_links.items()]
-        group_schedules: List[GroupSchedule] = await gather(*group_schedule_coroutines)
+        group_schedules: list[GroupSchedule] = await gather(*group_schedule_coroutines)
         groups_and_group_schedules = zip(groups, group_schedules)
         return {group: group_schedule for group, group_schedule in groups_and_group_schedules}

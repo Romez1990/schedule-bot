@@ -1,16 +1,15 @@
 from io import BytesIO
-from typing import Tuple, List
 from PIL import Image as ImageBase, ImageDraw, ImageFont
 
 
 class Image:
-    def __init__(self, size: Tuple[int, int], text_color: Tuple[int, int, int]):
+    def __init__(self, size: tuple[int, int], text_color: tuple[int, int, int]):
         self._image: ImageBase = ImageBase.new('RGB', size)
         self._draw: ImageDraw = ImageDraw.Draw(self._image)
         self._text_color = text_color
 
-    def rectangle(self, start_position: Tuple[int, int], size: Tuple[int, int],
-                  color: Tuple[int, int, int]) -> None:
+    def rectangle(self, start_position: tuple[int, int], size: tuple[int, int],
+                  color: tuple[int, int, int]) -> None:
         position = [
             start_position,
             (start_position[0] + size[0],
@@ -19,8 +18,8 @@ class Image:
         self._draw.rectangle(position, color)
 
     def rectangle_center(
-            self, cell_position: Tuple[int, int], cell_size: Tuple[int, int],
-            size: Tuple[int, int], color: Tuple[int, int, int]) -> None:
+            self, cell_position: tuple[int, int], cell_size: tuple[int, int],
+            size: tuple[int, int], color: tuple[int, int, int]) -> None:
         position = [
             (cell_position[0] + cell_size[0] / 2 - size[0] / 2,
              cell_position[1] + cell_size[1] / 2 - size[1] / 2),
@@ -29,8 +28,8 @@ class Image:
         ]
         self._draw.rectangle(position, color)
 
-    def text_center(self, text: str, cell_position: Tuple[int, int],
-                    cell_size: Tuple[int, int], font: ImageFont) -> None:
+    def text_center(self, text: str, cell_position: tuple[int, int],
+                    cell_size: tuple[int, int], font: ImageFont) -> None:
         text_size = font.getsize(text)
         text_image = ImageBase.new('RGBA', cell_size)
         text_draw = ImageDraw.Draw(text_image)
@@ -39,8 +38,8 @@ class Image:
         text_draw.text(text_position, text, self._text_color, font)
         self._image.paste(text_image, cell_position, text_image)
 
-    def text_center_rotate(self, text: str, cell_position: Tuple[int, int],
-                           cell_size: Tuple[int, int], font: ImageFont) -> None:
+    def text_center_rotate(self, text: str, cell_position: tuple[int, int],
+                           cell_size: tuple[int, int], font: ImageFont) -> None:
         text_size = font.getsize(text)
         text_image = ImageBase.new('RGBA', (cell_size[1], cell_size[0]))
         text_draw = ImageDraw.Draw(text_image)
@@ -50,8 +49,8 @@ class Image:
         rotated_text_image = text_image.rotate(90, expand=1)
         self._image.paste(rotated_text_image, cell_position, rotated_text_image)
 
-    def text_wrap_center(self, text: str, cell_position: Tuple[int, int],
-                         cell_size: Tuple[int, int], line_height: int,
+    def text_wrap_center(self, text: str, cell_position: tuple[int, int],
+                         cell_size: tuple[int, int], line_height: int,
                          font: ImageFont) -> None:
         lines = self._wrap_text(text, font, cell_size[0])
         text_image = ImageBase.new('RGBA', cell_size)
@@ -69,7 +68,7 @@ class Image:
             current_height += line_height
         self._image.paste(text_image, cell_position, text_image)
 
-    def _wrap_text(self, text: str, font: ImageFont, width: int) -> List[str]:
+    def _wrap_text(self, text: str, font: ImageFont, width: int) -> list[str]:
         words = text.split()
         lines = []
         line = ''

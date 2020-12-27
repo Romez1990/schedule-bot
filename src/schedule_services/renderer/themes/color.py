@@ -1,8 +1,3 @@
-from typing import (
-    Tuple,
-)
-
-
 class Color:
     def __init__(self, red: int, green: int, blue: int) -> None:
         self.__red = red
@@ -21,5 +16,5 @@ class Color:
     def blue(self) -> int:
         return self.__blue
 
-    def to_tuple(self) -> Tuple[int, int, int]:
+    def to_tuple(self) -> tuple[int, int, int]:
         return self.__red, self.__green, self.__blue
