@@ -11,23 +11,23 @@ from src.env.errors import EnvironmentUnreadError
 
 @fixture(autouse=True)
 def setup() -> None:
-    global env, mock_driver
-    mock_driver = Mock()
-    env = UnreadEnvironment(mock_driver)
+    global env, driver
+    driver = Mock()
+    env = UnreadEnvironment(driver)
 
 
 env: UnreadEnvironment
-mock_driver: EnvironmentDriver
+driver: EnvironmentDriver
 
 var_name = 'SOME_VAR'
 
 
 def test_read_calls_driver() -> None:
-    mock_driver.read = Mock()
+    driver.read = Mock()
 
     env.read()
 
-    mock_driver.read.assert_called_once()
+    driver.read.assert_called_once()
 
 
 def test_get_str_raises_error() -> None:
