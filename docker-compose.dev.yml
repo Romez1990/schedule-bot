@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  bot:
+    build:
+      context: .
+    volumes:
+      - .:/bot
+    depends_on:
+      - db
+    entrypoint:
+      - ./entrypoint.sh
+
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    environment:
+      - DB_NAME=schedule_bot
+      - DB_USER=postgres
+      - DB_PASSWORD=0
+      - DB_HOST=db
+      - DB_PORT=5432
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
