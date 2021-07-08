@@ -10,6 +10,14 @@ services:
       - db
     entrypoint:
       - ./entrypoint.sh
+    environment:
+      - POSTGRES_DB_HOST=db
+      - POSTGRES_DB_NAME=schedule_bot
+      - POSTGRES_DB_USER=postgres
+      - POSTGRES_DB_PASSWORD=0
+      - POSTGRES_DB_PORT=5432
+      - POSTGRES_DB_CONNECTION_POOL_SIZE=3
+      - POSTGRES_DB_CONNECTION_RELEASE_TIMEOUT=1
 
   db:
     image: postgres:13-alpine
@@ -18,11 +26,13 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
     environment:
-      - DB_NAME=schedule_bot
-      - DB_USER=postgres
-      - DB_PASSWORD=0
-      - DB_HOST=db
-      - DB_PORT=5432
+      - POSTGRES_DB_NAME=schedule_bot
+      - POSTGRES_DB_USER=postgres
+      - POSTGRES_DB_PASSWORD=0
+      - POSTGRES_DB_HOST=db
+      - POSTGRES_DB_PORT=5432
+      - POSTGRES_DB_CONNECTION_POOL_SIZE=3
+      - POSTGRES_DB_CONNECTION_RELEASE_TIMEOUT=1
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - "5432:5432"
