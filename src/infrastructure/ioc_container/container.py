@@ -27,6 +27,7 @@ from .errors import (
     UselessAdditionalParametersError,
 )
 from .binding_context import BindingContext
+from .module import Module
 
 T = TypeVar('T')
 
@@ -35,6 +36,10 @@ class Container:
     def __init__(self) -> None:
         self.__types: MutableMapping[type, type] = {}
         self.__instances: MutableMapping[type, object] = {}
+
+    def register_module(self, module: Type[Module]) -> None:
+        module_object = module(self)
+        module_object.load()
 
     def bind(self, class_type: type) -> BindingContext:
         def bind_to_base_class(base_class: Optional[type], to_self: bool) -> None:
