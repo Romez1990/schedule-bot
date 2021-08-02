@@ -24,6 +24,7 @@ from .errors import (
     TypeNotFoundError,
     MissingTypeHintError,
     WrongTypeHintError,
+    UselessAdditionalParametersError,
 )
 from .binding_context import BindingContext
 
@@ -65,10 +66,17 @@ class Container:
         self.__instances[base_class] = instance
         return instance
 
-    def __instantiate_type(self, class_type: type) -> T:
+    def create(self, class_type: Type[T], additional_parameters: Mapping[str, object] = None) -> T:
+        return self.__instantiate_type(class_type, additional_parameters)
+
+    def __instantiate_type(self, class_type: type,
+                           additional_parameters_optional: Mapping[str, object] = None) -> T:
+        additional_parameters: Mapping[str, object] = \
+            additional_parameters_optional if additional_parameters_optional is not None else {}
         type_hints = self.__get_constructor_type_hints(class_type)
-        parameter_instances = Dict(type_hints).map(self.__cast_type).map(self.get)
-        instance = class_type(**parameter_instances)
+        required_parameters = self.__subtract_additional_parameters(class_type, type_hints, additional_parameters)
+        parameter_instances = Dict(required_parameters).map(self.__cast_type).map(self.get)
+        instance = class_type(**parameter_instances, **additional_parameters)
         return cast(T, instance)
 
     def __get_constructor_type_hints(self, class_type: type) -> Mapping[str, type]:
@@ -97,6 +105,19 @@ class Container:
         if not isinstance(parameter_type, type):
             raise WrongTypeHintError(name, parameter_type)
         return parameter_type
+
+    def __subtract_additional_parameters(self, class_type: type, type_hints: Mapping[str, type],
+                                         additional_parameters: Mapping[str, object]) -> Mapping[str, type]:
+        additional_parameters_set = set(additional_parameters.keys())
+        new_type_hints = {}
+        for parameter_name in type_hints:
+            if parameter_name not in additional_parameters_set:
+                new_type_hints[parameter_name] = type_hints[parameter_name]
+            else:
+                additional_parameters_set.remove(parameter_name)
+        if len(additional_parameters_set) > 0:
+            raise UselessAdditionalParametersError(class_type, additional_parameters_set)
+        return new_type_hints
 
     def __cast_type(self, type_value: type) -> Type[object]:
         return cast(Type[object], type_value)
