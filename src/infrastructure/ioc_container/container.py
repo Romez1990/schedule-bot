@@ -1,3 +1,4 @@
+from pathlib import Path
 from collections.abc import (
     Sequence,
     Mapping,
@@ -27,6 +28,7 @@ from .errors import (
     UselessAdditionalParametersError,
 )
 from .binding_context import BindingContext
+from .service_scanner import ServiceScanner
 from .module import Module
 
 T = TypeVar('T')
@@ -36,6 +38,10 @@ class Container:
     def __init__(self) -> None:
         self.__types: MutableMapping[type, type] = {}
         self.__instances: MutableMapping[type, object] = {}
+        self.__scanner = ServiceScanner(self)
+
+    def scan_services(self, scan_directory: Path) -> None:
+        self.__scanner.scan(scan_directory)
 
     def register_module(self, module: Type[Module]) -> None:
         module_object = module(self)
