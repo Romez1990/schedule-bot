@@ -10,3 +10,6 @@ class ConfigImpl(Config):
         self.db_name = env.get_str('DB_NAME')
         self.db_user = env.get_str('DB_USER')
         self.db_password = env.get_str('DB_PASSWORD')
+
+        self.telegram_bot_token = env.get_str('TELEGRAM_BOT_TOKEN')
+        self.vk_bot_token = env.get_str('VK_BOT_TOKEN')
