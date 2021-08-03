@@ -12,6 +12,7 @@ lint = "mypy ."
 test = "pytest"
 
 [packages]
+python-dotenv = "*"
 
 [dev-packages]
 mypy = "*"
