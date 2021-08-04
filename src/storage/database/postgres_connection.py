@@ -81,10 +81,12 @@ class PostgresConnection(Connection):
             .map_left(self.__filter_error)
 
     def __filter_error(self, error: Exception) -> DatabaseError:
-        if isinstance(error, PostgresSyntaxError):
-            return QuerySyntaxError(str(error))
-        if isinstance(error, DuplicateTableError):
-            return TableAlreadyExistsError(str(error))
-        if isinstance(error, DuplicateObjectError):
-            return ObjectAlreadyExistsError(str(error))
-        raise error
+        match error:
+            case PostgresSyntaxError():
+                return QuerySyntaxError(str(error))
+            case DuplicateTableError():
+                return TableAlreadyExistsError(str(error))
+            case DuplicateObjectError():
+                return ObjectAlreadyExistsError(str(error))
+            case _:
+                raise error
