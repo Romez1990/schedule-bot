@@ -14,7 +14,7 @@ from .errors import (
 )
 from .database import Database
 from .connection_pool import ConnectionPool
-from .connection import Connection
+from .pool_connection import PoolConnection
 from .data_fetcher import (
     Records,
     Record,
@@ -35,32 +35,32 @@ class DatabaseImpl(Database):
         await self.__connection_pool.destroy()
 
     def execute(self, query: str, *args: object) -> TaskEither[DatabaseError, None]:
-        def perform_query(connection: Connection) -> TaskEither[DatabaseError, None]:
+        def perform_query(connection: PoolConnection) -> TaskEither[DatabaseError, None]:
             return connection.execute(query, *args)
 
         return self.__with_connection(perform_query)
 
     def fetch(self, query: str, *args: object) -> TaskEither[DatabaseError, Records]:
-        def perform_query(connection: Connection) -> TaskEither[DatabaseError, Records]:
+        def perform_query(connection: PoolConnection) -> TaskEither[DatabaseError, Records]:
             return connection.fetch(query, *args)
 
         return self.__with_connection(perform_query)
 
     def fetch_row(self, query: str, *args: object) -> TaskEither[DatabaseError, Maybe[Record]]:
-        def perform_query(connection: Connection) -> TaskEither[DatabaseError, Maybe[Record]]:
+        def perform_query(connection: PoolConnection) -> TaskEither[DatabaseError, Maybe[Record]]:
             return connection.fetch_row(query, *args)
 
         return self.__with_connection(perform_query)
 
     def fetch_value(self, query: str, *args: object, value_type: Type[T]) -> TaskEither[DatabaseError, T]:
-        def perform_query(connection: Connection) -> TaskEither[DatabaseError, object]:
+        def perform_query(connection: PoolConnection) -> TaskEither[DatabaseError, object]:
             return connection.fetch_value(query, *args, value_type=value_type)
 
         return self.__with_connection(perform_query)
 
-    def __with_connection(self, perform_query: Callable[[Connection], TaskEither[DatabaseError, T]],
+    def __with_connection(self, perform_query: Callable[[PoolConnection], TaskEither[DatabaseError, T]],
                           ) -> TaskEither[DatabaseError, T]:
-        def perform_query_and_release(connection: Connection) -> TaskEither[DatabaseError, T]:
+        def perform_query_and_release(connection: PoolConnection) -> TaskEither[DatabaseError, T]:
             def release_connection(result: Either[DatabaseError, T]) -> Either[DatabaseError, T]:
                 self.__connection_pool.release_connection(connection)
                 return result
@@ -68,10 +68,10 @@ class DatabaseImpl(Database):
             return perform_query(connection) \
                 .map_task(release_connection)
 
-        get_connection_task: Task[Either[DatabaseError, Connection]] = Task(self.__connection_pool.get_connection()) \
+        get_connection_task: Task[Either[DatabaseError, PoolConnection]] = Task(self.__connection_pool.get_connection()) \
             .map(Right)
         return TaskEither(get_connection_task) \
             .bind(perform_query_and_release)
 
-    def __right_connection(self, connection: Connection) -> Either[Exception, Connection]:
+    def __right_connection(self, connection: PoolConnection) -> Either[Exception, PoolConnection]:
         return Right(connection)

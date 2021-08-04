@@ -3,7 +3,8 @@ from typing import (
     Awaitable,
 )
 
-from .connection import Connection
+from .pool_connection_context_manager import PoolConnectionContextManager
+from .pool_connection import PoolConnection
 
 
 class ConnectionPool(metaclass=ABCMeta):
@@ -14,7 +15,7 @@ class ConnectionPool(metaclass=ABCMeta):
     def destroy(self) -> Awaitable[None]: ...
 
     @abstractmethod
-    def get_connection(self) -> Awaitable[Connection]: ...
+    def get_connection(self) -> PoolConnectionContextManager: ...
 
     @abstractmethod
-    def release_connection(self, connection: Connection) -> None: ...
+    def release_connection(self, connection: PoolConnection) -> None: ...

@@ -78,7 +78,7 @@ async def test_release_connection__when_get_connection__returns_the_same_connect
     connection_factory.create = Mock(return_value=connection)
 
     result_connection = await connection_pool.get_connection()
-    connection_pool.release_connection(result_connection)
+    result_connection.release()
     result_connection_2 = await connection_pool.get_connection()
 
     assert result_connection_2 is connection
