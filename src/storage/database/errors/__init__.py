@@ -2,3 +2,4 @@ from .database_error import DatabaseError
 from .query_syntax_error import QuerySyntaxError
 from .table_already_exists_error import TableAlreadyExistsError
 from .object_already_exists_error import ObjectAlreadyExistsError
+from .get_connection_timeout_error import GetConnectionTimeoutError
