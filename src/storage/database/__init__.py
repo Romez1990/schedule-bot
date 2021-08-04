@@ -5,6 +5,7 @@ from .errors import (
     ObjectAlreadyExistsError,
     GetConnectionTimeoutError,
 )
+from .database import Database
 from .connection_pool import ConnectionPool
 from .connection_pool_impl import ConnectionPoolImpl
 from .connection import Connection
