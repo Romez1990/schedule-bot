@@ -1,12 +1,10 @@
 from __future__ import annotations
 from functools import reduce
-from collections.abc import (
-    Iterable,
-    Sequence,
-)
+from collections.abc import Sequence
 from typing import (
     Optional,
     Callable,
+    Iterable,
     Type,
     TypeVar,
     overload,

@@ -1,7 +1,7 @@
 from __future__ import annotations
+from collections.abc import Mapping
 from typing import (
     Iterator,
-    Mapping,
     Callable,
     Type,
     TypeVar,
@@ -22,11 +22,11 @@ class Dict(Mapping[K, V]):
     def __iter__(self) -> Iterator[K]:
         return iter(self.__dict)
 
-    def __getitem__(self, key: K) -> V:
-        return self.__dict[key]
-
     def __len__(self) -> int:
         return len(self.__dict)
+
+    def __getitem__(self, key: K) -> V:
+        return self.__dict[key]
 
     def cast(self, new_type: Type[V2]) -> Dict[K, V2]:
         return self.map(cast(new_type))

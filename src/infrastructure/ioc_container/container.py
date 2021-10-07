@@ -1,11 +1,9 @@
 from pathlib import Path
-from collections.abc import (
+from typing import (
+    Optional,
     Sequence,
     Mapping,
     MutableMapping,
-)
-from typing import (
-    Optional,
     Type,
     Callable,
     TypeVar,

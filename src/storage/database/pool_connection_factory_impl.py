@@ -2,12 +2,14 @@ from typing import (
     Callable,
 )
 
+from infrastructure.ioc_container import service
 from .pool_connection_factory import PoolConnectionFactory
 from .manageable_pool_connection import ManageablePoolConnection
 from .connection_factory import ConnectionFactory
 from .pool_connection_impl import PoolConnectionImpl
 
 
+@service
 class PoolConnectionFactoryImpl(PoolConnectionFactory):
     def __init__(self, connection_factory: ConnectionFactory) -> None:
         self.__connection_factory = connection_factory
