@@ -3,7 +3,7 @@ from typing import (
     Awaitable,
 )
 
-from database.entities import (
+from storage.entities import (
     User,
 )
 
