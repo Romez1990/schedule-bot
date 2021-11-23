@@ -80,6 +80,14 @@ class List(Sequence[T]):
             raise ValueError(f'{element} not in list')
         return List(new_list)
 
+    def remove_at(self, index: int) -> List[T]:
+        new_list = self.__list.copy()
+        try:
+            del new_list[index]
+        except IndexError:
+            raise IndexError(f'index {index} is of out range')
+        return List(new_list)
+
     def pop(self, index: int = None) -> tuple[T, List[T]]:
         new_list = self.__list.copy()
         element = new_list.pop() if index is None else new_list.pop(index)
