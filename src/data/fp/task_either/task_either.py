@@ -65,10 +65,10 @@ class TaskEither(Generic[L, R], Awaitable[Either[L, R]]):
         either = await self.__value
         return either if either.is_left else await either.bind(fn)
 
-    def bind_task(self, fn: Callable[[R], Task[R2]]) -> TaskEither[L, R2]:
-        return TaskEither(self.__async_bind_task(fn))
+    def bind_awaitable(self, fn: Callable[[R], Awaitable[R2]]) -> TaskEither[L, R2]:
+        return TaskEither(self.__async_awaitable_task(fn))
 
-    async def __async_bind_task(self, fn: Callable[[R], Task[R2]]) -> Either[L, R2]:
+    async def __async_awaitable_task(self, fn: Callable[[R], Awaitable[R2]]) -> Either[L, R2]:
         either = await self.__value
         return either if either.is_left else Right(await either.bind(fn))
 

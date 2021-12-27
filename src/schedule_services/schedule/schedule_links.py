@@ -4,8 +4,9 @@ from typing import (
 )
 
 from .schedule_base import ScheduleBase
+from .group import Group
 
 
 class ScheduleLinks(ScheduleBase[str]):
-    def __init__(self, week_start: date, week_end: date, group_links: Mapping[str, str]) -> None:
-        super().__init__(week_start, week_end, group_links)
+    def __init__(self, week_start: date, week_end: date, links: Mapping[Group, str]) -> None:
+        super().__init__(week_start, week_end, links)

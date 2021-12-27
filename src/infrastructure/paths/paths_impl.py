@@ -12,5 +12,7 @@ class PathsImpl(Paths):
     def __init__(self) -> None:
         self.project_root = project_root
         self.source_root = source_root
-        self.assets_root = self.project_root / 'assets'
-        self.message_texts_path = self.assets_root / 'message_texts'
+
+        self.assets = self.project_root / 'assets'
+        self.fonts = self.assets / 'fonts'
+        self.message_texts_path = self.assets / 'message_texts'

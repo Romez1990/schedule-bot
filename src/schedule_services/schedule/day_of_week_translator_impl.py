@@ -1,9 +1,11 @@
-from .day_of_week_translator_interface import DayOfWeekTranslatorInterface
+from infrastructure.ioc_container import service
+from .day_of_week_translator import DayOfWeekTranslator
 from .day_of_week import DayOfWeek
 
 
-class DayOfWeekTranslator(DayOfWeekTranslatorInterface):
-    __days_of_week = [
+@service
+class DayOfWeekTranslatorImpl(DayOfWeekTranslator):
+    __days_of_week = (
         'Понедельник',
         'Вторник',
         'Среда',
@@ -11,7 +13,7 @@ class DayOfWeekTranslator(DayOfWeekTranslatorInterface):
         'Пятница',
         'Суббота',
         'Воскресенье',
-    ]
+    )
 
     def translate(self, day_of_week: DayOfWeek) -> str:
         return self.__days_of_week[day_of_week.value]

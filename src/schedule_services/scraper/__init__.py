@@ -1,1 +1,1 @@
-from .schedule_scraper_interface import ScheduleScraperInterface
+from .schedule_scraper import ScheduleScraper

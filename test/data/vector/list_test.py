@@ -70,7 +70,7 @@ def test_add__element__contains_new_element() -> None:
 def test_remove__element__not_contain_element() -> None:
     old_list = List([11, 22, 33])
 
-    new_list = old_list.remove(22)
+    new_list = old_list.remove_unsafe(22)
 
     assert 22 not in new_list
     assert len(new_list) == len(old_list) - 1

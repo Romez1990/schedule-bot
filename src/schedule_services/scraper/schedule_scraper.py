@@ -1,14 +1,12 @@
-from src.schedule import (
-    Schedule,
+from abc import ABCMeta, abstractmethod
+from typing import (
+    Sequence,
 )
-from .schedule_scraper_interface import ScheduleScraperInterface
-from .university_schedule import UniversityScheduleScraperInterface
+
+from data.fp.task_either import TaskEither
+from schedule_services.schedule import Schedule
 
 
-class ScheduleScraper(ScheduleScraperInterface):
-    def __init__(self, university_schedule_scraper: UniversityScheduleScraperInterface) -> None:
-        self.__university_schedule_scraper = university_schedule_scraper
-
-    async def get_schedule(self) -> Schedule:
-        university_schedule = await self.__university_schedule_scraper.get_schedule()
-        return university_schedule
+class ScheduleScraper(metaclass=ABCMeta):
+    @abstractmethod
+    def scrap_schedule(self) -> TaskEither[Exception, Sequence[Schedule]]: ...

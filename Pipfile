@@ -19,6 +19,8 @@ vkwave = "*"
 vkbottle = "*"
 lxml = "*"
 beautifulsoup4 = "*"
+aiohttp = "*"
+pillow = "*"
 
 [dev-packages]
 mypy = "*"

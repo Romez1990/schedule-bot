@@ -1,1 +1,1 @@
-from .university_schedule_scraper_interface import UniversityScheduleScraperInterface
+from .university_schedule_scraper import UniversityScheduleScraper

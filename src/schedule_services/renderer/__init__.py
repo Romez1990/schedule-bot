@@ -1,5 +1,5 @@
 from .themes import (
-    ThemeRepositoryInterface,
+    ThemeRepository,
     Theme,
 )
-from .schedule_renderer_interface import ScheduleRendererInterface
+from .schedule_renderer import ScheduleRenderer

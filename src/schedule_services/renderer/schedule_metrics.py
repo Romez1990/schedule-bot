@@ -1,4 +1,4 @@
-from src.schedule import (
+from schedule_services.schedule import (
     Schedule,
     DayOfWeek,
 )

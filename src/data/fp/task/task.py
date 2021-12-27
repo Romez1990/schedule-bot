@@ -9,6 +9,7 @@ from typing import (
     Callable,
     TypeVar,
     Generic,
+    cast,
 )
 
 from .async_identity import async_identity
@@ -26,9 +27,8 @@ class Task(Generic[T], Awaitable[T]):
         return Task(async_identity(value))
 
     @staticmethod
-    def parallel(tasks: Iterable[Task[T]]) -> Task[list[T]]:
-        return Task(gather(*tasks)) \
-            .map(list)
+    def parallel(tasks: Iterable[Awaitable[T]]) -> Task[list[T]]:
+        return Task(cast(Awaitable[list[T]], gather(*tasks)))
 
     def __await__(self) -> Generator[object, None, T]:
         return self.__value.__await__()

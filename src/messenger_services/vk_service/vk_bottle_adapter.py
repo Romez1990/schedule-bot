@@ -6,7 +6,7 @@ from vkbottle.bot import (
     Bot,
     Message as VkMessage,
 )
-from vkbottle.dispatch.rules.bot import CommandRule
+from vkbottle.dispatch.rules.base import CommandRule
 
 from messenger_services.messenger_service import MessengerAdapter, MessageHandlerParameters, Message, User
 
