@@ -4,6 +4,7 @@ from typing import (
     TYPE_CHECKING,
 )
 
+from data.fp.maybe import Maybe
 from data.vector import List
 from .element import Element
 
@@ -17,7 +18,7 @@ class ElementContainer(metaclass=ABCMeta):
     def children(self) -> List[Element]: ...
 
     @abstractmethod
-    def select(self, selector: str) -> TagElement: ...
+    def select(self, selector: str) -> Maybe[TagElement]: ...
 
     @abstractmethod
     def select_all(self, selector: str) -> List[TagElement]: ...

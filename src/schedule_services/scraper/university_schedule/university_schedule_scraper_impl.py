@@ -34,23 +34,17 @@ class UniversityScheduleScraperImpl(UniversityScheduleScraper):
         return Task.parallel(tasks)
 
     def __get_schedule_from_links_or_raise(self, links: ScheduleLinks) -> Task[Schedule]:
-        return self.__get_schedule_from_links(links)
+        return Task(self.__get_schedule_from_links(links))
 
-    def __get_schedule_from_links(self, links: ScheduleLinks) -> Task[Schedule]:
+    async def __get_schedule_from_links(self, links: ScheduleLinks) -> Schedule:
         week_start = links.week_start
         week_end = links.week_end
         links_dict = dict(links)
-        week_schedules_tasks = List(links_dict.values()) \
-            .map(self.__get_week_schedule)
-
-        def merge_week_schedules(week_schedules: Sequence[WeekSchedule]) -> Schedule:
-            schedule_dict = {group: week_schedule
-                             for group, week_schedule in zip(links_dict.keys(), week_schedules)}
-            schedule = Schedule(week_start, week_end, schedule_dict)
-            return self.__schedule_post_processor.process(schedule)
-
-        return Task.parallel(week_schedules_tasks) \
-            .map(merge_week_schedules)
+        week_schedules_tasks = List(links_dict.values()).map(self.__get_week_schedule)
+        week_schedules = await Task.parallel(week_schedules_tasks)
+        schedule_dict = {group: week_schedule for group, week_schedule in zip(links_dict.keys(), week_schedules)}
+        schedule = Schedule(week_start, week_end, schedule_dict)
+        return self.__schedule_post_processor.process(schedule)
 
     def __get_week_schedule(self, link: str) -> Task[WeekSchedule]:
         return self.__group_schedule_scraper.scrap_week_schedule(link).get_or_raise()

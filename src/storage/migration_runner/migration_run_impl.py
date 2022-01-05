@@ -45,7 +45,7 @@ class MigrationRunImpl(MigrationRun):
 
     def create_relationship(self) -> Task[None]:
         return TaskEither.from_either(self.__create_table_result) \
-            .bind_task(self.__create_relationships) \
+            .bind_awaitable(self.__create_relationships) \
             .match(self.__log_migration_failure, self.__log_migration_success)
 
     def __create_relationships(self, _: None) -> Task[None]:

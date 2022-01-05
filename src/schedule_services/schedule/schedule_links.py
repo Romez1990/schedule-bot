@@ -1,5 +1,6 @@
 from datetime import date
 from typing import (
+    Optional,
     Mapping,
 )
 
@@ -8,5 +9,5 @@ from .group import Group
 
 
 class ScheduleLinks(ScheduleBase[str]):
-    def __init__(self, week_start: date, week_end: date, links: Mapping[Group, str]) -> None:
+    def __init__(self, week_start: Optional[date], week_end: Optional[date], links: Mapping[Group, str]) -> None:
         super().__init__(week_start, week_end, links)

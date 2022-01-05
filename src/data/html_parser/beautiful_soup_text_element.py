@@ -11,7 +11,10 @@ class BeautifulSoupTextElement(TextElement):
 
     @property
     def text(self) -> str:
-        return str(self.__string)
+        return str(self)
 
     def to_html(self) -> str:
+        return str(self)
+
+    def __str__(self) -> str:
         return str(self.__string)

@@ -1,6 +1,7 @@
 from re import compile as compile_regex
 from datetime import date
 from typing import (
+    Optional,
     Sequence,
     Mapping,
 )
@@ -28,7 +29,7 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
         self.__week_start_and_end_regex = compile_regex(r'(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})')
 
     def scrap_schedule_links(self) -> TaskEither[Exception, Sequence[ScheduleLinks]]:
-        return self.__http_client.html('https://viti-mephi.ru/raspisanie') \
+        return self.__http_client.get_text('https://viti-mephi.ru/raspisanie') \
             .map(self.__html_parser.parse) \
             .map(self.__scrap_from_document)
 
@@ -36,27 +37,34 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
         return document.select_all('.node-raspisanie') \
             .map(self.__get_schedule_elements) \
             .filter(self.__is_week_element_valid) \
-            .map(self.__get_schedule_links_)
+            .map(self.__get_schedule_links)
 
     def __get_schedule_elements(self, week_element: TagElement) -> ScheduleLinksElements:
         links_element = week_element.select('.rasp_div')
-        title = week_element.select('h2').text
+        title = week_element.select('h2').get_or_raise().text
         return ScheduleLinksElements(links_element, title)
 
     def __is_week_element_valid(self, schedule_links_elements: ScheduleLinksElements) -> bool:
-        if schedule_links_elements.links_element is None:
+        if schedule_links_elements.links_element.is_nothing:
             return False
-        if 'заочного' in schedule_links_elements.title:
-            return False
+
+        skip_phrases = [
+            'заочного',
+            'сессия',
+        ]
+        for skip_phrase in skip_phrases:
+            if skip_phrase in schedule_links_elements.title:
+                return False
+
         return True
 
-    def __get_schedule_links_(self, schedule_links_elements: ScheduleLinksElements) -> ScheduleLinks:
+    def __get_schedule_links(self, schedule_links_elements: ScheduleLinksElements) -> ScheduleLinks:
         start, end = self.__get_week_start_and_end(schedule_links_elements.title)
-        groups = self.__parse_links_element(schedule_links_elements.links_element)
+        groups = self.__parse_links_element(schedule_links_elements.links_element.get_or_raise())
         return ScheduleLinks(start, end, groups)
 
     def __parse_links_element(self, links_element: TagElement) -> Mapping[Group, str]:
-        return {self.__get_group(link_element): self.__get_link(links_element)
+        return {self.__get_group(link_element): self.__get_link(link_element)
                 for link_element in links_element.select_all('a')}
 
     def __get_group(self, link_element: TagElement) -> Group:
@@ -66,9 +74,12 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
         maybe_link = link_element.get_attribute('href')
         return maybe_link.get_or_raise()
 
-    def __get_week_start_and_end(self, title: str) -> tuple[date, date]:
-        start, end = List(self.__week_start_and_end_regex.findall(title)) \
+    def __get_week_start_and_end(self, title: str) -> tuple[Optional[date], Optional[date]]:
+        dates = List(self.__week_start_and_end_regex.findall(title)) \
             .map(self.__get_date_from_match)
+        if len(dates) != 2:
+            return None, None
+        start, end = dates
         return start, end
 
     def __get_date_from_match(self, match: tuple[str, str, str]) -> date:

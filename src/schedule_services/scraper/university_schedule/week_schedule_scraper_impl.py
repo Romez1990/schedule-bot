@@ -1,3 +1,7 @@
+from typing import (
+    Callable,
+)
+
 from infrastructure.ioc_container import service
 from schedule_services.schedule import (
     WeekSchedule,
@@ -14,6 +18,7 @@ from data.html_parser import (
 )
 from data.fp.task_either import TaskEither
 from data.fp.maybe import Maybe, Some, Nothing
+from data.vector import List
 from .week_schedule_scraper import WeekScheduleScraper
 
 
@@ -24,9 +29,9 @@ class WeekScheduleScraperImpl(WeekScheduleScraper):
         self.__html_parser = html_parser
 
     def scrap_week_schedule(self, link: str) -> TaskEither[Exception, WeekSchedule]:
-        return self.__http_client.html('https://viti-mephi.ru/raspisanie') \
+        return self.__http_client.get_text(link) \
             .map(self.__html_parser.parse) \
-            .map(self.__parse_week_element)
+            .map(self.__scrap_from_document)
 
     def __scrap_from_document(self, document: Document) -> WeekSchedule:
         day_elements = document.select_all('tr')[2:]
@@ -42,7 +47,7 @@ class WeekScheduleScraperImpl(WeekScheduleScraper):
         entry_tag_children = entry_tag.children
         if self.__is_entry_empty(entry_tag):
             return Nothing
-        kind_and_subject, _, teacher_and_class_room = entry_tag_children
+        kind_and_subject, _, teacher_and_class_room, *_ = entry_tag_children
         if not isinstance(kind_and_subject, TextElement) or not isinstance(teacher_and_class_room, TextElement):
             raise ValueError('unexpected children type')
         kind, subject = self.__split_kind_and_subject(kind_and_subject.text)
@@ -64,20 +69,21 @@ class WeekScheduleScraperImpl(WeekScheduleScraper):
     ]
 
     def __split_kind_and_subject(self, kind_and_subject: str) -> tuple[str, str]:
-        result = self.__list_helper.find_first_map(
-            self.__kind_and_subject_splitters, lambda splitter: self.__split_string(kind_and_subject, splitter))
-        if result != Nothing:
-            return result.unwrap()
-        return '', kind_and_subject
+        return List(self.__kind_and_subject_splitters) \
+            .find_first_map(self.__split_string(kind_and_subject)) \
+            .get_or(('', kind_and_subject))
 
-    def __split_string(self, string: str, splitter: str) -> Maybe[tuple[str, str]]:
-        try:
-            split_index = string.index(splitter) + len(splitter)
-        except ValueError:
-            return Nothing
-        first_part = string[:split_index].strip()
-        second_part = string[split_index:].strip()
-        return Some((first_part, second_part))
+    def __split_string(self, string: str) -> Callable[[str], Maybe[tuple[str, str]]]:
+        def split_string(splitter: str) -> Maybe[tuple[str, str]]:
+            try:
+                split_index = string.index(splitter) + len(splitter)
+            except ValueError:
+                return Nothing
+            first_part = string[:split_index].strip()
+            second_part = string[split_index:].strip()
+            return Some((first_part, second_part))
+
+        return split_string
 
     def __split_teacher_and_class_room(self, teacher_and_class_room: str) -> tuple[str, str]:
         split_str = 'а.'

@@ -11,6 +11,7 @@ from typing import (
 )
 
 from data.fp.either import Either, Right, Left
+from data.fp.maybe import Maybe, Nothing
 from data.fp.type import cast
 
 T = TypeVar('T')
@@ -36,7 +37,7 @@ class List(Sequence[T]):
 
     def __getitem__(self, index_or_slice: int | slice) -> T | Sequence[T]:
         result = self.__data[index_or_slice]
-        if not isinstance(result, list):
+        if not isinstance(result, tuple):
             return result
         return List(result)
 
@@ -67,6 +68,13 @@ class List(Sequence[T]):
         if initial is None:
             return reduce(function, self)
         return reduce(function, self, initial)
+
+    def find_first_map(self, function: Callable[[T], Maybe[T2]]) -> Maybe[T2]:
+        for element in self:
+            maybe_result = function(element)
+            if maybe_result.is_some:
+                return maybe_result
+        return Nothing
 
     def add(self, element: T) -> List[T]:
         new_data = list(self.__data)
@@ -101,4 +109,5 @@ class List(Sequence[T]):
         return element, List(new_data)
 
     def __str__(self) -> str:
-        return str(self.__data)
+        elements = ', '.join(map(str, self))
+        return f'List([{elements}])'

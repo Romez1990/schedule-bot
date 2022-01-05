@@ -15,13 +15,13 @@ class ScheduleBase(Mapping[Group, T], Generic[T]):
     def __init__(self, week_start: date, week_end: date, data: Mapping[Group, T]) -> None:
         self.week_end = week_end
         self.week_start = week_start
-        self.__data = data
+        self._data = data
 
     def __iter__(self) -> Iterator[Group]:
-        return iter(self.__data)
+        return iter(self._data)
 
     def __getitem__(self, key: Group) -> T:
-        return self.__data[key]
+        return self._data[key]
 
     def __len__(self) -> int:
-        return len(self.__data)
+        return len(self._data)

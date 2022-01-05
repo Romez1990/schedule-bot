@@ -11,10 +11,10 @@ from .element import Element
 
 class BeautifulSoupDocument(Document, BeautifulSoupElementContainer):
     def __init__(self, html: str) -> None:
-        self.__soup = BeautifulSoup(html, 'lxml')
-        super().__init__(self.__soup)
+        soup = BeautifulSoup(html, 'lxml')
+        super().__init__(soup)
 
     @cached_property
     def children(self) -> List[Element]:
-        body = self.select('body')
+        body = self.select('body').get_or_raise()
         return body.children

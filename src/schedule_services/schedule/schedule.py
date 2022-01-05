@@ -4,7 +4,6 @@ from typing import (
     Optional,
     Callable,
     Iterable,
-    Iterator,
     Mapping,
 )
 
@@ -24,22 +23,37 @@ class Schedule(ScheduleBase[WeekSchedule]):
         super().__init__(week_start, week_end, schedule)
 
     def map(self, func: Callable[[WeekSchedule], WeekSchedule]) -> Schedule:
-        return Schedule({key: func(value) for key, value in self.__group_schedules.items()})
+        return Schedule(self.week_start, self.week_end, {key: func(value) for key, value in self._data.items()})
 
     def filter(self, groups: Iterable[Group], day_of_week: DayOfWeek = None) -> Schedule:
-        group_schedules = List(groups) \
-            .filter(self.__group_exists) \
-            .map(self.__get_group_schedule) \
-            .map(lambda t: (t[0], self.__try_select_day(t[1], day_of_week)))
-        return Schedule({group: group_schedule for group, group_schedule in group_schedules})
+        existing_groups = List(groups).filter(self.__group_exists)
+        week_schedules = existing_groups \
+            .map(self.__get_week_schedule) \
+            .map(self.__try_select_day(day_of_week))
+        schedule_data = {group: group_schedule for group, group_schedule in zip(existing_groups, week_schedules)}
+        return Schedule(self.week_start, self.week_end, schedule_data)
 
     def __group_exists(self, group: Group) -> bool:
-        return group in self.__group_schedules
+        return group in self._data
 
-    def __get_group_schedule(self, group: Group) -> tuple[Group, WeekSchedule]:
-        return group, self.__group_schedules[group]
+    def __get_week_schedule(self, group: Group) -> WeekSchedule:
+        return self._data[group]
 
-    def __try_select_day(self, group_schedule: WeekSchedule, day_of_week: Optional[DayOfWeek]) -> WeekSchedule:
-        return Maybe.from_optional(day_of_week) \
-            .map(lambda day: WeekSchedule(day, {day: group_schedule[day]})) \
-            .get_or(group_schedule)
+    def __try_select_day(self, day_of_week: Optional[DayOfWeek]) -> Callable[[WeekSchedule], WeekSchedule]:
+        def try_select_day(week_schedule: WeekSchedule) -> WeekSchedule:
+            return Maybe.from_optional(day_of_week) \
+                .map(self.__select_day(week_schedule)) \
+                .get_or(week_schedule)
+
+        return try_select_day
+
+    def __select_day(self, week_schedule: WeekSchedule) -> Callable[[DayOfWeek], WeekSchedule]:
+        def select_day(day_of_week: DayOfWeek) -> WeekSchedule:
+            day_schedule_index = day_of_week.value - week_schedule.start_from.value
+            if not (0 <= day_schedule_index < len(week_schedule)):
+                raise RuntimeError(f'there is no {day_of_week} in schedule')
+            day_schedule = week_schedule[day_schedule_index]
+            day_schedules = [day_schedule]
+            return WeekSchedule(day_of_week, day_schedules)
+
+        return select_day

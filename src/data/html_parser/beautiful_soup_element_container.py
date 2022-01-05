@@ -4,6 +4,7 @@ from bs4.element import (
     NavigableString,
 )
 
+from data.fp.maybe import Maybe
 from data.vector import List
 from .element_container import ElementContainer
 from .tag_element import TagElement
@@ -12,15 +13,15 @@ from .beautiful_soup_text_element import BeautifulSoupTextElement
 
 
 class BeautifulSoupElementContainer(ElementContainer, metaclass=ABCMeta):
-    def __init__(self, container: BSElement) -> None:
-        self.__container = container
+    def __init__(self, element: BSElement) -> None:
+        self._element = element
 
-    def select(self, selector: str) -> TagElement:
-        element = self.__container.select_one(selector)
-        return self.__create_beautiful_soup_tag_element(element)
+    def select(self, selector: str) -> Maybe[TagElement]:
+        return Maybe.from_optional(self._element.select_one(selector)) \
+            .map(self.__create_beautiful_soup_tag_element)
 
     def select_all(self, selector: str) -> List[TagElement]:
-        return List(self.__container.select(selector)) \
+        return List(self._element.select(selector)) \
             .map(self.__create_beautiful_soup_tag_element)
 
     def __create_beautiful_soup_tag_element(self, element: BSElement) -> TagElement:
@@ -35,3 +36,6 @@ class BeautifulSoupElementContainer(ElementContainer, metaclass=ABCMeta):
         from .beautiful_soup_tag_element import BeautifulSoupTagElement
 
         return BeautifulSoupTagElement(element)
+
+    def __str__(self) -> str:
+        return str(self._element)
