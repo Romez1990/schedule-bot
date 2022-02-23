@@ -14,6 +14,6 @@ class ScheduleScraperImpl(ScheduleScraper):
     def __init__(self, university_schedule_scraper: UniversityScheduleScraper) -> None:
         self.__university_schedule_scraper = university_schedule_scraper
 
-    def scrap_schedule(self) -> Task[Sequence[Schedule]]:
-        university_schedule = self.__university_schedule_scraper.scrap_schedule()
+    def scrap_schedules(self) -> Task[Sequence[Schedule]]:
+        university_schedule = self.__university_schedule_scraper.scrap_schedules()
         return university_schedule

@@ -2,7 +2,9 @@ from abc import ABCMeta, abstractmethod
 
 from data.fp.task import Task
 from data.fp.task_maybe import TaskMaybe
-from storage.entities import User
+from storage.entities import (
+    User,
+)
 
 
 class UserRepository(metaclass=ABCMeta):

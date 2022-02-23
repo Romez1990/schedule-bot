@@ -13,19 +13,17 @@ from schedule_services.schedule import (
 from .university_schedule_scraper import UniversityScheduleScraper
 from .schedule_links_scraper import ScheduleLinksScraper
 from .week_schedule_scraper import WeekScheduleScraper
-from .schedule_post_processor import SchedulePostProcessor
 
 
 @service
 class UniversityScheduleScraperImpl(UniversityScheduleScraper):
-    def __init__(self, schedule_links_scraper: ScheduleLinksScraper, group_schedule_scraper: WeekScheduleScraper,
-                 schedule_post_processor: SchedulePostProcessor) -> None:
+    def __init__(self, schedule_links_scraper: ScheduleLinksScraper,
+                 group_schedule_scraper: WeekScheduleScraper) -> None:
         self.__schedule_links_scraper = schedule_links_scraper
         self.__group_schedule_scraper = group_schedule_scraper
-        self.__schedule_post_processor = schedule_post_processor
 
-    def scrap_schedule(self) -> Task[Sequence[Schedule]]:
-        return self.__schedule_links_scraper.scrap_schedule_links() \
+    def scrap_schedules(self) -> Task[Sequence[Schedule]]:
+        return self.__schedule_links_scraper.scrap_schedules_links() \
             .get_or_raise() \
             .bind(self.__get_schedules_from_links)
 
@@ -43,8 +41,7 @@ class UniversityScheduleScraperImpl(UniversityScheduleScraper):
         week_schedules_tasks = List(links_dict.values()).map(self.__get_week_schedule)
         week_schedules = await Task.parallel(week_schedules_tasks)
         schedule_dict = {group: week_schedule for group, week_schedule in zip(links_dict.keys(), week_schedules)}
-        schedule = Schedule(week_start, week_end, schedule_dict)
-        return self.__schedule_post_processor.process(schedule)
+        return Schedule(week_start, week_end, schedule_dict)
 
     def __get_week_schedule(self, link: str) -> Task[WeekSchedule]:
         return self.__group_schedule_scraper.scrap_week_schedule(link).get_or_raise()

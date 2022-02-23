@@ -37,7 +37,7 @@ class List(Sequence[T]):
 
     def __getitem__(self, index_or_slice: int | slice) -> T | Sequence[T]:
         result = self.__data[index_or_slice]
-        if not isinstance(result, tuple):
+        if not isinstance(index_or_slice, slice):
             return result
         return List(result)
 
@@ -57,6 +57,10 @@ class List(Sequence[T]):
 
     def filter(self, function: Callable[[T], bool]) -> List[T]:
         return List(filter(function, self))
+
+    def refine(self, new_type: Type[T2], function: Callable[[T], bool]) -> List[T2]:
+        return List(filter(function, self)) \
+            .cast(new_type)
 
     @overload
     def reduce(self, function: Callable[[T, T], T]) -> T: ...

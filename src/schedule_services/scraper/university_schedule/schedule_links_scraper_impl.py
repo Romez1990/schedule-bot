@@ -28,7 +28,7 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
         self.__html_parser = html_parser
         self.__week_start_and_end_regex = compile_regex(r'(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})')
 
-    def scrap_schedule_links(self) -> TaskEither[Exception, Sequence[ScheduleLinks]]:
+    def scrap_schedules_links(self) -> TaskEither[Exception, Sequence[ScheduleLinks]]:
         return self.__http_client.get_text('https://viti-mephi.ru/raspisanie') \
             .map(self.__html_parser.parse) \
             .map(self.__scrap_from_document)

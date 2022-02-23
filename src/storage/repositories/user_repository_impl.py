@@ -1,11 +1,15 @@
 from infrastructure.ioc_container import service
-from storage.database import Record
-from storage.entities import User
 from data.fp.maybe import Maybe
 from data.fp.task import taskify
 from data.fp.task_maybe import task_maybeify
-from .user_repository import UserRepository
+from storage.database import (
+    Record,
+)
+from storage.entities import (
+    User,
+)
 from .repository_base import RepositoryBase
+from .user_repository import UserRepository
 
 
 @service

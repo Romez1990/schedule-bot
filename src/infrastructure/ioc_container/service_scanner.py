@@ -1,6 +1,7 @@
 from __future__ import annotations
 from importlib import import_module
 from pathlib import Path
+from abc import ABCMeta
 from typing import (
     TYPE_CHECKING,
 )
@@ -45,4 +46,7 @@ class ServiceScanner:
                 container.bind(service_parameters.service).to(interface)
 
     def __get_interface(self, service: type) -> type:
-        return service.__bases__[0]
+        interface = service.__bases__[0]
+        if interface.__class__ is not ABCMeta:
+            raise RuntimeError(f'interface "{interface.__name__}" is not abstract class')
+        return interface

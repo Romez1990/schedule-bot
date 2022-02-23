@@ -14,9 +14,7 @@ from types import (
     WrapperDescriptorType,
 )
 
-from data.vector import (
-    Dict,
-)
+from data.vector import Dict
 from .errors import (
     SubclassError,
     TypeAlreadyBoundError,
@@ -78,13 +76,14 @@ class Container:
     def create(self, class_type: Type[T], additional_parameters: Mapping[str, object] = None) -> T:
         return self.__instantiate_type(class_type, additional_parameters)
 
-    def __instantiate_type(self, class_type: type,
-                           additional_parameters_optional: Mapping[str, object] = None) -> T:
+    def __instantiate_type(self, class_type: type, additional_parameters_optional: Mapping[str, object] = None) -> T:
         additional_parameters: Mapping[str, object] = \
             additional_parameters_optional if additional_parameters_optional is not None else {}
         type_hints = self.__get_constructor_type_hints(class_type)
         required_parameters = self.__subtract_additional_parameters(class_type, type_hints, additional_parameters)
-        parameter_instances = Dict(required_parameters).map(self.__cast_type).map(self.get)
+        parameter_instances = Dict(required_parameters) \
+            .map(self.__cast_type) \
+            .map(self.get)
         instance = class_type(**parameter_instances, **additional_parameters)
         return cast(T, instance)
 

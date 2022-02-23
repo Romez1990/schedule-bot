@@ -6,6 +6,7 @@ from infrastructure.ioc_container import service, Container
 from messenger_services.telegram_service import TelegramService
 from messenger_services.vk_service import VkWaveService, VkBottleService
 from data.fp.task import Task
+from data.vector import List
 from .message_handler_registrar import MessageHandlerRegistrar
 from .controller_decorator import messenger_controllers
 from .message_handler_adapter import MessageHandlerAdapter
@@ -37,7 +38,7 @@ class MessageHandlerRegistrarImpl(MessageHandlerRegistrar):
 
     def __create_controllers(self, container: Container
                              ) -> dict[Type[MessengerService], dict[Type[MessengerController], MessengerController]]:
-        controllers = {}
+        controllers: dict[Type[MessengerService], dict[Type[MessengerController], MessengerController]] = {}
         for messenger_service in self.__messenger_services:
             controllers_for_messenger_service = {}
             for controller_class in messenger_controllers:
@@ -57,5 +58,9 @@ class MessageHandlerRegistrarImpl(MessageHandlerRegistrar):
         messenger_service.add_message_handler(parameters, message_handler)
 
     async def start(self) -> None:
-        tasks = [Task(messenger_service.start()) for messenger_service in self.__messenger_services]
+        tasks = List(self.__messenger_services) \
+            .map(self.__start_messenger_service)
         await Task.parallel(tasks)
+
+    def __start_messenger_service(self, messenger_service: MessengerService) -> Task[None]:
+        return Task(messenger_service.start())

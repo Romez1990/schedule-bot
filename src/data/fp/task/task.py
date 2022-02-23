@@ -34,13 +34,13 @@ class Task(Generic[T], Awaitable[T]):
         return self.__value.__await__()
 
     def map(self, fn: Callable[[T], T2]) -> Task[T2]:
-        return Task(self.__async_map(fn))
+        async def async_map() -> T2:
+            return fn(await self.__value)
+
+        return Task(async_map())
 
     def bind(self, fn: Callable[[T], Awaitable[T2]]) -> Task[T2]:
-        return Task(self.__async_bind(fn))
+        async def async_bind() -> T2:
+            return await fn(await self.__value)
 
-    async def __async_map(self, fn: Callable[[T], T2]) -> T2:
-        return fn(await self.__value)
-
-    async def __async_bind(self, fn: Callable[[T], Awaitable[T2]]) -> T2:
-        return await fn(await self.__value)
+        return Task(async_bind())

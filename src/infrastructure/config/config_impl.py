@@ -16,3 +16,5 @@ class ConfigImpl(Config):
 
         self.telegram_bot_token = env.get_str('TELEGRAM_BOT_TOKEN')
         self.vk_bot_token = env.get_str('VK_BOT_TOKEN')
+
+        self.update_checker_interval = env.get_int('UPDATE_CHECKER_INTERVAL')

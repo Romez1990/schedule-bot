@@ -25,52 +25,51 @@ class TaskMaybe(Generic[T], Awaitable[Maybe[T]]):
 
     @staticmethod
     def try_except(awaitable: Awaitable[T], error_type: Type[Exception]) -> TaskMaybe[T]:
-        return TaskMaybe(TaskMaybe.__async_try_except(awaitable, error_type))
+        async def async_try_except() -> Maybe[T]:
+            try:
+                value = await awaitable
+            except Exception as e:
+                if not isinstance(e, error_type):
+                    raise e
+                return Nothing
+            return Some(value)
 
-    @staticmethod
-    async def __async_try_except(awaitable: Awaitable[T], error_type: Type[Exception]) -> Maybe[T]:
-        try:
-            value = await awaitable
-        except Exception as e:
-            if not isinstance(e, error_type):
-                raise e
-            return Nothing
-        return Some(value)
+        return TaskMaybe(async_try_except())
 
     def __await__(self) -> Generator[object, None, Maybe[T]]:
         return self.__value.__await__()
 
     def map(self, fn: Callable[[T], T2]) -> TaskMaybe[T2]:
-        return TaskMaybe(self.__async_map(fn))
+        async def async_map() -> Maybe[T]:
+            return (await self.__value).map(fn)
 
-    async def __async_map(self, fn: Callable[[T], T2]) -> Maybe[T]:
-        return (await self.__value).map(fn)
+        return TaskMaybe(async_map())
 
     def bind(self, fn: Callable[[T], Maybe[T2]]) -> TaskMaybe[T2]:
-        return TaskMaybe(self.__async_bind(fn))
+        async def async_bind() -> Maybe[T2]:
+            maybe = await self.__value
+            value = maybe if maybe.is_nothing else await maybe.bind(fn)
+            return value
 
-    async def __async_bind(self, fn: Callable[[T], Maybe[T2]]) -> Maybe[T2]:
-        maybe = await self.__value
-        value = maybe if maybe.is_nothing else await maybe.bind(fn)
-        return value
+        return TaskMaybe(async_bind())
 
     def get_or(self, value: T) -> Task[T]:
-        return Task(self.__async_get_or(value))
+        async def async_get_or() -> T:
+            return (await self.__value).get_or(value)
 
-    async def __async_get_or(self, value: T) -> T:
-        return (await self.__value).get_or(value)
+        return Task(async_get_or())
 
     def get_or_call(self, fn: Callable[[], T]) -> Task[T]:
-        return Task(self.__async_get_or_call(fn))
+        async def async_get_or_call() -> T:
+            return (await self.__value).get_or_call(fn)
 
-    async def __async_get_or_call(self, fn: Callable[[], T]) -> T:
-        return (await self.__value).get_or_call(fn)
+        return Task(async_get_or_call())
 
     def get_or_raise(self) -> Task[T]:
-        return Task(self.__async_get_or_raise())
+        async def async_get_or_raise() -> T:
+            return (await self.__value).get_or_raise()
 
-    async def __async_get_or_raise(self) -> T:
-        return (await self.__value).get_or_raise()
+        return Task(async_get_or_raise())
 
     def to_maybe(self) -> Task[Maybe[T]]:
         return Task(self.__value)

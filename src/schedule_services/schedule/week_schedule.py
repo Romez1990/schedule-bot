@@ -9,8 +9,8 @@ from .day_schedule import DaySchedule
 
 
 class WeekSchedule(Sequence[DaySchedule]):
-    def __init__(self, start_from: DayOfWeek, day_schedules: Iterable[DaySchedule]) -> None:
-        self.start_from = start_from
+    def __init__(self, starts_from: DayOfWeek, day_schedules: Iterable[DaySchedule]) -> None:
+        self.starts_from = starts_from
         self.__day_schedules = tuple(day_schedules)
 
     def __getitem__(self, index: int) -> DaySchedule:

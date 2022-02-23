@@ -59,7 +59,7 @@ class WeekScheduleScraperImpl(WeekScheduleScraper):
         if len(entry_tag_children) == 0:
             return True
         first_entry_tag_child = entry_tag_children[0]
-        if isinstance(first_entry_tag_child, str) and first_entry_tag_child.strip() == '_':
+        if isinstance(first_entry_tag_child, TextElement) and first_entry_tag_child.text.strip() == '_':
             return True
         return False
 

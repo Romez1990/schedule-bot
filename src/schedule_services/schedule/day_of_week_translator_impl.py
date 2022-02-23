@@ -16,4 +16,5 @@ class DayOfWeekTranslatorImpl(DayOfWeekTranslator):
     )
 
     def translate(self, day_of_week: DayOfWeek) -> str:
-        return self.__days_of_week[day_of_week.value]
+        day_index = day_of_week.value - 1
+        return self.__days_of_week[day_index]

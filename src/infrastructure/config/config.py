@@ -12,3 +12,5 @@ class Config(metaclass=ABCMeta):
 
     telegram_bot_token: str
     vk_bot_token: str
+
+    update_checker_interval: int

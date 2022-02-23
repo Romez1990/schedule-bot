@@ -43,17 +43,17 @@ class ConnectionPoolImpl(ConnectionPool):
             await connection.close()
 
     def get_connection(self) -> PoolConnectionContextManager:
-        return PoolConnectionContextManager(self.__async_get_connection())
+        async def async_get_connection() -> PoolConnection:
+            await self.__get_connection_lock.acquire()
+            unused_is_empty = len(self.__unused_connections) == 0
+            if unused_is_empty and len(self.__used_connections) < self.__max_size:
+                return await self.__create_connection()
+            if unused_is_empty and len(self.__used_connections) == self.__max_size:
+                self.__get_connection_lock.release()
+                return await self.__wait_for_connection()
+            return self.__get_unused_connection()
 
-    async def __async_get_connection(self) -> PoolConnection:
-        await self.__get_connection_lock.acquire()
-        unused_is_empty = len(self.__unused_connections) == 0
-        if unused_is_empty and len(self.__used_connections) < self.__max_size:
-            return await self.__create_connection()
-        if unused_is_empty and len(self.__used_connections) == self.__max_size:
-            self.__get_connection_lock.release()
-            return await self.__wait_for_connection()
-        return self.__get_unused_connection()
+        return PoolConnectionContextManager(async_get_connection())
 
     def __get_unused_connection(self) -> PoolConnection:
         connection = self.__unused_connections.pop()

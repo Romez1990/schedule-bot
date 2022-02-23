@@ -74,6 +74,7 @@ class PostgresConnection(Connection):
             .map(cast(value_type))
 
     def __record_to_dict(self, record: AsyncpgRecord) -> Record:
+        # return record
         return dict(record)
 
     def __except_error(self, coroutine: Coroutine[object, object, T]) -> TaskEither[DatabaseError, T]:

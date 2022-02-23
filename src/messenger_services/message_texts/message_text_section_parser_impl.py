@@ -1,5 +1,7 @@
 from typing import (
-    NoReturn, )
+    Callable,
+    NoReturn,
+)
 
 from data.html_parser import (
     HtmlParser,
@@ -16,29 +18,31 @@ class MessageTextSectionParserImpl(MessageTextSectionParser):
     def __init__(self, html_parser: HtmlParser) -> None:
         self.__html_parser = html_parser
 
-    __section: MessageTextSection
-
     def get_message_text_elements(self, section: MessageTextSection) -> dict[str, List[Element]]:
-        self.__section = section
-        document = self.__html_parser.parse(self.__section.content)
+        document = self.__html_parser.parse(section.content)
         message_text_elements = document.children \
-            .refine(TagElement, self.__is_message_text_element)
-        return {self.__get_message_text_name(element): self.__get_message_text(element)
+            .refine(TagElement, self.__is_message_text_element_or_raise(section))
+        return {self.__get_message_text_name(section, element): self.__get_message_text(element)
                 for element in message_text_elements}
 
-    def __is_message_text_element(self, element: Element) -> bool:
-        if isinstance(element, TextElement):
-            if not element.text.isspace():
-                raise Exception(f'in section {self.__section.name} there must be no text outside div blocks')
-            return False
-        return True
+    def __is_message_text_element_or_raise(self, section: MessageTextSection) -> Callable[[Element], bool]:
+        def is_message_text_element(element: Element) -> bool:
+            if isinstance(element, TextElement):
+                if not element.text.isspace():
+                    raise Exception(f'in section {section.name} there must be no text outside div blocks')
+                return False
+            if isinstance(element, TagElement):
+                return True
+            raise Exception(f'unexpected type {type(element)}')
 
-    def __get_message_text_name(self, element: TagElement) -> str:
+        return is_message_text_element
+
+    def __get_message_text_name(self, section: MessageTextSection, element: TagElement) -> str:
         if element.name != 'div':
-            raise Exception(f'in section {self.__section.name} message text element must be div element')
+            raise Exception(f'in section {section.name} message text element must be div element')
 
         def raise_no_name_error() -> NoReturn:
-            raise Exception(f'in section {self.__section.name} no id attribute for message text div')
+            raise Exception(f'in section {section.name} no id attribute for message text div')
 
         return element.get_attribute('id').get_or_call(raise_no_name_error)
 
