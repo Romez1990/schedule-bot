@@ -4,9 +4,8 @@ from asyncio import (
     TimeoutError,
     wait_for,
 )
-from collections import deque
+from queue import Queue
 from typing import (
-    MutableSequence,
     cast,
 )
 
@@ -31,7 +30,7 @@ class ConnectionPoolImpl(ConnectionPool):
         self.__get_connection_timeout = config.db_connection_pool_timeout
         self.__used_connections: list[ManageablePoolConnection] = []
         self.__unused_connections: list[ManageablePoolConnection] = []
-        self.__waiting_queue: deque[Future[PoolConnection]] = deque()
+        self.__connection_waiters: Queue[Future[PoolConnection]] = Queue()
         self.__get_connection_lock = Lock()
 
     async def init(self) -> None:
@@ -64,8 +63,7 @@ class ConnectionPoolImpl(ConnectionPool):
     async def __create_connection(self) -> PoolConnection:
         return await self.__create_connection_and_add_to(self.__used_connections)
 
-    async def __create_connection_and_add_to(self,
-                                             collection: MutableSequence[ManageablePoolConnection]) -> PoolConnection:
+    async def __create_connection_and_add_to(self, collection: list[ManageablePoolConnection]) -> PoolConnection:
         def release_connection() -> None:
             self.release_connection(connection)
 
@@ -78,7 +76,7 @@ class ConnectionPoolImpl(ConnectionPool):
 
     async def __wait_for_connection(self) -> PoolConnection:
         future: Future[PoolConnection] = Future()
-        self.__waiting_queue.append(future)
+        self.__connection_waiters.put(future)
         try:
             connection = await wait_for(future, self.__get_connection_timeout)
         except TimeoutError:
@@ -86,17 +84,17 @@ class ConnectionPoolImpl(ConnectionPool):
         return connection
 
     def release_connection(self, connection: PoolConnection) -> None:
-        def get_from_queue() -> Future[PoolConnection]:
-            return self.__waiting_queue.popleft()
+        def get_connection_waiter() -> Future[PoolConnection]:
+            return self.__connection_waiters.get()
 
-        def pass_connection(waiting: Future[PoolConnection]) -> None:
+        def pass_connection(connection_waiter: Future[PoolConnection]) -> None:
             # is doesn't move from used_connections to unused_connections because connection is passed to another use
-            waiting.set_result(connection)
+            connection_waiter.set_result(connection)
 
         def release_connection() -> None:
             manageable_pool_connection = cast(ManageablePoolConnection, connection)
             self.__used_connections.remove(manageable_pool_connection)
             self.__unused_connections.append(manageable_pool_connection)
 
-        Maybe.try_except(get_from_queue, IndexError) \
+        Maybe.try_except(get_connection_waiter, IndexError) \
             .match(release_connection, pass_connection)
