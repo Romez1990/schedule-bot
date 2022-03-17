@@ -9,5 +9,5 @@ from .group import Group
 
 
 class Schedule(ScheduleBase[WeekSchedule]):
-    def __init__(self, week_start: date, week_end: date, schedule: Mapping[Group, WeekSchedule]) -> None:
-        super().__init__(week_start, week_end, schedule)
+    def __init__(self, week_start: date, schedule: Mapping[Group, WeekSchedule]) -> None:
+        super().__init__(week_start, schedule)
