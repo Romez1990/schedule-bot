@@ -64,8 +64,8 @@ class ConnectionPoolImpl(ConnectionPool):
     async def __create_connection(self) -> PoolConnection:
         return await self.__create_connection_and_add_to(self.__used_connections)
 
-    async def __create_connection_and_add_to(self, collection: MutableSequence[ManageablePoolConnection],
-                                             ) -> PoolConnection:
+    async def __create_connection_and_add_to(self,
+                                             collection: MutableSequence[ManageablePoolConnection]) -> PoolConnection:
         def release_connection() -> None:
             self.release_connection(connection)
 
@@ -86,16 +86,17 @@ class ConnectionPoolImpl(ConnectionPool):
         return connection
 
     def release_connection(self, connection: PoolConnection) -> None:
-        def get_waiting() -> Future[PoolConnection]:
+        def get_from_queue() -> Future[PoolConnection]:
             return self.__waiting_queue.popleft()
 
         def pass_connection(waiting: Future[PoolConnection]) -> None:
-            # is doesn't move from used_connections to unused_connections cause connection is passed to another use
+            # is doesn't move from used_connections to unused_connections because connection is passed to another use
             waiting.set_result(connection)
 
         def release_connection() -> None:
-            self.__used_connections.remove(cast(ManageablePoolConnection, connection))
-            self.__unused_connections.append(cast(ManageablePoolConnection, connection))
+            manageable_pool_connection = cast(ManageablePoolConnection, connection)
+            self.__used_connections.remove(manageable_pool_connection)
+            self.__unused_connections.append(manageable_pool_connection)
 
-        Maybe.try_except(get_waiting, IndexError) \
+        Maybe.try_except(get_from_queue, IndexError) \
             .match(release_connection, pass_connection)

@@ -23,5 +23,5 @@ def lazy_reduce(function: Callable[[B, Callable[[], A]], B], lazy_list: List[Cal
 def lazy_reduce(function: Callable, lazy_list: List[Callable[[], A]], initial: B = None) -> A | B:
     if initial is not None:
         return reduce(function, lazy_list, initial)
-    head, tail = lazy_list.pop(0)
+    head, tail = lazy_list.pop_unsafe(0)
     return reduce(function, tail, head())

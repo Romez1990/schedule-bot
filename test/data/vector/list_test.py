@@ -65,21 +65,3 @@ def test_add__element__contains_new_element() -> None:
     assert 44 in new_list
     assert list(new_list).index(44) == 3
     assert len(new_list) == len(old_list) + 1
-
-
-def test_remove__element__not_contain_element() -> None:
-    old_list = List([11, 22, 33])
-
-    new_list = old_list.remove_unsafe(22)
-
-    assert 22 not in new_list
-    assert len(new_list) == len(old_list) - 1
-
-
-def test_remove__not_existing_element__returns_same_list() -> None:
-    old_list = List([11, 22, 33])
-
-    with raises(ValueError) as e:
-        old_list.remove(99)
-
-    assert str(e.value) == '99 not in list'

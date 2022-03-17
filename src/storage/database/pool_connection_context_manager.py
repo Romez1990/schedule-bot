@@ -1,9 +1,11 @@
+from abc import abstractmethod
 from types import (
     TracebackType,
 )
 from typing import (
     Optional,
     Awaitable,
+    Coroutine,
     Generator,
     Type,
 )
@@ -11,17 +13,32 @@ from typing import (
 from .pool_connection import PoolConnection
 
 
-class PoolConnectionContextManager:
-    def __init__(self, awaitable: Awaitable[PoolConnection]) -> None:
-        self.__awaitable = awaitable
+class PoolConnectionContextManager(Coroutine[object, None, PoolConnection]):
+    def __init__(self, coroutine: Coroutine[object, None, PoolConnection]) -> None:
+        self.__coroutine = coroutine
+        super().__init__()
 
     def __await__(self) -> Generator[object, None, PoolConnection]:
-        return self.__awaitable.__await__()
+        return self.__coroutine.__await__()
+
+    def send(self, value: None) -> object:
+        res = self.__coroutine.send(value)
+        return res
+
+    def throw(self, __typ: Type[BaseException], __val: BaseException | object = ...,
+              __tb: Optional[TracebackType] = ...) -> object:
+        self.__coroutine.throw(__typ, __val, __tb)
+
+    def close(self) -> None:
+        return self.__coroutine.close()
+
+    # def __iter__(self) -> Generator[object, None, PoolConnection]:
+    #     return self.__await__()
 
     __connection: PoolConnection
 
     async def __aenter__(self) -> PoolConnection:
-        self.__connection = await self.__awaitable
+        self.__connection = await self.__coroutine
         return self.__connection
 
     async def __aexit__(self, exception_type: Optional[Type[Exception]], exception: Optional[Exception],

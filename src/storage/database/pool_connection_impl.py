@@ -22,15 +22,19 @@ class PoolConnectionImpl(ManageablePoolConnection):
     def __init__(self, connection: Connection, on_released: Callable[[], None]) -> None:
         self.__connection = connection
         self.__on_released = on_released
-        self.__released = True
+        self.__is_acquired = True
 
     def __del__(self) -> None:
-        if self.__released:
+        if not self.__is_acquired:
             raise RuntimeError('connection was not released')
+
+    def acquire(self) -> None:
+        self.__check_if_acquired()
+        self.__is_acquired = True
 
     def release(self) -> None:
         self.__check_if_released()
-        self.__released = True
+        self.__is_acquired = False
         self.__on_released()
 
     def open(self) -> Awaitable[None]:
@@ -55,6 +59,10 @@ class PoolConnectionImpl(ManageablePoolConnection):
         self.__check_if_released()
         return self.__connection.fetch_value(query, *args, value_type=value_type)
 
+    def __check_if_acquired(self) -> None:
+        if self.__is_acquired:
+            raise RuntimeError('connection is already acquired')
+
     def __check_if_released(self) -> None:
-        if self.__released:
+        if not self.__is_acquired:
             raise RuntimeError('connection is already released')

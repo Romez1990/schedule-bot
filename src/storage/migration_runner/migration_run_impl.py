@@ -69,4 +69,4 @@ class MigrationRunImpl(MigrationRun):
         self.__logger.info(f'Migration {migration_name} applied')
 
     def __log_migration_failure(self, error: MigrationTableAlreadyExistsError) -> None:
-        self.__logger.info(str(error))
+        self.__logger.error(str(error))

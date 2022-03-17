@@ -22,7 +22,7 @@ class List(Sequence[T]):
     def __init__(self, iterable: Iterable[T] = None) -> None:
         self.__data = self.__create_list(iterable)
 
-    def __create_list(self, iterable: Optional[Iterable[T]]) -> tuple[T]:
+    def __create_list(self, iterable: Optional[Iterable[T]]) -> tuple[T, ...]:
         if iterable is None:
             return tuple()
         if isinstance(iterable, List):
@@ -81,36 +81,31 @@ class List(Sequence[T]):
         return Nothing
 
     def add(self, element: T) -> List[T]:
-        new_data = list(self.__data)
-        new_data.append(element)
+        new_data = self.__data + (element,)
         return List(new_data)
 
-    def remove(self, element: T) -> Either[ValueError, List[T]]:
-        new_data = list(self.__data)
-        try:
-            new_data.remove(element)
-        except ValueError:
-            return Left(ValueError(f'{element} not in list'))
-        return Right(List(new_data))
-
-    def remove_unsafe(self, element: T) -> List[T]:
-        return self.remove(element).get_or_raise()
-
-    def remove_at(self, index: int) -> Either[IndexError, List[T]]:
-        new_data = list(self.__data)
-        try:
-            del new_data[index]
-        except IndexError:
+    def delete_at(self, index: int) -> Either[IndexError, List[T]]:
+        if index >= len(self.__data) or index < -len(self.__data):
             return Left(IndexError(f'index {index} is of out range'))
+        normalized_index = index if index >= 0 else len(self.__data) + index
+        new_data = (element for element_index, element in enumerate(self.__data) if element_index != normalized_index)
         return Right(List(new_data))
 
-    def remove_at_unsafe(self, index: int) -> List[T]:
-        return self.remove_at(index).get_or_raise()
+    def delete_at_unsafe(self, index: int) -> List[T]:
+        return self.delete_at(index).get_or_raise()
 
-    def pop(self, index: int = None) -> tuple[T, List[T]]:
-        new_data = list(self.__data)
-        element = new_data.pop() if index is None else new_data.pop(index)
-        return element, List(new_data)
+    def pop(self, index: int = None) -> Either[IndexError, tuple[T, List[T]]]:
+        if len(self.__data) == 0:
+            return Left(IndexError('list is empty'))
+        if index is not None and (index >= len(self.__data) or index < -len(self.__data)):
+            return Left(IndexError(f'index {index} is of out range'))
+        normalized_index = index if index is not None else -1
+        element = self.__data[normalized_index]
+        new_list = self.delete_at_unsafe(normalized_index)
+        return Right((element, new_list))
+
+    def pop_unsafe(self, index: int = None) -> tuple[T, List[T]]:
+        return self.pop(index).get_or_raise()
 
     def __str__(self) -> str:
         elements = ', '.join(map(str, self))
