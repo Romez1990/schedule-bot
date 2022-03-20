@@ -53,6 +53,19 @@ class TaskMaybe(Generic[T], Awaitable[Maybe[T]]):
 
         return TaskMaybe(async_bind())
 
+    def match(self, on_nothing: Callable[[], T2], on_some: Callable[[T], T2]) -> Task[T2]:
+        async def match() -> T2:
+            return (await self.__value).match(on_nothing, on_some)
+
+        return Task(match())
+
+    def match_awaitable(self, on_nothing: Callable[[], Awaitable[T2]],
+                        on_some: Callable[[T], Awaitable[T2]]) -> Task[T2]:
+        async def match() -> T2:
+            return await (await self.__value).match(on_nothing, on_some)
+
+        return Task(match())
+
     def get_or(self, value: T) -> Task[T]:
         async def async_get_or() -> T:
             return (await self.__value).get_or(value)
