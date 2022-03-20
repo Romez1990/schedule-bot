@@ -97,7 +97,7 @@ class ScheduleRendererImpl(ScheduleRenderer):
         font_path = self.__paths.fonts / filename
         return ImageFont.truetype(str(font_path), self._scale * font_size)
 
-    def render(self, schedule: Schedule, theme_name: str) -> BytesIO:
+    def render(self, schedule: Schedule, theme_name: str) -> bytes:
         self._set_theme(theme_name)
         self._create_image(schedule)
         self._render_sidebar()
@@ -286,5 +286,5 @@ class ScheduleRendererImpl(ScheduleRenderer):
         _, line_height = font.getsize(class_room)
         self._image.text_wrap_center(class_room, position, cell_size, line_height, font)
 
-    def _get_image_bytes(self) -> BytesIO:
+    def _get_image_bytes(self) -> bytes:
         return self._image.get_bytes()

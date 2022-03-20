@@ -35,7 +35,7 @@ class RenderMyGroupScript(AsyncScript):
             self.save(dark_schedule, 'dark.jpg')
             self.logger.info('Schedule saved')
 
-    def save(self, image_bytes: BytesIO, filename: str) -> None:
+    def save(self, image_bytes: bytes, filename: str) -> None:
         scripts_path = Path(__file__).parent
         with open(scripts_path / filename, 'wb') as file:
-            file.write(image_bytes.read())
+            file.write(image_bytes)

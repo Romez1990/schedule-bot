@@ -85,8 +85,8 @@ class Image:
             lines.append(line)
         return lines
 
-    def get_bytes(self) -> BytesIO:
+    def get_bytes(self) -> bytes:
         bytes_io = BytesIO()
         self._image.save(bytes_io, 'JPEG')
         bytes_io.seek(0)
-        return bytes_io
+        return bytes_io.getvalue()
