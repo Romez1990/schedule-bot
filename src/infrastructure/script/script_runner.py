@@ -1,4 +1,4 @@
-from asyncio import get_event_loop
+from asyncio import get_event_loop, set_event_loop_policy, WindowsSelectorEventLoopPolicy
 from typing import (
     Type,
 )
@@ -39,5 +39,7 @@ class ScriptRunner:
         script.run()
 
     def __run_async_script(self, script: AsyncScript) -> None:
+        policy = WindowsSelectorEventLoopPolicy()
+        set_event_loop_policy(policy)
         event_loop = get_event_loop()
         event_loop.run_until_complete(script.run())
