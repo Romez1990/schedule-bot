@@ -20,13 +20,12 @@ from .message_handler_decorator import message_handler_parameters
 
 @service
 class MessageHandlerRegistrarImpl(MessageHandlerRegistrar):
-    def __init__(self, message_handler_adapter: MessageHandlerAdapter, telegram: TelegramService,
-                 vk_wave: VkWaveService, vk_bottle: VkBottleService) -> None:
+    def __init__(self, message_handler_adapter: MessageHandlerAdapter, telegram: TelegramService) -> None:
         self.__message_handler_adapter = message_handler_adapter
         self.__messenger_services: list[MessengerService] = [
             telegram,
-            vk_wave,
-            vk_bottle,
+            # vk_wave,
+            # vk_bottle,
         ]
 
     def register(self, container: Container) -> None:

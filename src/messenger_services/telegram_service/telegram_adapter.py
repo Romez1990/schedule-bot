@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import (
     Callable,
     Awaitable,
@@ -21,8 +22,14 @@ class TelegramAdapter(MessengerAdapter[TelegramMessage]):
         self.__bot = bot
         self.__dispatcher = dispatcher
 
-    async def send_message(self, user: User, text: str) -> None:
-        await self.__bot.send_message(user.chat_id, text)
+    async def send_message(self, user: User, text: str, keyboard=None) -> None:
+        await self.__bot.send_message(user.chat_id, text, reply_markup=keyboard)
+
+    async def send_image(self, user: User, image_bytes: bytes) -> None:
+        bytes_io = BytesIO()
+        bytes_io.write(image_bytes)
+        bytes_io.seek(0)
+        await self.__bot.send_photo(user.chat_id, bytes_io)
 
     def map_message(self, message: TelegramMessage) -> Message:
         user = self.__map_user(message.chat)

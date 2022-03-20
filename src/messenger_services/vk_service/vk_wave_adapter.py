@@ -16,8 +16,11 @@ class VkWaveAdapter(MessengerAdapter[SimpleUserEvent]):
         self.__bot = bot
         self.__api_context = self.__bot.api_context
 
-    async def send_message(self, user: User, text: str) -> None:
+    async def send_message(self, user: User, text: str, keyboard=None) -> None:
         await self.__api_context.messages.send(peer_id=user.chat_id, message=text, random_id=0)
+
+    async def send_image(self, user: User, image_bytes: bytes) -> None:
+        raise RuntimeError
 
     def map_message(self, message: SimpleUserEvent) -> Message:
         event = message.object.object
