@@ -59,9 +59,10 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
         return True
 
     def __get_schedule_links(self, schedule_links_elements: ScheduleLinksElements) -> ScheduleLinks:
+        # remove end
         start, end = self.__get_week_start_and_end(schedule_links_elements.title)
         groups = self.__parse_links_element(schedule_links_elements.links_element.get_or_raise())
-        return ScheduleLinks(start, end, groups)
+        return ScheduleLinks(start, groups)
 
     def __parse_links_element(self, links_element: TagElement) -> Mapping[Group, str]:
         return {self.__get_group(link_element): self.__get_link(link_element)
