@@ -1,10 +1,5 @@
-from abc import ABCMeta, abstractmethod
-from typing import (
-    NoReturn,
-    Awaitable,
-)
+from abc import ABCMeta
 
 
 class UpdateChecker(metaclass=ABCMeta):
-    @abstractmethod
-    def start(self) -> Awaitable[NoReturn]: ...
+    pass

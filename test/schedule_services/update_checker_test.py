@@ -10,9 +10,8 @@ from pytest import (
 from unittest.mock import Mock
 
 from data.fp.maybe import Some, Nothing
-from data.fp.task import async_identity
+from data.fp.task_maybe import TaskNothing
 from data.serializers import BytesSerializerImpl
-from data.hashing import Md5HashingImpl
 from schedule_services.schedule import (
     Schedule,
     Group,
@@ -23,50 +22,48 @@ from schedule_services.schedule import (
 )
 from schedule_services.update_checker import (
     UpdateCheckerImpl,
-    ScheduleFetcherFactory,
     ScheduleFetcher,
+    ScheduleHashing,
+    ScheduleHashStorage,
 )
 
 
 @fixture(autouse=True)
 def setup() -> None:
-    global update_checker, schedule_fetcher, bytes_serializer, md5_hashing, on_schedules_changed
+    global update_checker, schedule_fetcher, schedule_hashing, schedule_hash_storage, on_schedules_changed
     schedule_fetcher = Mock()
-    schedule_fetcher_factory: ScheduleFetcherFactory = Mock()
 
-    def create_schedule_fetcher(on_schedules_fetched: Callable[[Sequence[Schedule]], None]) -> ScheduleFetcher:
+    def create_schedule_fetcher(on_schedules_fetched: Callable[[Sequence[Schedule]], None]) -> None:
         global schedules_fetched
         schedules_fetched = on_schedules_fetched
-        return schedule_fetcher
 
-    schedule_fetcher_factory.create = create_schedule_fetcher
-    bytes_serializer = BytesSerializerImpl()
-    md5_hashing = Md5HashingImpl()
+    schedule_fetcher.subscribe_for_updates = create_schedule_fetcher
+    schedule_hashing = Mock()
+    schedule_hash_storage = Mock()
     on_schedules_changed = Mock()
-    update_checker = UpdateCheckerImpl(schedule_fetcher_factory, bytes_serializer, md5_hashing, on_schedules_changed)
+    update_checker = UpdateCheckerImpl(schedule_fetcher, schedule_hashing, schedule_hash_storage, on_schedules_changed)
 
 
 update_checker: UpdateCheckerImpl
 schedules_fetched: Callable[[Sequence[Schedule]], None]
 schedule_fetcher: ScheduleFetcher
-bytes_serializer: BytesSerializerImpl
-md5_hashing: Md5HashingImpl
+schedule_hashing: ScheduleHashing
+schedule_hash_storage: ScheduleHashStorage
 on_schedules_changed: Callable[[Schedule, list[Group]], None]
 
 
 @mark.asyncio
-async def test_start__calls_schedule_fetcher_start() -> None:
-    schedule_fetcher.start = Mock(return_value=async_identity(None))
+async def test_schedule_fetched__saves_hash_to_storage__when_no_hash_found_in_storage() -> None:
+    schedule_hash = 123
+    schedule_hashing.hash = Mock(return_value=schedule_hash)
+    schedule_hash_storage.get_hash_by_date = Mock(return_value=TaskNothing())
+    schedule_hash_storage.save = Mock()
 
-    await update_checker.start()
-
-    schedule_fetcher.start.assert_called_once_with()
-
-
-@mark.asyncio
-async def test_() -> None:
     schedules_fetched([schedule])
-    schedules_fetched([schedule_2])
+
+    schedule_hashing.hash.assert_called_once_with(schedule)
+    schedule_hash_storage.get_hash_by_date.assert_called_once_with(schedule.week_start)
+    schedule_hash_storage.save.assert_called_once_with(schedule.week_start, schedule_hash)
 
 
 schedule = Schedule(date(2022, 3, 14), {

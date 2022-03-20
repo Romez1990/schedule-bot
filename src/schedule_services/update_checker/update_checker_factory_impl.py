@@ -1,6 +1,5 @@
 from typing import (
-    NoReturn,
-    Awaitable,
+    Sequence,
     Callable,
 )
 
@@ -10,15 +9,15 @@ from schedule_services.schedule import (
     Group,
 )
 from .update_checker_factory import UpdateCheckerFactory
-from .schedule_fetcher_factory import ScheduleFetcherFactory
+from .schedule_fetcher import ScheduleFetcher
 from .update_checker import UpdateChecker
 from .update_checker_impl import UpdateCheckerImpl
 
 
 @service
 class UpdateCheckerFactoryImpl(UpdateCheckerFactory):
-    def __init__(self, schedule_fetcher_factory: ScheduleFetcherFactory) -> None:
-        self.__schedule_fetcher_factory = schedule_fetcher_factory
+    def __init__(self, schedule_fetcher: ScheduleFetcher) -> None:
+        self.__schedule_fetcher = schedule_fetcher
 
-    def create(self, on_schedules_changed: Callable[[Schedule, list[Group]], None]) -> UpdateChecker:
-        return UpdateCheckerImpl(self.__schedule_fetcher_factory, on_schedules_changed)
+    def create(self, on_schedules_changed: Callable[[Schedule, Sequence[Group]], None]) -> UpdateChecker:
+        return UpdateCheckerImpl(self.__schedule_fetcher, on_schedules_changed)
