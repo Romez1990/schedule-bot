@@ -1,10 +1,8 @@
-from abc import abstractmethod
 from types import (
     TracebackType,
 )
 from typing import (
     Optional,
-    Awaitable,
     Coroutine,
     Generator,
     Type,
@@ -31,9 +29,6 @@ class PoolConnectionContextManager(Coroutine[object, None, PoolConnection]):
 
     def close(self) -> None:
         return self.__coroutine.close()
-
-    # def __iter__(self) -> Generator[object, None, PoolConnection]:
-    #     return self.__await__()
 
     __connection: PoolConnection
 
