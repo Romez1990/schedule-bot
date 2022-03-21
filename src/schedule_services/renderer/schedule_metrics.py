@@ -61,10 +61,10 @@ class ScheduleMetrics:
 
     def __get_day_length_from_week_schedule(self, day_of_week_value: int) -> Callable[[WeekSchedule], int]:
         def get_day_length_from_week_schedule(week_schedule: WeekSchedule) -> int:
-            day_value = day_of_week_value - week_schedule.starts_from.value
-            if not (0 <= day_value < len(week_schedule)):
+            day_index = day_of_week_value - week_schedule.starts_from.value
+            if not (0 <= day_index < len(week_schedule)):
                 return 0
-            return len(week_schedule[day_value - 1])
+            return len(week_schedule[day_index])
 
         return get_day_length_from_week_schedule
 
