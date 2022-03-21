@@ -1,3 +1,4 @@
+from itertools import dropwhile
 from typing import (
     Callable,
 )
@@ -36,12 +37,26 @@ class WeekScheduleScraperImpl(WeekScheduleScraper):
     def __scrap_from_document(self, document: Document) -> WeekSchedule:
         day_elements = document.select_all('tr')[2:]
         day_schedules = day_elements.map(self.__get_day_schedule)
-        return WeekSchedule(DayOfWeek.monday, day_schedules)
+        starts_from, truncated_days = self.__truncate_days(DayOfWeek.monday, day_schedules)
+        return WeekSchedule(starts_from, truncated_days)
+
+    def __truncate_days(self, starts_from: DayOfWeek, days: List[DaySchedule]) -> tuple[DayOfWeek, List[DaySchedule]]:
+        truncated_from_start = list(dropwhile(DaySchedule.is_empty, days))
+        new_starts_from = DayOfWeek(starts_from.value + len(days) - len(truncated_from_start))
+        truncated_days = list(dropwhile(DaySchedule.is_empty, reversed(days)))
+        return new_starts_from, List(reversed(truncated_days))
 
     def __get_day_schedule(self, day_element: TagElement) -> DaySchedule:
         entry_tags = day_element.select_all('td p')[1:]
         entries = entry_tags.map(self.__get_entry)
-        return DaySchedule(entries)
+        truncated_entries = self.__truncate_entries(entries)
+        if len(truncated_entries) == 0:
+            return DaySchedule([Nothing])
+        return DaySchedule(truncated_entries)
+
+    def __truncate_entries(self, entries: List[Maybe[Entry]]) -> list[Maybe[Entry]]:
+        truncated_entries = dropwhile(lambda entry: entry == Nothing, reversed(entries))
+        return list(reversed(list(truncated_entries)))
 
     def __get_entry(self, entry_tag: TagElement) -> Maybe[Entry]:
         entry_tag_children = entry_tag.children
