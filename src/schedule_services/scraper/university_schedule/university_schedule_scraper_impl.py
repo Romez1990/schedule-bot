@@ -35,12 +35,12 @@ class UniversityScheduleScraperImpl(UniversityScheduleScraper):
         return Task(self.__get_schedule_from_links(links))
 
     async def __get_schedule_from_links(self, links: ScheduleLinks) -> Schedule:
-        week_start = links.week_start
-        links_dict = dict(links)
-        week_schedules_tasks = List(links_dict.values()).map(self.__get_week_schedule)
+        starts_at = links.starts_at
+        week_schedules_tasks = List(links.values()) \
+            .map(self.__get_week_schedule)
         week_schedules = await Task.parallel(week_schedules_tasks)
-        schedule_dict = {group: week_schedule for group, week_schedule in zip(links_dict.keys(), week_schedules)}
-        return Schedule(week_start, schedule_dict)
+        schedule_dict = {group: week_schedule for group, week_schedule in zip(links.keys(), week_schedules)}
+        return Schedule(starts_at, schedule_dict)
 
     def __get_week_schedule(self, link: str) -> Task[WeekSchedule]:
         return self.__group_schedule_scraper.scrap_week_schedule(link).get_or_raise()

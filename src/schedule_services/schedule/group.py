@@ -11,5 +11,8 @@ class Group:
     def __hash__(self) -> int:
         return hash(self.__group_name)
 
+    def __repr__(self) -> str:
+        return f'Group({repr(self.__group_name)})'
+
     def __str__(self) -> str:
         return self.__group_name

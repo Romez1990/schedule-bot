@@ -4,6 +4,7 @@ from typing import (
 )
 
 from data.fp.maybe import Maybe, Nothing
+from data.repr import repr_list
 from .entry import Entry
 
 
@@ -19,3 +20,6 @@ class DaySchedule(Sequence[Maybe[Entry]]):
 
     def is_empty(self) -> bool:
         return all(entry == Nothing for entry in self.__entries)
+
+    def __repr__(self) -> str:
+        return f'{type(self).__name__}({repr_list(self.__entries)})'

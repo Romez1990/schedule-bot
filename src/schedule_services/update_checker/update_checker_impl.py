@@ -35,13 +35,13 @@ class UpdateCheckerImpl(UpdateChecker):
 
     def __check_schedule(self, schedule: Schedule) -> Task[None]:
         schedule_hash = self.__schedule_hashing.hash(schedule)
-        return self.__schedule_hash_storage.get_hash_by_date(schedule.week_start) \
+        return self.__schedule_hash_storage.get_hash_by_date(schedule.starts_at) \
             .match_awaitable(self.__store_schedule_hash(schedule, schedule_hash),
                              self.__check_schedule_hash(schedule, schedule_hash))
 
     def __store_schedule_hash(self, schedule: Schedule, schedule_hash: int) -> Callable[[], Task[None]]:
         def store_schedule_hash() -> Task[None]:
-            return self.__schedule_hash_storage.save(schedule.week_start, schedule_hash)
+            return self.__schedule_hash_storage.save(schedule.starts_at, schedule_hash)
 
         return store_schedule_hash
 
@@ -50,7 +50,7 @@ class UpdateCheckerImpl(UpdateChecker):
             if schedule_hash == stored_schedule_hash:
                 return Task.from_value(None)
 
-            return self.__schedule_hash_storage.update_schedule_hash(schedule.week_start, schedule_hash) \
+            return self.__schedule_hash_storage.update_schedule_hash(schedule.starts_at, schedule_hash) \
                 .map(self.__check_day_schedules(schedule))
 
         return check_schedule_hash

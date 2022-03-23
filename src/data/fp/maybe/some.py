@@ -40,5 +40,8 @@ class Some(Maybe[T]):
     def get_or_raise(self) -> T:
         return self.__value
 
+    def __repr__(self) -> str:
+        return f'Some({repr(self.__value)})'
+
     def __str__(self) -> str:
         return f'<Some: {self.__value}>'

@@ -10,3 +10,6 @@ class DayOfWeek(Enum):
     friday = auto()
     saturday = auto()
     sunday = auto()
+
+    def __repr__(self) -> str:
+        return f'DayOfWeek.{self.name}'

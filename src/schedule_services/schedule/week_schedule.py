@@ -4,6 +4,7 @@ from typing import (
     Iterable,
 )
 
+from data.repr import repr_list
 from .day_of_week import DayOfWeek
 from .day_schedule import DaySchedule
 
@@ -18,3 +19,6 @@ class WeekSchedule(Sequence[DaySchedule]):
 
     def __len__(self) -> int:
         return len(self.__day_schedules)
+
+    def __repr__(self) -> str:
+        return f'{type(self).__name__}({repr(self.starts_from)}, {repr_list(self.__day_schedules)})'

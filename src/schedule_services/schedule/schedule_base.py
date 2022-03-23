@@ -12,8 +12,8 @@ T = TypeVar('T')
 
 
 class ScheduleBase(Mapping[Group, T], Generic[T]):
-    def __init__(self, week_start: date, data: Mapping[Group, T]) -> None:
-        self.week_start = week_start
+    def __init__(self, starts_at: date, data: Mapping[Group, T]) -> None:
+        self.starts_at = starts_at
         self._data = data
 
     def __iter__(self) -> Iterator[Group]:

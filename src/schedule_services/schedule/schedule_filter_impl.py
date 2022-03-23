@@ -22,7 +22,7 @@ class ScheduleFilterImpl(ScheduleFilter):
             .map(self.__get_week_schedule(schedule)) \
             .map(self.__try_select_day(day_of_week))
         schedule_dict = {group: group_schedule for group, group_schedule in zip(existing_groups, week_schedules)}
-        return Schedule(schedule.week_start, schedule_dict)
+        return Schedule(schedule.starts_at, schedule_dict)
 
     def __group_exists(self, schedule: Schedule) -> Callable[[Group], bool]:
         def group_exists(group: Group) -> bool:

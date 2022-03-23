@@ -26,7 +26,7 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
     def __init__(self, http_client: HttpClient, html_parser: HtmlParser) -> None:
         self.__http_client = http_client
         self.__html_parser = html_parser
-        self.__week_start_and_end_regex = compile_regex(r'(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})')
+        self.__starts_at_regex = compile_regex(r'(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})')
 
     def scrap_schedules_links(self) -> TaskEither[Exception, Sequence[ScheduleLinks]]:
         return self.__http_client.get_text('https://viti-mephi.ru/raspisanie') \
@@ -59,8 +59,7 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
         return True
 
     def __get_schedule_links(self, schedule_links_elements: ScheduleLinksElements) -> ScheduleLinks:
-        # remove end
-        start, end = self.__get_week_start_and_end(schedule_links_elements.title)
+        start = self.__get_starts_at(schedule_links_elements.title)
         groups = self.__parse_links_element(schedule_links_elements.links_element.get_or_raise())
         return ScheduleLinks(start, groups)
 
@@ -75,14 +74,9 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
         maybe_link = link_element.get_attribute('href')
         return maybe_link.get_or_raise()
 
-    def __get_week_start_and_end(self, title: str) -> tuple[Optional[date], Optional[date]]:
-        dates = List(self.__week_start_and_end_regex.findall(title)) \
-            .map(self.__get_date_from_match)
-        if len(dates) != 2:
-            return None, None
-        start, end = dates
-        return start, end
-
-    def __get_date_from_match(self, match: tuple[str, str, str]) -> date:
-        day, month, year = map(int, match)
+    def __get_starts_at(self, title: str) -> Optional[date]:
+        match = self.__starts_at_regex.search(title)
+        if match is None:
+            return None
+        day, month, year = map(int, match.groups())
         return date(year, month, day)
