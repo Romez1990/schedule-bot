@@ -62,8 +62,8 @@ async def test_schedule_fetched__saves_hash_to_storage__when_no_hash_found_in_st
     schedules_fetched([schedule])
 
     schedule_hashing.hash.assert_called_once_with(schedule)
-    schedule_hash_storage.get_hash_by_date.assert_called_once_with(schedule.week_start)
-    schedule_hash_storage.save.assert_called_once_with(schedule.week_start, schedule_hash)
+    schedule_hash_storage.get_hash_by_date.assert_called_once_with(schedule.starts_at)
+    schedule_hash_storage.save.assert_called_once_with(schedule.starts_at, schedule_hash)
 
 
 schedule = Schedule(date(2022, 3, 14), {
