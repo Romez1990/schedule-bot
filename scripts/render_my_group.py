@@ -1,7 +1,6 @@
 from pathlib import Path
-from io import BytesIO
 
-from infrastructure.script import AsyncScript, script
+from infrastructure.script_runner import AsyncScript, script
 from schedule_services.scraper import ScheduleScraper
 from schedule_services.renderer import ScheduleRenderer
 from schedule_services.schedule import (

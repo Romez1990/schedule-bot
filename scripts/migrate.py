@@ -1,4 +1,4 @@
-from infrastructure.script import AsyncScript, script
+from infrastructure.script_runner import AsyncScript, script
 from storage.migration_runner import MigrationRunner
 
 

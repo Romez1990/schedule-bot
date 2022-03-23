@@ -1,4 +1,4 @@
-from infrastructure.script import AsyncScript, script
+from infrastructure.script_runner import AsyncScript, script
 from infrastructure.logger import LoggerFactory
 from messenger_services.messenger_service import MessageHandlerRegistrar
 
