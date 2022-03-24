@@ -42,6 +42,3 @@ class Some(Maybe[T]):
 
     def __repr__(self) -> str:
         return f'Some({repr(self.__value)})'
-
-    def __str__(self) -> str:
-        return f'<Some: {self.__value}>'

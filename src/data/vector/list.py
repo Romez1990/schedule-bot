@@ -107,6 +107,6 @@ class List(Sequence[T]):
     def pop_unsafe(self, index: int = None) -> tuple[T, List[T]]:
         return self.pop(index).get_or_raise()
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         elements = ', '.join(map(str, self))
         return f'List([{elements}])'

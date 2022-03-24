@@ -42,8 +42,5 @@ class _Nothing(Maybe[T]):
     def __repr__(self) -> str:
         return 'Nothing'
 
-    def __str__(self) -> str:
-        return '<Nothing>'
-
 
 Nothing = _Nothing()

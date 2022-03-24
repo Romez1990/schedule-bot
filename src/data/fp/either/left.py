@@ -49,8 +49,8 @@ class _Left(Either[L, R]):
             raise TypeError(f'{self.__value} is not en exception')
         raise self.__value
 
-    def __str__(self) -> str:
-        return f'<Left: {self.__value}>'
+    def __repr__(self) -> str:
+        return f'Left({repr(self.__value)})'
 
 
 def Left(value: L) -> Either[L, R]:

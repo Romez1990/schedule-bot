@@ -50,5 +50,5 @@ class Dict(Mapping[K, V]):
             raise KeyError(key)
         return Dict(new_dict)
 
-    def __str__(self) -> str:
-        return str(self.__dict)
+    def __repr__(self) -> str:
+        return f'Dict({repr(self.__dict)})'

@@ -47,8 +47,8 @@ class _Right(Either[L, R]):
     def get_or_raise(self) -> R:
         return self.__value
 
-    def __str__(self) -> str:
-        return f'<Right: {self.__value}>'
+    def __repr__(self) -> str:
+        return f'Right({repr(self.__value)})'
 
 
 def Right(value: R) -> Either[L, R]:
