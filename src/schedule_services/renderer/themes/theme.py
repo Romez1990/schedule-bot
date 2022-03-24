@@ -6,7 +6,7 @@ from .color import Color
 
 
 class Theme:
-    def __init__(self, name: str, text_color: Color, background_colors: Sequence[Color]) -> None:
+    def __init__(self, *, name: str, text_color: Color, background_colors: Sequence[Color]) -> None:
         self.__name = name
         self.__background_colors = background_colors
         self.__text_color = text_color

@@ -13,8 +13,16 @@ from .color import Color
 class ThemeRepositoryImpl(ThemeRepository):
     def __init__(self) -> None:
         themes = [
-            Theme('light', Color(0, 0, 0), [Color(255, 255, 255), Color(238, 238, 238)]),
-            Theme('dark', Color(173, 173, 173), [Color(37, 37, 38), Color(32, 32, 33)]),
+            Theme(
+                name='light',
+                text_color=Color(0, 0, 0),
+                background_colors=[Color(255, 255, 255), Color(238, 238, 238)],
+            ),
+            Theme(
+                name='dark',
+                text_color=Color(173, 173, 173),
+                background_colors=[Color(37, 37, 38), Color(32, 32, 33)],
+            ),
         ]
         self.__themes: Mapping[str, Theme] = {theme.name: theme for theme in themes}
 
