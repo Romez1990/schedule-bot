@@ -8,7 +8,7 @@ class Entity:
         super().__setattr__(key, value)
 
     def __str__(self) -> str:
-        entity_name = type(self).__name__
+        entity_name = self.__class__.__name__
         attributes = List(self.__dict__.items()) \
             .cast(tuple[str, object]) \
             .map(self.__join_attribute_name_and_value)

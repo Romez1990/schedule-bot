@@ -21,4 +21,4 @@ class WeekSchedule(Sequence[DaySchedule]):
         return len(self.__day_schedules)
 
     def __repr__(self) -> str:
-        return f'{type(self).__name__}({repr(self.starts_from)}, {repr_list(self.__day_schedules)})'
+        return f'{self.__class__.__name__}({repr(self.starts_from)}, {repr_list(self.__day_schedules)})'

@@ -13,4 +13,4 @@ class Entry:
             self.class_room,
         ]
         fields_str = ', '.join(map(repr, fields))
-        return f'{type(self).__name__}({fields_str})'
+        return f'{self.__class__.__name__}({fields_str})'
