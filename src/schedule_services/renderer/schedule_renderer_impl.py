@@ -1,5 +1,4 @@
 from __future__ import annotations
-from io import BytesIO
 from typing import (
     Iterable,
     Callable,
@@ -22,6 +21,7 @@ from .image import Image
 from .themes import (
     ThemeRepository,
     Theme,
+    Color,
 )
 from .schedule_metrics import ScheduleMetrics
 
@@ -108,6 +108,10 @@ class ScheduleRendererImpl(ScheduleRenderer):
     def _set_theme(self, theme_name: str) -> None:
         self._theme = self.__themes.get_by_name(theme_name).get_or_raise()
 
+    def _get_nth_background_color(self, n: int) -> Color:
+        background_color_index = n % len(self._theme.background_colors)
+        return self._theme.background_colors[background_color_index]
+
     def _create_image(self, schedule: Schedule) -> None:
         self._schedule_metrics = ScheduleMetrics(schedule)
         image_size = (
@@ -147,7 +151,7 @@ class ScheduleRendererImpl(ScheduleRenderer):
                                     day_of_week: DayOfWeek = None) -> None:
         size = (self._sidebar_stripe_width,
                 self._cell_size[1] * day_length)
-        color = self._theme.get_nth_background_color(row_id)
+        color = self._get_nth_background_color(row_id)
         self._image.rectangle(position, size, color.to_tuple())
 
         text = self.__day_of_week_translator.translate(day_of_week) if day_of_week is not None else ''
@@ -165,14 +169,14 @@ class ScheduleRendererImpl(ScheduleRenderer):
                 start_position[1] + entry_number * self._cell_size[1]
             )
             size = (self._sidebar_stripe_width, self._cell_size[1])
-            color = self._theme.get_nth_background_color(row_id + entry_number)
+            color = self._get_nth_background_color(row_id + entry_number)
             self._image.rectangle(position, size, color.to_tuple())
 
             text = custom_text if custom_text is not None else str(entry_number + 1)
             self._image.text_center(text, position, size, font)
 
     def _render_stripe(self, row_id: int, position: tuple[int, int]) -> None:
-        color = self._theme.get_nth_background_color(row_id)
+        color = self._get_nth_background_color(row_id)
         self._image.rectangle(position, self._cell_size, color.to_tuple())
 
     def _render_header(self, groups: Iterable[Group]) -> None:
