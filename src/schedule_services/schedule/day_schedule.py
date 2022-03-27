@@ -12,7 +12,7 @@ class DaySchedule(Sequence[Maybe[Entry]]):
     def __init__(self, entries: Iterable[Maybe[Entry]]) -> None:
         self.__entries = tuple(entries)
 
-    def __getitem__(self, index: int) -> Maybe[Entry]:
+    def __getitem__(self, index: int | slice) -> Maybe[Entry]:
         return self.__entries[index]
 
     def __len__(self) -> int:

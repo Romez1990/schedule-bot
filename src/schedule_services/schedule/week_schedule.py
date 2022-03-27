@@ -14,7 +14,7 @@ class WeekSchedule(Sequence[DaySchedule]):
         self.starts_from = starts_from
         self.__day_schedules = tuple(day_schedules)
 
-    def __getitem__(self, index: int) -> DaySchedule:
+    def __getitem__(self, index: int | slice) -> DaySchedule:
         return self.__day_schedules[index]
 
     def __len__(self) -> int:
