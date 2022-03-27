@@ -85,8 +85,8 @@ class ScheduleRendererImpl(ScheduleRenderer):
             'Arial 8': self._load_font('Arial.ttf', 8),
         }
 
-    def _compute_offset(self, values: dict[any, int]) -> dict[any, int]:
-        offsets: dict[any, int] = {}
+    def _compute_offset(self, values: dict[str, int]) -> dict[str, int]:
+        offsets = {}
         current_offset = 0
         for key, value in values.items():
             offsets[key] = current_offset
