@@ -26,11 +26,18 @@ from .pool_connection_context_manager import PoolConnectionContextManager
 class ConnectionPoolImpl(ConnectionPool):
     def __init__(self, connection_factory: PoolConnectionFactory, config: Config) -> None:
         self.__connection_factory = connection_factory
-        self.__max_size = config.db_connection_pool_max_size
-        self.__get_connection_timeout = config.db_connection_pool_timeout
+        self.__config = config
         self.__used_connections: list[ManageablePoolConnection] = []
         self.__unused_connections: Queue[ManageablePoolConnection] = Queue()
         self.__get_connection_lock = Lock()
+
+    @property
+    def __max_size(self) -> int:
+        return self.__config.db_connection_pool_max_size
+
+    @property
+    def __get_connection_timeout(self) -> float:
+        return self.__config.db_connection_pool_timeout
 
     async def init(self) -> None:
         await self.__create_connection_and_add(self.__unused_connections.put_nowait)
