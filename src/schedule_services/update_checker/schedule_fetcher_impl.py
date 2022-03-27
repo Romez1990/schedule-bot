@@ -17,8 +17,12 @@ from .schedule_fetcher import ScheduleFetcher
 class ScheduleFetcherImpl(ScheduleFetcher):
     def __init__(self, schedule_scraper: ScheduleScraper, config: Config) -> None:
         self.__schedule_scraper = schedule_scraper
-        self.__interval = self.__minutes_to_seconds(config.update_checker_interval)
+        self.__config = config
         self.__on_schedules_fetched: list[Callable[[Sequence[Schedule]], Awaitable[None]]] = []
+
+    @property
+    def __interval(self) -> int:
+        return self.__minutes_to_seconds(self.__config.update_checker_interval)
 
     def __minutes_to_seconds(self, minutes: int) -> int:
         return minutes * 60
