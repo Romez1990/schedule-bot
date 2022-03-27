@@ -31,16 +31,16 @@ class ScheduleUpdateServiceImpl(ScheduleUpdateService):
         self.__schedules = schedules
         self.__schedules_fetched.set()
 
+    def __on_schedules_changed(self, schedule: Schedule, groups: Sequence[Group]) -> None:
+        for on_update in self.__on_update:
+            on_update(schedule, groups)
+
+    def subscribe_for_updates(self, on_update: Callable[[Schedule, Sequence[Group]], None]) -> None:
+        self.__on_update.append(on_update)
+
     async def start_checking_updates(self) -> NoReturn:
         return await self.__schedule_fetcher.start()
 
     async def get_schedules(self) -> Sequence[Schedule]:
         await self.__schedules_fetched.wait()
         return self.__schedules
-
-    def subscribe_for_updates(self, on_update: Callable[[Schedule, Sequence[Group]], None]) -> None:
-        self.__on_update.append(on_update)
-
-    def __on_schedules_changed(self, schedule: Schedule, groups: Sequence[Group]) -> None:
-        for on_update in self.__on_update:
-            on_update(schedule, groups)

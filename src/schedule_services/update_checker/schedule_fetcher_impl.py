@@ -27,12 +27,12 @@ class ScheduleFetcherImpl(ScheduleFetcher):
     def __minutes_to_seconds(self, minutes: int) -> int:
         return minutes * 60
 
+    def subscribe_for_updates(self, on_schedules_fetched: Callable[[Sequence[Schedule]], Awaitable[None]]) -> None:
+        self.__on_schedules_fetched.append(on_schedules_fetched)
+
     async def start(self) -> NoReturn:
         while True:
             schedules = await self.__schedule_scraper.scrap_schedules()
             for on_schedules_fetched in self.__on_schedules_fetched:
                 on_schedules_fetched(schedules)
             await sleep(self.__interval)
-
-    def subscribe_for_updates(self, on_schedules_fetched: Callable[[Sequence[Schedule]], Awaitable[None]]) -> None:
-        self.__on_schedules_fetched.append(on_schedules_fetched)
