@@ -27,6 +27,7 @@ class RenderMyGroupScript(AsyncScript):
             schedule, *_ = schedules
             filtered_schedule = self.schedule_filter.filter(schedule, [
                 Group('ИС-20-Д'),
+                Group('ИС-19-Д'),
             ])
             light_schedule = self.renderer.render(filtered_schedule, 'light')
             dark_schedule = self.renderer.render(filtered_schedule, 'dark')
