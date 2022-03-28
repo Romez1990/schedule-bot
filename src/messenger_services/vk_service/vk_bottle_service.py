@@ -1,7 +1,11 @@
+from typing import (
+    NoReturn,
+)
 from vkbottle import Bot
 
-from infrastructure.config import Config
 from infrastructure.ioc_container import service
+from infrastructure.config import Config
+from infrastructure.errors import NoReturnError
 from messenger_services.messenger_service import MessengerService
 from .vk_bottle_adapter import VkBottleAdapter
 
@@ -13,5 +17,6 @@ class VkBottleService(MessengerService):
         adapter = VkBottleAdapter(self.__bot)
         super().__init__(adapter)
 
-    async def start(self) -> None:
+    async def start(self) -> NoReturn:
         await self.__bot.run_polling()
+        raise NoReturnError

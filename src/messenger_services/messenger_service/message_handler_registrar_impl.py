@@ -1,8 +1,10 @@
 from typing import (
     Type,
+    NoReturn,
 )
 
 from infrastructure.ioc_container import service, Container
+from infrastructure.errors import NoReturnError
 from data.fp.task import Task
 from data.vector import List
 from messenger_services.telegram_service import TelegramService
@@ -58,10 +60,11 @@ class MessageHandlerRegistrarImpl(MessageHandlerRegistrar):
                                                                              parameters.method_name)
         messenger_service.add_message_handler(parameters, message_handler)
 
-    async def start(self) -> None:
+    async def start(self) -> NoReturn:
         tasks = List(self.__messenger_services) \
             .map(self.__start_messenger_service)
         await Task.parallel(tasks)
+        raise NoReturnError
 
-    def __start_messenger_service(self, messenger_service: MessengerService) -> Task[None]:
+    def __start_messenger_service(self, messenger_service: MessengerService) -> Task[NoReturn]:
         return Task(messenger_service.start())

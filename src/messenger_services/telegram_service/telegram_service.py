@@ -1,7 +1,11 @@
+from typing import (
+    NoReturn,
+)
 from aiogram import Bot, Dispatcher
 
 from infrastructure.ioc_container import service
 from infrastructure.config import Config
+from infrastructure.errors import NoReturnError
 from messenger_services.messenger_service import MessengerService
 from .telegram_adapter import TelegramAdapter
 
@@ -14,6 +18,7 @@ class TelegramService(MessengerService):
         adapter = TelegramAdapter(bot, self.__dispatcher)
         super().__init__(adapter)
 
-    async def start(self) -> None:
+    async def start(self) -> NoReturn:
         await self.__dispatcher.skip_updates()
         await self.__dispatcher.start_polling()
+        raise NoReturnError

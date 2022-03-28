@@ -3,6 +3,7 @@ from typing import (
     Callable,
     Awaitable,
     Coroutine,
+    NoReturn,
 )
 
 from .messenger_adapter import MessengerAdapter
@@ -22,4 +23,4 @@ class MessengerService(metaclass=ABCMeta):
         self.adapter.add_message_handler(parameters, method)
 
     @abstractmethod
-    def start(self) -> Coroutine[object, None, None]: ...
+    def start(self) -> Coroutine[object, None, NoReturn]: ...
