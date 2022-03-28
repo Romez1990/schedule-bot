@@ -3,7 +3,6 @@ from typing import (
     NoReturn,
     Callable,
     Sequence,
-    Awaitable,
 )
 
 from infrastructure.ioc_container import service
@@ -18,7 +17,7 @@ class ScheduleFetcherImpl(ScheduleFetcher):
     def __init__(self, schedule_scraper: ScheduleScraper, config: Config) -> None:
         self.__schedule_scraper = schedule_scraper
         self.__config = config
-        self.__on_schedules_fetched: list[Callable[[Sequence[Schedule]], Awaitable[None]]] = []
+        self.__on_schedules_fetched: list[Callable[[Sequence[Schedule]], None]] = []
 
     @property
     def __interval(self) -> int:
@@ -27,7 +26,7 @@ class ScheduleFetcherImpl(ScheduleFetcher):
     def __minutes_to_seconds(self, minutes: int) -> int:
         return minutes * 60
 
-    def subscribe_for_updates(self, on_schedules_fetched: Callable[[Sequence[Schedule]], Awaitable[None]]) -> None:
+    def subscribe_for_updates(self, on_schedules_fetched: Callable[[Sequence[Schedule]], None]) -> None:
         self.__on_schedules_fetched.append(on_schedules_fetched)
 
     async def start(self) -> NoReturn:

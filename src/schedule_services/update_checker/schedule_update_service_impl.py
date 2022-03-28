@@ -39,8 +39,10 @@ class ScheduleUpdateServiceImpl(ScheduleUpdateService):
         self.__on_update.append(on_update)
 
     async def start_checking_updates(self) -> NoReturn:
-        return await self.__schedule_fetcher.start()
+        await self.__schedule_fetcher.start()
 
     async def get_schedules(self) -> Sequence[Schedule]:
         await self.__schedules_fetched.wait()
+        if self.__schedules is None:
+            raise RuntimeError
         return self.__schedules

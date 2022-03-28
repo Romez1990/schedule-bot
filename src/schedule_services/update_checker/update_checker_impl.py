@@ -28,10 +28,11 @@ class UpdateCheckerImpl(UpdateChecker):
         self.__on_schedule_changed = on_schedules_changed
 
     def __on_schedules_fetched(self, schedules: Sequence[Schedule]) -> None:
-        tasks = List(schedules) \
-            .map(self.__check_schedule)
-        task = Task.parallel(tasks)
+        task = self.__check_schedules(schedules)
         create_task(task)
+
+    def __check_schedules(self, schedules: Sequence[Schedule]) -> Task[None]:
+        a = self.__schedule_hash_storage.get_hashes_by_date(schedules)
 
     def __check_schedule(self, schedule: Schedule) -> Task[None]:
         schedule_hash = self.__schedule_hashing.hash(schedule)
@@ -49,8 +50,7 @@ class UpdateCheckerImpl(UpdateChecker):
         def check_schedule_hash(stored_schedule_hash: int) -> Task[None]:
             if schedule_hash == stored_schedule_hash:
                 return Task.from_value(None)
-
-            return self.__schedule_hash_storage.update_schedule_hash(schedule.starts_at, schedule_hash) \
+            return self.__schedule_hash_storage.save(schedule.starts_at, schedule_hash) \
                 .map(self.__check_day_schedules(schedule))
 
         return check_schedule_hash
