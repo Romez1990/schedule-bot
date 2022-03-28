@@ -5,8 +5,8 @@ from .user import User
 
 
 class UserSettings(Entity):
-    def __init__(self, user: User, name: str, value: str, user_settings_id: int = None) -> None:
-        self.id = user_settings_id
+    def __init__(self, user: User, name: str, value: str, id: int = None) -> None:
+        self.id = id
         self.user = user
         self.name = name
         self.value = value

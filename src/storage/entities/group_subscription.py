@@ -5,8 +5,8 @@ from .user import User
 
 
 class GroupSubscription(Entity):
-    def __init__(self, user: User, group_name: str, group_subscription_id: int = None) -> None:
-        self.id = group_subscription_id
+    def __init__(self, user: User, group_name: str, id: int = None) -> None:
+        self.id = id
         self.user = user
         self.group_name = group_name
 

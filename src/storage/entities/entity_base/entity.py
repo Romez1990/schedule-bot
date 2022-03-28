@@ -10,7 +10,6 @@ class Entity:
     def __str__(self) -> str:
         entity_name = self.__class__.__name__
         attributes = List(self.__dict__.items()) \
-            .cast(tuple[str, object]) \
             .map(self.__join_attribute_name_and_value)
         attributes_with_comma = ', '.join(attributes)
         return f'{entity_name} {{ {attributes_with_comma} }}'
