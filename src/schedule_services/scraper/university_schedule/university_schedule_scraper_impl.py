@@ -36,6 +36,7 @@ class UniversityScheduleScraperImpl(UniversityScheduleScraper):
 
     async def __get_schedule_from_links(self, links: ScheduleLinks) -> Schedule:
         starts_at = links.starts_at
+        links = {group: schedule for group, schedule in links.items() if str(group) in ['ИС-20-Д', 'ИС-19-Д']}
         week_schedules_tasks = List(links.values()) \
             .map(self.__get_week_schedule)
         week_schedules = await Task.parallel(week_schedules_tasks)
