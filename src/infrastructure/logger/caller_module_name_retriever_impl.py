@@ -17,6 +17,8 @@ class CallerModuleNameRetrieverImpl(CallerModuleNameRetriever):
         caller_module = self.__get_caller_module(1 + stack_offset)
         caller_module_name = caller_module.__name__
         if caller_module_name == '__main__':
+            if caller_module.__file__ is None:
+                raise RuntimeError
             script_path = Path(caller_module.__file__)
             return self.__get_script_module_name(script_path)
         return caller_module_name

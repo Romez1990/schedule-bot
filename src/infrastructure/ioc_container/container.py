@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import (
-    Optional,
     Sequence,
     Mapping,
     MutableMapping,
@@ -44,12 +43,12 @@ class Container:
         module_object.load()
 
     def bind(self, class_type: type) -> BindingContext:
-        def bind_to_base_class(base_class: Optional[type], to_self: bool) -> None:
+        def bind_to_base_class(base_class: type | None, to_self: bool) -> None:
             self.__bind_type(class_type, base_class, to_self)
 
         return BindingContext(bind_to_base_class)
 
-    def __bind_type(self, class_type: type, base_class_optional: Optional[type], to_self: bool) -> None:
+    def __bind_type(self, class_type: type, base_class_optional: type | None, to_self: bool) -> None:
         base_class = cast(type, base_class_optional) if not to_self else class_type
         if not issubclass(class_type, base_class):
             raise SubclassError(class_type, base_class)

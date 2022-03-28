@@ -1,11 +1,10 @@
 from typing import (
-    Optional,
     Callable,
 )
 
 
 class BindingContext:
-    def __init__(self, callback: Callable[[Optional[type], bool], None]) -> None:
+    def __init__(self, callback: Callable[[type | None, bool], None]) -> None:
         self.__callback = callback
         self.__bound = False
 

@@ -1,7 +1,6 @@
 from __future__ import annotations
 from abc import ABCMeta, abstractmethod
 from typing import (
-    Optional,
     TYPE_CHECKING,
 )
 
@@ -19,7 +18,7 @@ class Module(metaclass=ABCMeta):
     def load(self) -> None: ...
 
     def _bind(self, class_type: type) -> BindingContext:
-        def bind_to_base_class(base_class: Optional[type], to_self: bool) -> None:
+        def bind_to_base_class(base_class: type | None, to_self: bool) -> None:
             if to_self:
                 self.__container.bind(class_type).to_self()
             else:

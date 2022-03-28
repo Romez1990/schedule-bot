@@ -1,5 +1,4 @@
 from typing import (
-    Optional,
     Union,
     Callable,
     Type,
@@ -17,7 +16,7 @@ services: list[ServiceBindParameters] = []
 T = TypeVar('T')
 
 
-def add_service(class_type: Type[T], to_self: Optional[bool] = None) -> Type[T]:
+def add_service(class_type: Type[T], to_self: bool = None) -> Type[T]:
     check_decorating_type(service, object, class_type)
     services.append(ServiceBindParameters(class_type, to_self))
     return class_type
