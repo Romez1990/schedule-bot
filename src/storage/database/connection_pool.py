@@ -12,9 +12,6 @@ class ConnectionPool(metaclass=ABCMeta):
     def init(self) -> Awaitable[None]: ...
 
     @abstractmethod
-    def destroy(self) -> Awaitable[None]: ...
-
-    @abstractmethod
     def get_connection(self) -> PoolConnectionContextManager: ...
 
     @abstractmethod

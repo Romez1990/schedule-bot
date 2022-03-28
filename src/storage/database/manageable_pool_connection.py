@@ -1,8 +1,9 @@
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 from .pool_connection import PoolConnection
 from .connection import Connection
 
 
 class ManageablePoolConnection(PoolConnection, Connection, metaclass=ABCMeta):
-    pass
+    @abstractmethod
+    def acquire(self) -> None: ...

@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from typing import (
+    Sequence,
+    Mapping,
     Type,
     TypeVar,
 )
@@ -10,8 +12,8 @@ from .errors import (
     DatabaseError,
 )
 
-Record = dict[str, object]
-Records = list[Record]
+Record = Mapping[str, object]
+Records = Sequence[Record]
 
 T = TypeVar('T')
 

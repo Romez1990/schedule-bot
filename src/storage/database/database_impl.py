@@ -31,9 +31,6 @@ class DatabaseImpl(Database):
     async def connect(self) -> None:
         await self.__connection_pool.init()
 
-    async def disconnect(self) -> None:
-        await self.__connection_pool.destroy()
-
     def execute(self, query: str, *args: object) -> TaskEither[DatabaseError, None]:
         def perform_query(connection: PoolConnection) -> TaskEither[DatabaseError, None]:
             return connection.execute(query, *args)

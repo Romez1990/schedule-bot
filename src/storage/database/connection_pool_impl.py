@@ -3,8 +3,8 @@ from asyncio import (
     TimeoutError,
     Queue,
     wait_for,
+    get_event_loop,
 )
-from itertools import chain
 from typing import (
     Callable,
     cast,
@@ -40,12 +40,9 @@ class ConnectionPoolImpl(ConnectionPool):
         return self.__config.db_connection_pool_timeout
 
     async def init(self) -> None:
+        if len(self.__used_connections) > 0 or not self.__unused_connections.empty():
+            raise RuntimeError('pool is already inited')
         await self.__create_connection_and_add(self.__unused_connections.put_nowait)
-
-    async def destroy(self) -> None:
-        connections = chain(self.__used_connections, self.__unused_connections)
-        for connection in connections:
-            await connection.close()
 
     def get_connection(self) -> PoolConnectionContextManager:
         async def async_get_connection() -> PoolConnection:
@@ -62,15 +59,18 @@ class ConnectionPoolImpl(ConnectionPool):
 
     def __get_unused_connection(self) -> PoolConnection:
         connection = self.__unused_connections.get_nowait()
+        connection.acquire()
         self.__used_connections.append(connection)
         self.__get_connection_lock.release()
         return connection
 
     async def __create_connection(self) -> PoolConnection:
-        return await self.__create_connection_and_add(self.__used_connections.append)
+        connection = await self.__create_connection_and_add(self.__used_connections.append)
+        connection.acquire()
+        return connection
 
     async def __create_connection_and_add(self, add_to_collection: Callable[[ManageablePoolConnection], None]
-                                          ) -> PoolConnection:
+                                          ) -> ManageablePoolConnection:
         def release_connection() -> None:
             self.release_connection(connection)
 

@@ -22,10 +22,10 @@ class PoolConnectionImpl(ManageablePoolConnection):
     def __init__(self, connection: Connection, on_released: Callable[[], None]) -> None:
         self.__connection = connection
         self.__on_released = on_released
-        self.__is_acquired = True
+        self.__is_acquired = False
 
     def __del__(self) -> None:
-        if not self.__is_acquired:
+        if self.__is_acquired:
             raise RuntimeError('connection was not released')
 
     def acquire(self) -> None:
