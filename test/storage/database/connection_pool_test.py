@@ -126,7 +126,9 @@ async def test_get_connection__when_get_connection__no_return() -> None:
     connection_2.open = Mock(return_value=Task.from_value(None))
     connection_factory.create = Mock(side_effect=[connection_1, connection_2])
 
-    await connection_pool.get_connection()  # result_connection_1
-    await connection_pool.get_connection()  # result_connection_2
+    # noinspection PyUnusedLocal
+    result_connection_1 = await connection_pool.get_connection()
+    # noinspection PyUnusedLocal
+    result_connection_2 = await connection_pool.get_connection()
     with raises(GetConnectionTimeoutError):
         await connection_pool.get_connection()
