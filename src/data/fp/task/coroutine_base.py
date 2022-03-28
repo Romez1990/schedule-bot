@@ -4,11 +4,11 @@ from types import (
     TracebackType,
 )
 from typing import (
-    Optional,
     Generator,
     Type,
     TypeVar,
     Generic,
+    cast,
 )
 
 T = TypeVar('T')
@@ -24,9 +24,9 @@ class CoroutineBase(Coroutine[object, None, T], Generic[T]):
     def send(self, value: None) -> object:
         return self._coroutine.send(value)
 
-    def throw(self, exception_type: Type[BaseException], value: BaseException | object = ...,
-              traceback: Optional[TracebackType] = None) -> object:
-        return self._coroutine.throw(exception_type, value, traceback)
+    def throw(self, exception_type: BaseException | Type[BaseException], value: object | None = None,
+              traceback: TracebackType = None) -> object:
+        return self._coroutine.throw(cast(Type[BaseException], exception_type), value, traceback)
 
     def close(self) -> None:
         self._coroutine.close()

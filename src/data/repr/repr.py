@@ -12,7 +12,6 @@ def repr_list(elements: Iterable[object]) -> str:
 
 
 def repr_dict(mapping: Mapping[object, object]) -> str:
-    # mapping_repr = map(indent_pair_multiline, cast(Iterable[tuple[object, object]], mapping.items()))
     mapping_repr = map(indent_pair_multiline, mapping.items())
     joined_pairs = ',\n'.join(mapping_repr) + ','
     return f'{{\n{joined_pairs}\n}}'

@@ -2,17 +2,16 @@ from __future__ import annotations
 from functools import reduce
 from collections.abc import Sequence
 from typing import (
-    Optional,
     Callable,
     Iterable,
     Type,
     TypeVar,
     overload,
+    cast,
 )
 
 from data.fp.either import Either, Right, Left
 from data.fp.maybe import Maybe, Nothing
-from data.fp.type import cast
 
 T = TypeVar('T')
 T2 = TypeVar('T2')
@@ -22,7 +21,7 @@ class List(Sequence[T]):
     def __init__(self, iterable: Iterable[T] = None) -> None:
         self.__data = self.__create_list(iterable)
 
-    def __create_list(self, iterable: Optional[Iterable[T]]) -> tuple[T, ...]:
+    def __create_list(self, iterable: Iterable[T] | None) -> tuple[T, ...]:
         if iterable is None:
             return tuple()
         if isinstance(iterable, List):
@@ -37,9 +36,11 @@ class List(Sequence[T]):
 
     def __getitem__(self, index_or_slice: int | slice) -> T | Sequence[T]:
         result = self.__data[index_or_slice]
-        if not isinstance(index_or_slice, slice):
-            return result
-        return List(result)
+        if isinstance(index_or_slice, slice):
+            if not isinstance(result, tuple):
+                raise RuntimeError
+            return List(result)
+        return result
 
     def __len__(self) -> int:
         return len(self.__data)
@@ -49,8 +50,8 @@ class List(Sequence[T]):
             return False
         return self.__data == other.__data
 
-    def cast(self, new_type: Type[T2]) -> List[T2]:
-        return self.map(cast(new_type))
+    def cast(self, _: Type[T2]) -> List[T2]:
+        return cast(List[T2], self)
 
     def map(self, function: Callable[[T], T2]) -> List[T2]:
         return List(map(function, self))

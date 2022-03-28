@@ -1,7 +1,6 @@
 from __future__ import annotations
 from abc import ABCMeta, abstractmethod
 from typing import (
-    Optional,
     Callable,
     Type,
     TypeVar,
@@ -14,7 +13,7 @@ T2 = TypeVar('T2')
 
 class Maybe(Generic[T], metaclass=ABCMeta):
     @staticmethod
-    def from_optional(optional: Optional[T]) -> Maybe[T]:
+    def from_optional(optional: T | None) -> Maybe[T]:
         from .some import Some
         from .nothing import Nothing
 
