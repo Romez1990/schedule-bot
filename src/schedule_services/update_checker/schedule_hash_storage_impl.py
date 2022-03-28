@@ -1,4 +1,7 @@
 from datetime import date
+from typing import (
+    Sequence,
+)
 
 from infrastructure.ioc_container import service
 from data.fp.maybe import Maybe
@@ -12,8 +15,8 @@ class ScheduleHashStorageImpl(ScheduleHashStorage):
     def __init__(self, schedule_hash_repository: ScheduleHashRepository) -> None:
         self.__schedule_hash_repository = schedule_hash_repository
 
-    def get_hashes_by_date(self, schedule_date: date) -> Task[Maybe[int]]:
+    def get_hashes_by_date(self, schedule_dates: Sequence[date]) -> Task[Sequence[Maybe[int]]]:
         pass
 
-    async def save(self, schedule_date: date, schedule_hash: int) -> None:
+    def save(self, hashes: Sequence[tuple[date, int]]) -> Task[None]:
         pass
