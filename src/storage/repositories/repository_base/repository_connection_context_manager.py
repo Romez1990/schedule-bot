@@ -2,7 +2,6 @@ from types import (
     TracebackType,
 )
 from typing import (
-    Optional,
     Awaitable,
     Generator,
     Type,
@@ -25,6 +24,6 @@ class RepositoryConnectionContextManager:
         self.__connection = await self.__awaitable
         return self.__connection
 
-    async def __aexit__(self, exception_type: Optional[Type[Exception]], exception: Optional[Exception],
-                        exception_traceback: Optional[TracebackType]) -> None:
+    async def __aexit__(self, exception_type: Type[Exception] | None, exception: Exception | None,
+                        exception_traceback: TracebackType | None) -> None:
         self.__connection.release()
