@@ -3,7 +3,7 @@ from typing import (
     Callable,
     TypeVar,
 )
-from aiohttp import ClientSession, ClientResponse
+from aiohttp import ClientSession, ClientResponse, ClientConnectionError
 
 from infrastructure.ioc_container import service
 from data.fp.task_either import TaskEither
@@ -26,6 +26,8 @@ class HttpClientImpl(HttpClient):
         async with ClientSession() as session:
             try:
                 response = await session.get(url)
+            except ClientConnectionError as e:
+                return Left(ConnectionError(e))
             except Exception as e:
                 return Left(e)
             else:
