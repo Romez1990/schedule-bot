@@ -1,7 +1,6 @@
 from re import compile as compile_regex
 from datetime import date
 from typing import (
-    Optional,
     Sequence,
     Mapping,
 )
@@ -74,9 +73,9 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
         maybe_link = link_element.get_attribute('href')
         return maybe_link.get_or_raise()
 
-    def __get_starts_at(self, title: str) -> Optional[date]:
+    def __get_starts_at(self, title: str) -> date:
         match = self.__starts_at_regex.search(title)
         if match is None:
-            return None
+            raise RuntimeError
         day, month, year = map(int, match.groups())
         return date(year, month, day)

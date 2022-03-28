@@ -1,5 +1,4 @@
 from typing import (
-    Optional,
     Callable,
     Iterable,
 )
@@ -36,7 +35,7 @@ class ScheduleFilterImpl(ScheduleFilter):
 
         return get_week_schedule
 
-    def __try_select_day(self, day_of_week: Optional[DayOfWeek]) -> Callable[[WeekSchedule], WeekSchedule]:
+    def __try_select_day(self, day_of_week: DayOfWeek | None) -> Callable[[WeekSchedule], WeekSchedule]:
         def try_select_day(week_schedule: WeekSchedule) -> WeekSchedule:
             return Maybe.from_optional(day_of_week) \
                 .map(self.__select_day(week_schedule)) \

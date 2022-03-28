@@ -2,6 +2,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import (
     Iterable,
+    overload,
 )
 
 from data.repr import repr_list
@@ -14,7 +15,13 @@ class WeekSchedule(Sequence[DaySchedule]):
         self.starts_from = starts_from
         self.__day_schedules = tuple(day_schedules)
 
-    def __getitem__(self, index: int | slice) -> DaySchedule:
+    @overload
+    def __getitem__(self, index: int) -> DaySchedule: ...
+
+    @overload
+    def __getitem__(self, slice_: slice) -> Sequence[DaySchedule]: ...
+
+    def __getitem__(self, index: int | slice) -> DaySchedule | Sequence[DaySchedule]:
         return self.__day_schedules[index]
 
     def __len__(self) -> int:
