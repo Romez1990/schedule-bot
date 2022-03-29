@@ -65,10 +65,10 @@ class DatabaseImpl(Database):
             return perform_query(connection) \
                 .map_task(release_connection)
 
-        get_connection_task: Task[Either[DatabaseError, PoolConnection]] = Task(self.__connection_pool.get_connection()) \
-            .map(Right)
+        get_connection_task = Task(self.__connection_pool.get_connection()) \
+            .map(self.__right_connection)
         return TaskEither(get_connection_task) \
             .bind(perform_query_and_release)
 
-    def __right_connection(self, connection: PoolConnection) -> Either[Exception, PoolConnection]:
+    def __right_connection(self, connection: PoolConnection) -> Either[DatabaseError, PoolConnection]:
         return Right(connection)
