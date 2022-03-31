@@ -110,7 +110,7 @@ async def test_get_connection__when_get_connection__waits_for_release() -> None:
     result_connection_1 = await connection_pool.get_connection()
     result_connection_2 = await connection_pool.get_connection()
     result_connection_3_task = create_task(connection_pool.get_connection())
-    connection_pool.release_connection(result_connection_1)
+    result_connection_1.release()
     result_connection_3 = await result_connection_3_task
 
     assert result_connection_3 is result_connection_1

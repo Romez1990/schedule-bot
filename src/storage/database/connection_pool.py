@@ -4,7 +4,6 @@ from typing import (
 )
 
 from .pool_connection_context_manager import PoolConnectionContextManager
-from .pool_connection import PoolConnection
 
 
 class ConnectionPool(metaclass=ABCMeta):
@@ -13,6 +12,3 @@ class ConnectionPool(metaclass=ABCMeta):
 
     @abstractmethod
     def get_connection(self) -> PoolConnectionContextManager: ...
-
-    @abstractmethod
-    def release_connection(self, connection: PoolConnection) -> None: ...

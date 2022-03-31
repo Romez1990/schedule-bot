@@ -59,7 +59,7 @@ class DatabaseImpl(Database):
                           ) -> TaskEither[DatabaseError, T]:
         def perform_query_and_release(connection: PoolConnection) -> TaskEither[DatabaseError, T]:
             def release_connection(result: Either[DatabaseError, T]) -> Either[DatabaseError, T]:
-                self.__connection_pool.release_connection(connection)
+                connection.release()
                 return result
 
             return perform_query(connection) \

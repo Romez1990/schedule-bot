@@ -71,10 +71,10 @@ class ConnectionPoolImpl(ConnectionPool):
 
     async def __create_connection_and_add(self, add_to_collection: Callable[[ManageablePoolConnection], None]
                                           ) -> ManageablePoolConnection:
-        def release_connection() -> None:
-            self.release_connection(connection)
+        def on_connection_released() -> None:
+            self.__move_connection_to_unused(connection)
 
-        connection = self.__connection_factory.create(release_connection)
+        connection = self.__connection_factory.create(on_connection_released)
         add_to_collection(connection)
         if self.__get_connection_lock.locked():
             self.__get_connection_lock.release()
@@ -88,7 +88,6 @@ class ConnectionPoolImpl(ConnectionPool):
             raise GetConnectionTimeoutError(self.__get_connection_timeout)
         return connection
 
-    def release_connection(self, connection: PoolConnection) -> None:
-        manageable_pool_connection = cast(ManageablePoolConnection, connection)
-        self.__used_connections.remove(manageable_pool_connection)
-        self.__unused_connections.put_nowait(manageable_pool_connection)
+    def __move_connection_to_unused(self, connection: ManageablePoolConnection) -> None:
+        self.__used_connections.remove(connection)
+        self.__unused_connections.put_nowait(connection)
