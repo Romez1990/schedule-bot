@@ -3,7 +3,7 @@ from data.fp.either import Either
 from data.fp.task import Task
 from data.fp.task_either import TaskEither
 from storage.database import (
-    Database,
+    DataFetcher,
     DatabaseError,
     QuerySyntaxError,
     TableAlreadyExistsError,
@@ -17,8 +17,8 @@ from .migration import Migration
 
 
 class MigrationRunImpl(MigrationRun):
-    def __init__(self, database: Database, logger_factory: LoggerFactory, migration: Migration) -> None:
-        self.__database = database
+    def __init__(self, data_fetcher: DataFetcher, logger_factory: LoggerFactory, migration: Migration) -> None:
+        self.__data_fetcher = data_fetcher
         self.__logger = logger_factory.create()
         self.__migration = migration
 
@@ -38,7 +38,7 @@ class MigrationRunImpl(MigrationRun):
             self.__create_table_result = result
 
         query = getattr(self.__migration, query_name)
-        return self.__database.execute(query) \
+        return self.__data_fetcher.execute(query) \
             .map_left(filter_error) \
             .to_task() \
             .map(set_result)
@@ -60,7 +60,7 @@ class MigrationRunImpl(MigrationRun):
             return error
 
         query = getattr(self.__migration.create_relationships, query_name)
-        return self.__database.execute(query) \
+        return self.__data_fetcher.execute(query) \
             .map_left(filter_error) \
             .get_or_raise()
 
