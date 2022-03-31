@@ -2,10 +2,10 @@ from typing import (
     NoReturn,
 )
 
-from data.fp.task import Task
 from infrastructure.script_runner import AsyncScript, script
 from infrastructure.logger import LoggerFactory
 from infrastructure.errors import NoReturnError
+from data.fp.task import Task
 from storage.database import ConnectionPool
 from schedule_services.update_checker import ScheduleUpdateService
 from messenger_services.messenger_service import MessageHandlerRegistrar
@@ -22,11 +22,17 @@ class StartScript(AsyncScript):
         self.message_handler_registrar = message_handler_registrar
 
     async def run(self) -> NoReturn:
+        await self.init()
+        self.logger.info('App has been started')
+        await self.start()
+        raise NoReturnError
+
+    async def init(self) -> None:
         await self.connection_pool.init()
         self.message_handler_registrar.register(self.container)
-        self.logger.info('App has been started')
+
+    async def start(self) -> None:
         await Task.parallel([
             self.schedule_update_service.start_checking_updates(),
             self.message_handler_registrar.start(),
         ])
-        raise NoReturnError
