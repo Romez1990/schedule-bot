@@ -34,18 +34,14 @@ class Task(CoroutineBase[T], Generic[T]):
 
     @staticmethod
     def series(tasks: Iterable[Task[T]]) -> Task[list[T]]:
-        def reducer(results_task: Task[list[T]], task: Task[T]) -> Task[list[T]]:
-            def binder(results: list[T]) -> Task[list[T]]:
-                def mapper(value: T) -> list[T]:
-                    results.append(value)
-                    return results
+        async def async_series() -> list[T]:
+            results = []
+            for task in tasks:
+                value = await task
+                results.append(value)
+            return results
 
-                return task.map(mapper)
-
-            return results_task.bind(binder)
-
-        return List(tasks) \
-            .reduce(reducer, Task.from_value([]))
+        return Task(async_series())
 
     def map(self, fn: Callable[[T], T2]) -> Task[T2]:
         async def async_map() -> T2:
