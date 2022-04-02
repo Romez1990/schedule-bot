@@ -19,9 +19,6 @@ class VkBottleAdapter(MessengerAdapter[VkMessage]):
     async def send_message(self, user: User, text: str) -> None:
         await self.__api.messages.send(user.chat_id, message=text, random_id=0)
 
-    async def send_image(self, user: User, image_bytes: bytes) -> None:
-        raise RuntimeError
-
     def map_message(self, message: VkMessage) -> Message:
         user = self.__map_user(message)
         return Message(user, message.text)
