@@ -31,8 +31,9 @@ class StartScript(AsyncScript):
         await self.connection_pool.init()
         self.message_handler_registrar.register(self.container)
 
-    async def start(self) -> None:
+    async def start(self) -> NoReturn:
         await Task.parallel([
             self.schedule_update_service.start_checking_updates(),
             self.message_handler_registrar.start(),
         ])
+        raise NoReturnError
