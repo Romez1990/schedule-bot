@@ -7,14 +7,14 @@ from infrastructure.logger import LoggerFactory
 from infrastructure.errors import NoReturnError
 from data.fp.task import Task
 from storage.database import ConnectionPool
-from schedule_services.update_checker import ScheduleUpdateService
+from schedule_services.update_checker import UpdateChecker
 from messenger_services.messenger_service import MessageHandlerRegistrar
 
 
 @script
 class StartScript(AsyncScript):
     def __init__(self, logger_factory: LoggerFactory, connection_pool: ConnectionPool,
-                 schedule_update_service: ScheduleUpdateService,
+                 schedule_update_service: UpdateChecker,
                  message_handler_registrar: MessageHandlerRegistrar) -> None:
         self.logger = logger_factory.create()
         self.connection_pool = connection_pool
