@@ -16,7 +16,7 @@ from .coroutine_base import CoroutineBase
 from .async_identity import async_identity
 
 T = TypeVar('T')
-T2 = TypeVar('T2')
+TResult = TypeVar('TResult')
 
 
 class Task(CoroutineBase[T], Generic[T]):
@@ -42,14 +42,14 @@ class Task(CoroutineBase[T], Generic[T]):
 
         return Task(async_series())
 
-    def map(self, fn: Callable[[T], T2]) -> Task[T2]:
-        async def async_map() -> T2:
+    def map(self, fn: Callable[[T], TResult]) -> Task[TResult]:
+        async def async_map() -> TResult:
             return fn(await self._coroutine)
 
         return Task(async_map())
 
-    def bind(self, fn: Callable[[T], Awaitable[T2]]) -> Task[T2]:
-        async def async_bind() -> T2:
+    def bind(self, fn: Callable[[T], Awaitable[TResult]]) -> Task[TResult]:
+        async def async_bind() -> TResult:
             return await fn(await self._coroutine)
 
         return Task(async_bind())
