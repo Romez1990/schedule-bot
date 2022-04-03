@@ -7,9 +7,9 @@ from typing import (
 )
 
 L = TypeVar('L')
-L2 = TypeVar('L2')
+LResult = TypeVar('LResult')
 R = TypeVar('R')
-R2 = TypeVar('R2')
+RResult = TypeVar('RResult')
 T = TypeVar('T')
 
 
@@ -34,13 +34,13 @@ class Either(Generic[L, R], metaclass=ABCMeta):
     def is_left(self) -> bool: ...
 
     @abstractmethod
-    def map(self, fn: Callable[[R], R2]) -> Either[L, R2]: ...
+    def map(self, fn: Callable[[R], RResult]) -> Either[L, RResult]: ...
 
     @abstractmethod
-    def map_left(self, fn: Callable[[L], L2]) -> Either[L2, R]: ...
+    def map_left(self, fn: Callable[[L], LResult]) -> Either[LResult, R]: ...
 
     @abstractmethod
-    def bind(self, fn: Callable[[R], Either[L, R2]]) -> Either[L, R2]: ...
+    def bind(self, fn: Callable[[R], Either[L, RResult]]) -> Either[L, RResult]: ...
 
     @abstractmethod
     def match(self, on_left: Callable[[L], T], on_right: Callable[[R], T]) -> T: ...

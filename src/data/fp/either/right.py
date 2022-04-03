@@ -8,10 +8,10 @@ from typing import (
 from .either import Either
 
 L = TypeVar('L')
-L2 = TypeVar('L2')
+LResult = TypeVar('LResult')
 R = TypeVar('R')
-R2 = TypeVar('R2')
-T = TypeVar('T')
+RResult = TypeVar('RResult')
+TResult = TypeVar('TResult')
 
 
 class _Right(Either[L, R]):
@@ -26,16 +26,16 @@ class _Right(Either[L, R]):
     def is_left(self) -> bool:
         return False
 
-    def map(self, fn: Callable[[R], R2]) -> Either[L, R2]:
+    def map(self, fn: Callable[[R], RResult]) -> Either[L, RResult]:
         return Right(fn(self.__value))
 
-    def map_left(self, fn: Callable[[L], L2]) -> Either[L2, R]:
-        return cast(Either[L2, R], self)
+    def map_left(self, fn: Callable[[L], LResult]) -> Either[LResult, R]:
+        return cast(Either[LResult, R], self)
 
-    def bind(self, fn: Callable[[R], Either[L, R2]]) -> Either[L, R2]:
+    def bind(self, fn: Callable[[R], Either[L, RResult]]) -> Either[L, RResult]:
         return fn(self.__value)
 
-    def match(self, on_left: Callable[[L], T], on_right: Callable[[R], T]) -> T:
+    def match(self, on_left: Callable[[L], TResult], on_right: Callable[[R], TResult]) -> TResult:
         return on_right(self.__value)
 
     def get_or(self, value: R) -> R:
