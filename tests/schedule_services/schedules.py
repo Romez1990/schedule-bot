@@ -1,17 +1,6 @@
 from datetime import date
-from asyncio import sleep
-from typing import (
-    Callable,
-    Sequence,
-)
-from pytest import (
-    fixture,
-    mark,
-)
-from unittest.mock import Mock
 
 from data.fp.maybe import Some, Nothing
-from data.fp.task import Task
 from data.serializers import BytesSerializerImpl
 from schedule_services.schedule import (
     Schedule,
@@ -21,52 +10,6 @@ from schedule_services.schedule import (
     DaySchedule,
     Entry,
 )
-from schedule_services.update_checker import (
-    UpdateCheckerImpl,
-    ScheduleFetcher,
-    ScheduleHashing,
-    ScheduleHashStorage,
-)
-
-
-@fixture(autouse=True)
-def setup() -> None:
-    global update_checker, schedule_fetcher, schedule_hashing, schedule_hash_storage, on_schedules_changed
-    schedule_fetcher = Mock()
-
-    def create_schedule_fetcher(on_schedules_fetched: Callable[[Sequence[Schedule]], None]) -> None:
-        global schedules_fetched
-        schedules_fetched = on_schedules_fetched
-
-    schedule_fetcher.subscribe_for_updates = create_schedule_fetcher
-    schedule_hashing = Mock()
-    schedule_hash_storage = Mock()
-    on_schedules_changed = Mock()
-    update_checker = UpdateCheckerImpl(schedule_fetcher, schedule_hashing, schedule_hash_storage, on_schedules_changed)
-
-
-update_checker: UpdateCheckerImpl
-schedules_fetched: Callable[[Sequence[Schedule]], None]
-schedule_fetcher: ScheduleFetcher
-schedule_hashing: ScheduleHashing
-schedule_hash_storage: ScheduleHashStorage
-on_schedules_changed: Callable[[Schedule, list[Group]], None]
-
-
-@mark.asyncio
-async def test_schedule_fetched__saves_hash_to_storage__when_no_hash_found_in_storage() -> None:
-    schedule_hash = 123
-    schedule_hashing.hash = Mock(return_value=schedule_hash)
-    schedule_hash_storage.get_hashes_by_dates = Mock(return_value=Task.from_value([Nothing]))
-    schedule_hash_storage.save = Mock()
-
-    schedules_fetched([schedule])
-
-    await sleep(0)
-    schedule_hashing.hash.assert_called_once_with(schedule)
-    schedule_hash_storage.get_hashes_by_dates.assert_called_once_with([schedule.starts_at])
-    schedule_hash_storage.save.assert_called_once_with([(schedule.starts_at, schedule_hash)])
-
 
 schedule = Schedule(date(2022, 3, 21), {
     Group('ИС-20-Д'): WeekSchedule(DayOfWeek.monday, [
