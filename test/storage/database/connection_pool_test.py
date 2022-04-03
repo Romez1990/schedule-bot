@@ -16,7 +16,6 @@ from unittest.mock import Mock
 from storage.database import (
     ConnectionPoolImpl,
     PoolConnectionFactory,
-    Connection,
     ManageablePoolConnection,
     PoolConnectionImpl,
     GetConnectionTimeoutError,
@@ -35,15 +34,22 @@ def setup() -> None:
     connection_pool = ConnectionPoolImpl(connection_factory, config)
 
 
+def mock_connection_factory_create() -> Mock:
+    def create_connection(on_released: Callable[[], None]) -> ManageablePoolConnection:
+        connection: ManageablePoolConnection = Mock()
+        connection.open = Mock(return_value=Task.from_value(None))
+        return PoolConnectionImpl(connection, on_released)
+
+    return Mock(side_effect=create_connection)
+
+
 connection_pool: ConnectionPoolImpl
 connection_factory: PoolConnectionFactory
 
 
 @mark.asyncio
 async def test_init__calls_factory_create_connection() -> None:
-    connection: Connection = Mock()
-    connection.open = Mock(return_value=Task.from_value(None))
-    connection_factory.create = Mock(return_value=connection)
+    connection_factory.create = mock_connection_factory_create()
 
     await connection_pool.init()
 
@@ -52,60 +58,43 @@ async def test_init__calls_factory_create_connection() -> None:
 
 @mark.asyncio
 async def test_get_connection__calls_factory_create_connection() -> None:
-    connection: Connection = Mock()
-    connection.open = Mock(return_value=Task.from_value(None))
-    connection_factory.create = Mock(return_value=connection)
+    connection_factory.create = mock_connection_factory_create()
 
     result_connection = await connection_pool.get_connection()
 
-    assert result_connection is connection
     connection_factory.create.assert_called_once()
+    result_connection.release()
 
 
 @mark.asyncio
 async def test_get_connection__when_call_2_times__returns_different_connections() -> None:
-    connection_1: Connection = Mock()
-    connection_1.open = Mock(return_value=Task.from_value(None))
-    connection_2: Connection = Mock()
-    connection_2.open = Mock(return_value=Task.from_value(None))
-    connection_factory.create = Mock(side_effect=[connection_1, connection_2])
+    connection_factory.create = mock_connection_factory_create()
 
     result_connection_1 = await connection_pool.get_connection()
     result_connection_2 = await connection_pool.get_connection()
 
-    assert result_connection_1 is connection_1
-    assert result_connection_2 is connection_2
+    assert result_connection_1 is not result_connection_2
     assert connection_factory.create.call_count == 2
+    result_connection_1.release()
+    result_connection_2.release()
 
 
 @mark.asyncio
 async def test_release_connection__when_get_connection__returns_the_same_connection() -> None:
-    connection: Connection = Mock()
-    connection.open = Mock(return_value=Task.from_value(None))
-    pool_connection: PoolConnectionImpl | None = None
-
-    def create_connection(on_released: Callable[[], None]) -> ManageablePoolConnection:
-        nonlocal pool_connection
-        pool_connection = PoolConnectionImpl(connection, on_released)
-        return pool_connection
-
-    connection_factory.create = Mock(side_effect=create_connection)
+    connection_factory.create = mock_connection_factory_create()
 
     result_connection = await connection_pool.get_connection()
     result_connection.release()
     result_connection_2 = await connection_pool.get_connection()
 
-    assert result_connection_2 is pool_connection
+    assert result_connection_2 is result_connection
     connection_factory.create.assert_called_once()
+    result_connection_2.release()
 
 
 @mark.asyncio
 async def test_get_connection__when_get_connection__waits_for_release() -> None:
-    connection_1: Connection = Mock()
-    connection_1.open = Mock(return_value=Task.from_value(None))
-    connection_2: Connection = Mock()
-    connection_2.open = Mock(return_value=Task.from_value(None))
-    connection_factory.create = Mock(side_effect=[connection_1, connection_2])
+    connection_factory.create = mock_connection_factory_create()
 
     result_connection_1 = await connection_pool.get_connection()
     result_connection_2 = await connection_pool.get_connection()
@@ -116,15 +105,13 @@ async def test_get_connection__when_get_connection__waits_for_release() -> None:
     assert result_connection_3 is result_connection_1
     assert result_connection_2 is not result_connection_1
     assert connection_factory.create.call_count == 2
+    result_connection_2.release()
+    result_connection_3.release()
 
 
 @mark.asyncio
 async def test_get_connection__when_get_connection__no_return() -> None:
-    connection_1: Connection = Mock()
-    connection_1.open = Mock(return_value=Task.from_value(None))
-    connection_2: Connection = Mock()
-    connection_2.open = Mock(return_value=Task.from_value(None))
-    connection_factory.create = Mock(side_effect=[connection_1, connection_2])
+    connection_factory.create = mock_connection_factory_create()
 
     # noinspection PyUnusedLocal
     result_connection_1 = await connection_pool.get_connection()
@@ -132,3 +119,6 @@ async def test_get_connection__when_get_connection__no_return() -> None:
     result_connection_2 = await connection_pool.get_connection()
     with raises(GetConnectionTimeoutError):
         await connection_pool.get_connection()
+
+    result_connection_1.release()
+    result_connection_2.release()
