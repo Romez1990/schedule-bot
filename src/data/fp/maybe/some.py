@@ -7,7 +7,7 @@ from typing import (
 from .maybe import Maybe
 
 T = TypeVar('T')
-T2 = TypeVar('T2')
+TResult = TypeVar('TResult')
 
 
 class Some(Maybe[T]):
@@ -22,13 +22,13 @@ class Some(Maybe[T]):
     def is_nothing(self) -> bool:
         return False
 
-    def map(self, fn: Callable[[T], T2]) -> Maybe[T2]:
+    def map(self, fn: Callable[[T], TResult]) -> Maybe[TResult]:
         return Some(fn(self.__value))
 
-    def bind(self, fn: Callable[[T], Maybe[T2]]) -> Maybe[T2]:
+    def bind(self, fn: Callable[[T], Maybe[TResult]]) -> Maybe[TResult]:
         return fn(self.__value)
 
-    def match(self, on_nothing: Callable[[], T2], on_some: Callable[[T], T2]) -> T2:
+    def match(self, on_nothing: Callable[[], TResult], on_some: Callable[[T], TResult]) -> TResult:
         return on_some(self.__value)
 
     def get_or(self, value: T) -> T:

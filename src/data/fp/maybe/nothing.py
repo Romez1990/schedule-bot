@@ -9,7 +9,7 @@ from .maybe import Maybe
 from .nothing_error import NothingError
 
 T = Any
-T2 = TypeVar('T2')
+TResult = TypeVar('TResult')
 
 
 class _Nothing(Maybe[T]):
@@ -21,13 +21,13 @@ class _Nothing(Maybe[T]):
     def is_nothing(self) -> bool:
         return True
 
-    def map(self, fn: Callable[[T], T2]) -> Maybe[T2]:
+    def map(self, fn: Callable[[T], TResult]) -> Maybe[TResult]:
         return self
 
-    def bind(self, fn: Callable[[T], Maybe[T2]]) -> Maybe[T2]:
+    def bind(self, fn: Callable[[T], Maybe[TResult]]) -> Maybe[TResult]:
         return self
 
-    def match(self, on_nothing: Callable[[], T2], on_some: Callable[[T], T2]) -> T2:
+    def match(self, on_nothing: Callable[[], TResult], on_some: Callable[[T], TResult]) -> TResult:
         return on_nothing()
 
     def get_or(self, value: T) -> T:
