@@ -14,7 +14,6 @@ from data.html_parser import (
     TagElement,
 )
 from data.fp.task_either import TaskEither
-from data.vector import List
 from schedule_services.schedule.group import Group
 from .schedule_links_scraper import ScheduleLinksScraper
 from .schedule_links_elements import ScheduleLinksElements
