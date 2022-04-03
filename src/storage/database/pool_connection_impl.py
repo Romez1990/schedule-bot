@@ -47,6 +47,10 @@ class PoolConnectionImpl(ManageablePoolConnection):
         self.__check_if_released()
         return self.__connection.execute(query, *args)
 
+    def execute_many(self, query: str, *args: object) -> TaskEither[DatabaseError, None]:
+        self.__check_if_released()
+        return self.__connection.execute_many(query, *args)
+
     def fetch(self, query: str, *args: object) -> TaskEither[DatabaseError, Records]:
         self.__check_if_released()
         return self.__connection.fetch(query, *args)

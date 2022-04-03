@@ -52,6 +52,12 @@ class PostgresConnection(Connection):
 
         return self.__except_error(perform())
 
+    def execute_many(self, query: str, *args: object) -> TaskEither[DatabaseError, None]:
+        async def perform() -> None:
+            await self.__connection.executemany(query, *args)
+
+        return self.__except_error(perform())
+
     def fetch(self, query: str, *args: object) -> TaskEither[DatabaseError, Records]:
         async def perform() -> Records:
             return await self.__connection.fetch(query, *args)

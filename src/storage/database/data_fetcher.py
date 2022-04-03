@@ -23,6 +23,9 @@ class DataFetcher(metaclass=ABCMeta):
     def execute(self, query: str, *args: object) -> TaskEither[DatabaseError, None]: ...
 
     @abstractmethod
+    def execute_many(self, query: str, *args: object) -> TaskEither[DatabaseError, None]: ...
+
+    @abstractmethod
     def fetch(self, query: str, *args: object) -> TaskEither[DatabaseError, Records]: ...
 
     @abstractmethod
