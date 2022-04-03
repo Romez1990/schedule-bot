@@ -72,9 +72,13 @@ class List(Sequence[T]):
         return len(self.__data)
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, List):
-            return False
-        return self.__data == other.__data
+        if isinstance(other, List):
+            return self.__data == other.__data
+        if isinstance(other, list):
+            return list(self.__data) == other
+        if isinstance(other, tuple):
+            return self.__data == other
+        return False
 
     def cast(self, _: Type[TResult]) -> List[TResult]:
         return cast(List[TResult], self)
