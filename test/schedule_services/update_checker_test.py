@@ -11,7 +11,7 @@ from pytest import (
 from unittest.mock import Mock
 
 from data.fp.maybe import Some, Nothing
-from data.fp.task_maybe import TaskNothing
+from data.fp.task import Task
 from data.serializers import BytesSerializerImpl
 from schedule_services.schedule import (
     Schedule,
@@ -57,15 +57,15 @@ on_schedules_changed: Callable[[Schedule, list[Group]], None]
 async def test_schedule_fetched__saves_hash_to_storage__when_no_hash_found_in_storage() -> None:
     schedule_hash = 123
     schedule_hashing.hash = Mock(return_value=schedule_hash)
-    schedule_hash_storage.get_hash_by_date = Mock(return_value=TaskNothing())
+    schedule_hash_storage.get_hashes_by_dates = Mock(return_value=Task.from_value([Nothing]))
     schedule_hash_storage.save = Mock()
 
     schedules_fetched([schedule])
 
     await sleep(0)
     schedule_hashing.hash.assert_called_once_with(schedule)
-    schedule_hash_storage.get_hash_by_date.assert_called_once_with(schedule.starts_at)
-    schedule_hash_storage.save.assert_called_once_with(schedule.starts_at, schedule_hash)
+    schedule_hash_storage.get_hashes_by_dates.assert_called_once_with([schedule.starts_at])
+    schedule_hash_storage.save.assert_called_once_with([(schedule.starts_at, schedule_hash)])
 
 
 schedule = Schedule(date(2022, 3, 21), {

@@ -1,10 +1,14 @@
+from datetime import date
 from asyncio import create_task
 from typing import (
     Callable,
     Sequence,
+    cast,
 )
 
 from infrastructure.ioc_container import service
+from data.fp.function import const
+from data.fp.maybe import Maybe, Some, Nothing
 from data.fp.task import Task
 from data.vector import List
 from schedule_services.schedule import (
@@ -31,29 +35,45 @@ class UpdateCheckerImpl(UpdateChecker):
         task = self.__check_schedules(schedules)
         create_task(task)
 
-    def __check_schedules(self, schedules: Sequence[Schedule]) -> Task[None]:
-        a = self.__schedule_hash_storage.get_hashes_by_date(schedules)
+    async def __check_schedules(self, schedules: Sequence[Schedule]) -> None:
+        previous_hashes = await self.__get_previous_hashes(schedules)
+        schedules, hashes = List.unzip(self.__get_new_schedule_hashes(schedules, previous_hashes))
+        await self.__save_hashes(schedules, hashes)
 
-    def __check_schedule(self, schedule: Schedule) -> Task[None]:
+    def __get_previous_hashes(self, schedules: Sequence[Schedule]) -> Task[Sequence[Maybe[int]]]:
+        dates = List(schedules) \
+            .map(self.__get_starts_at)
+        return self.__schedule_hash_storage.get_hashes_by_dates(dates)
+
+    def __get_new_schedule_hashes(self, schedules: Sequence[Schedule],
+                                  previous_hashes: Sequence[Maybe[int]]) -> Sequence[tuple[Schedule, int]]:
+        return List.filter_map(self.__get_new_schedule_hash, zip(schedules, previous_hashes))
+
+    def __get_new_schedule_hash(self, t: tuple[Schedule, Maybe[int]]) -> Maybe[tuple[Schedule, int]]:
+        schedule, previous_hash = t
         schedule_hash = self.__schedule_hashing.hash(schedule)
-        return self.__schedule_hash_storage.get_hash_by_date(schedule.starts_at) \
-            .match_awaitable(self.__store_schedule_hash(schedule, schedule_hash),
-                             self.__check_schedule_hash(schedule, schedule_hash))
+        return previous_hash.match(
+            const(cast(Maybe[tuple[Schedule, int]], Some((schedule, schedule_hash)))),
+            self.__get_new_schedule_hash_if_it_needs_to_be_stored(schedule, schedule_hash),
+        )
 
-    def __store_schedule_hash(self, schedule: Schedule, schedule_hash: int) -> Callable[[], Task[None]]:
-        def store_schedule_hash() -> Task[None]:
-            return self.__schedule_hash_storage.save(schedule.starts_at, schedule_hash)
-
-        return store_schedule_hash
-
-    def __check_schedule_hash(self, schedule: Schedule, schedule_hash: int) -> Callable[[int], Task[None]]:
-        def check_schedule_hash(stored_schedule_hash: int) -> Task[None]:
-            if schedule_hash == stored_schedule_hash:
-                return Task.from_value(None)
-            return self.__schedule_hash_storage.save(schedule.starts_at, schedule_hash) \
-                .map(self.__check_day_schedules(schedule))
+    def __get_new_schedule_hash_if_it_needs_to_be_stored(self, schedule: Schedule, schedule_hash: int
+                                                         ) -> Callable[[int], Maybe[tuple[Schedule, int]]]:
+        def check_schedule_hash(previous_hash: int) -> Maybe[tuple[Schedule, int]]:
+            if schedule_hash == previous_hash:
+                return Nothing
+            return Some((schedule, schedule_hash))
 
         return check_schedule_hash
+
+    async def __save_hashes(self, schedules: Sequence[Schedule], hashes: Sequence[int]) -> None:
+        dates = List(schedules) \
+            .map(self.__get_starts_at)
+        hashes_tuple = List.zip(dates, hashes)
+        await self.__schedule_hash_storage.save(hashes_tuple)
+
+    def __get_starts_at(self, schedule: Schedule) -> date:
+        return schedule.starts_at
 
     def __check_day_schedules(self, schedule: Schedule) -> Callable[[None], None]:
         def check_day_schedules(_: None) -> None:

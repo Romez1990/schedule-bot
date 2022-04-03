@@ -28,6 +28,10 @@ class RepositoryConnectionImpl(ManageableRepositoryConnection):
         future_result = self.__connection.execute(query, *args)
         return self.__raise_error(future_result)
 
+    def execute_many(self, query: str, *args: object) -> Task[None]:
+        future_result = self.__connection.execute_many(query, *args)
+        return self.__raise_error(future_result)
+
     def fetch(self, query: str, *args: object) -> Task[Records]:
         future_result = self.__connection.fetch(query, *args)
         return self.__raise_error(future_result)

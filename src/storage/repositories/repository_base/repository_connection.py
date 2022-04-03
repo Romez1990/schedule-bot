@@ -19,6 +19,9 @@ class RepositoryConnection(metaclass=ABCMeta):
     def execute(self, query: str, *args: object) -> Task[None]: ...
 
     @abstractmethod
+    def execute_many(self, query: str, *args: object) -> Task[None]: ...
+
+    @abstractmethod
     def fetch(self, query: str, *args: object) -> Task[Records]: ...
 
     @abstractmethod
