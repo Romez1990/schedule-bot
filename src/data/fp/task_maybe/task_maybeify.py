@@ -1,5 +1,5 @@
 from typing import (
-    Awaitable,
+    Coroutine,
     Callable,
     TypeVar,
     ParamSpec,
@@ -12,7 +12,7 @@ P = ParamSpec('P')
 T = TypeVar('T')
 
 
-def task_maybeify(fn: Callable[P, Awaitable[Maybe[T]]]) -> Callable[P, TaskMaybe[T]]:
+def task_maybeify(fn: Callable[P, Coroutine[object, None, Maybe[T]]]) -> Callable[P, TaskMaybe[T]]:
     def wrapper(*args: P.args, **kwargs: P.kwargs) -> TaskMaybe[T]:
         return TaskMaybe(fn(*args, **kwargs))
 
