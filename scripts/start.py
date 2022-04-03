@@ -25,7 +25,6 @@ class StartScript(AsyncScript):
         await self.init()
         self.logger.info('App has been started')
         await self.start()
-        raise NoReturnError
 
     async def init(self) -> None:
         await self.connection_pool.init()
