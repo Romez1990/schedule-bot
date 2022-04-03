@@ -11,10 +11,10 @@ from data.fp.either import Either, Right, Left
 from data.fp.task import Task, async_identity
 
 L = TypeVar('L')
-L2 = TypeVar('L2')
+LResult = TypeVar('LResult')
 R = TypeVar('R')
-R2 = TypeVar('R2')
-T = TypeVar('T')
+RResult = TypeVar('RResult')
+TResult = TypeVar('TResult')
 
 
 class TaskEither(Generic[L, R], Awaitable[Either[L, R]]):
@@ -39,33 +39,33 @@ class TaskEither(Generic[L, R], Awaitable[Either[L, R]]):
     def __await__(self) -> Generator[object, None, Either[L, R]]:
         return self.__value.__await__()
 
-    def map(self, fn: Callable[[R], R2]) -> TaskEither[L, R2]:
+    def map(self, fn: Callable[[R], RResult]) -> TaskEither[L, RResult]:
         async def async_map() -> Either[L, 2]:
             return (await self.__value).map(fn)
 
         return TaskEither(async_map())
 
-    def map_left(self, fn: Callable[[L], L2]) -> TaskEither[L2, R]:
-        async def async_map_left() -> Either[L2, R]:
+    def map_left(self, fn: Callable[[L], LResult]) -> TaskEither[LResult, R]:
+        async def async_map_left() -> Either[LResult, R]:
             return (await self.__value).map_left(fn)
 
         return TaskEither(async_map_left())
 
-    def map_task(self, fn: Callable[[Either[L, R]], Either[L2, R2]]) -> TaskEither[L2, R2]:
-        async def async_map_task() -> Either[L2, R2]:
+    def map_task(self, fn: Callable[[Either[L, R]], Either[LResult, RResult]]) -> TaskEither[LResult, RResult]:
+        async def async_map_task() -> Either[LResult, RResult]:
             return fn(await self.__value)
 
         return TaskEither(async_map_task())
 
-    def bind(self, fn: Callable[[R], TaskEither[L, R2]]) -> TaskEither[L, R2]:
-        async def async_bind() -> Either[L, R2]:
+    def bind(self, fn: Callable[[R], TaskEither[L, RResult]]) -> TaskEither[L, RResult]:
+        async def async_bind() -> Either[L, RResult]:
             either = await self.__value
             return either if either.is_left else await either.bind(fn)
 
         return TaskEither(async_bind())
 
-    def bind_awaitable(self, fn: Callable[[R], Awaitable[R2]]) -> TaskEither[L, R2]:
-        async def async_awaitable_task() -> Either[L, R2]:
+    def bind_awaitable(self, fn: Callable[[R], Awaitable[RResult]]) -> TaskEither[L, RResult]:
+        async def async_awaitable_task() -> Either[L, RResult]:
             either = await self.__value
             return either if either.is_left else Right(await either.bind(fn))
 
@@ -92,8 +92,8 @@ class TaskEither(Generic[L, R], Awaitable[Either[L, R]]):
     def to_task(self) -> Task[Either[L, R]]:
         return Task(self.__value)
 
-    def match(self, on_left: Callable[[L], T], on_right: Callable[[R], T]) -> Task[T]:
-        async def async_match() -> T:
+    def match(self, on_left: Callable[[L], TResult], on_right: Callable[[R], TResult]) -> Task[TResult]:
+        async def async_match() -> TResult:
             return (await self.__value).match(on_left, on_right)
 
         return Task(async_match())

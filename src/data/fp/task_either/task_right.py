@@ -1,12 +1,11 @@
 from typing import (
-    Any,
     TypeVar,
 )
 
 from data.fp.either import Right
 from data.fp.task_either import TaskEither
 
-L = Any
+L = TypeVar('L')
 R = TypeVar('R')
 
 
