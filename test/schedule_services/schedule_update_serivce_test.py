@@ -1,25 +1,10 @@
-from datetime import date
-from typing import (
-    Callable,
-    Sequence,
-)
 from pytest import (
     fixture,
     mark,
 )
 from unittest.mock import Mock
 
-from data.fp.maybe import Some, Nothing
 from data.fp.task import Task
-from data.serializers import BytesSerializerImpl
-from schedule_services.schedule import (
-    Schedule,
-    Group,
-    WeekSchedule,
-    DayOfWeek,
-    DaySchedule,
-    Entry,
-)
 from schedule_services.update_checker import (
     ScheduleUpdateServiceImpl,
     ScheduleFetcher,
