@@ -3,11 +3,9 @@ from asyncio import (
     TimeoutError,
     Queue,
     wait_for,
-    get_event_loop,
 )
 from typing import (
     Callable,
-    cast,
 )
 
 from infrastructure.ioc_container import service
