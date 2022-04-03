@@ -1,5 +1,3 @@
-from pytest import raises
-
 from data.vector import List
 
 
