@@ -19,7 +19,7 @@ T = TypeVar('T')
 TResult = TypeVar('TResult')
 
 
-class Task(CoroutineBase[T], Generic[T]):
+class Task(CoroutineBase[T]):
     def __init__(self, coroutine: Coroutine[object, None, T]) -> None:
         super().__init__(coroutine)
 
