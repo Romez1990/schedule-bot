@@ -104,8 +104,10 @@ class Container:
         return isinstance(constructor, WrapperDescriptorType)
 
     def __get_function_parameters(self, func: Callable) -> Sequence[str]:
+        # noinspection PyUnresolvedReferences
         number_of_parameters = func.__code__.co_argcount
         self_parameter = 1
+        # noinspection PyUnresolvedReferences
         return list(func.__code__.co_varnames[self_parameter:number_of_parameters])
 
     def __check_type_hint(self, name: str, parameter_type: object) -> type:
