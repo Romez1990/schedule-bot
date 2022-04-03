@@ -3,6 +3,20 @@ from pytest import raises
 from data.vector import List
 
 
+def test_unzip() -> None:
+    zipped_list = [
+        (1, 'a'),
+        (2, 'b'),
+        (3, 'c'),
+    ]
+
+    result = List.unzip(zipped_list)
+
+    ints, strings = result
+    assert ints == List([1, 2, 3])
+    assert strings == List(['a', 'b', 'c'])
+
+
 def test_eq__equal_lists__returns_true() -> None:
     list1 = List([1, 2, 3])
     list2 = List([1, 2, 3])

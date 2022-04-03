@@ -15,6 +15,7 @@ from data.fp.maybe import Maybe, Nothing
 
 T = TypeVar('T')
 T2 = TypeVar('T2')
+TResult = TypeVar('TResult')
 
 
 class List(Sequence[T]):
@@ -27,6 +28,31 @@ class List(Sequence[T]):
         if isinstance(iterable, List):
             return iterable.__data
         return tuple(iterable)
+
+    @staticmethod
+    def zip(elements_1: Iterable[T], elements_2: Iterable[T2]) -> List[tuple[T, T2]]:
+        return List(zip(elements_1, elements_2))
+
+    @staticmethod
+    def unzip(self: Iterable[tuple[T, T2]]) -> tuple[List[T], List[T2]]:
+        def create_list(t: tuple[TResult, ...]) -> List[TResult]:
+            return List(t)
+
+        result = List(zip(*self)) \
+            .map(create_list)
+        return cast(tuple[List[T], List[T2]], tuple(result))
+
+    @staticmethod
+    def filter_map(mapper: Callable[[T], Maybe[TResult]], self: Iterable[T]) -> List[TResult]:
+        result: list[TResult] = []
+
+        def add_value(value: TResult) -> None:
+            result.append(value)
+
+        for element in self:
+            mapper(element) \
+                .map(add_value)
+        return List(result)
 
     @overload
     def __getitem__(self, index: int) -> T: ...
@@ -50,16 +76,16 @@ class List(Sequence[T]):
             return False
         return self.__data == other.__data
 
-    def cast(self, _: Type[T2]) -> List[T2]:
-        return cast(List[T2], self)
+    def cast(self, _: Type[TResult]) -> List[TResult]:
+        return cast(List[TResult], self)
 
-    def map(self, function: Callable[[T], T2]) -> List[T2]:
+    def map(self, function: Callable[[T], TResult]) -> List[TResult]:
         return List(map(function, self))
 
     def filter(self, function: Callable[[T], bool]) -> List[T]:
         return List(filter(function, self))
 
-    def refine(self, new_type: Type[T2], function: Callable[[T], bool]) -> List[T2]:
+    def refine(self, new_type: Type[TResult], function: Callable[[T], bool]) -> List[TResult]:
         return List(filter(function, self)) \
             .cast(new_type)
 
@@ -67,14 +93,14 @@ class List(Sequence[T]):
     def reduce(self, function: Callable[[T, T], T]) -> T: ...
 
     @overload
-    def reduce(self, function: Callable[[T2, T], T2], initial: T2) -> T2: ...
+    def reduce(self, function: Callable[[TResult, T], TResult], initial: TResult) -> TResult: ...
 
-    def reduce(self, function: Callable, initial: T2 = None) -> T | T2:
+    def reduce(self, function: Callable, initial: TResult = None) -> T | TResult:
         if initial is None:
             return reduce(function, self)
         return reduce(function, self, initial)
 
-    def find_first_map(self, function: Callable[[T], Maybe[T2]]) -> Maybe[T2]:
+    def find_first_map(self, function: Callable[[T], Maybe[TResult]]) -> Maybe[TResult]:
         for element in self:
             maybe_result = function(element)
             if maybe_result.is_some:
