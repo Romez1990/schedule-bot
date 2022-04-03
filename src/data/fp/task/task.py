@@ -12,7 +12,6 @@ from typing import (
     cast,
 )
 
-from data.vector import List
 from .coroutine_base import CoroutineBase
 from .async_identity import async_identity
 
