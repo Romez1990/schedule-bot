@@ -1,8 +1,8 @@
 from asyncio import sleep
 from typing import (
+    Sequence,
     NoReturn,
     Callable,
-    Sequence,
 )
 
 from infrastructure.ioc_container import service
