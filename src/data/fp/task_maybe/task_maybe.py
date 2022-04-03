@@ -16,7 +16,7 @@ T = TypeVar('T')
 TResult = TypeVar('TResult')
 
 
-class TaskMaybe(Generic[T], CoroutineBase[Maybe[T]]):
+class TaskMaybe(CoroutineBase[Maybe[T]]):
     def __init__(self, maybe_coroutine: Coroutine[object, None, Maybe[T]]) -> None:
         super().__init__(maybe_coroutine)
 
@@ -36,9 +36,6 @@ class TaskMaybe(Generic[T], CoroutineBase[Maybe[T]]):
             return Some(value)
 
         return TaskMaybe(async_try_except())
-
-    def __await__(self) -> Generator[object, None, Maybe[T]]:
-        return self._coroutine.__await__()
 
     def map(self, fn: Callable[[T], TResult]) -> TaskMaybe[TResult]:
         async def async_map() -> Maybe[T]:
