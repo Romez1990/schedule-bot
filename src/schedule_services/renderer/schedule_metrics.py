@@ -1,6 +1,5 @@
 from itertools import accumulate
 from typing import (
-    Iterable,
     Callable,
 )
 
