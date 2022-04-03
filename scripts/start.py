@@ -32,7 +32,7 @@ class StartScript(AsyncScript):
 
     async def start(self) -> NoReturn:
         await Task.parallel([
-            self.schedule_update_service.start_checking_updates(),
+            self.schedule_update_service.start_checking_for_updates(),
             self.message_handler_registrar.start(),
         ])
         raise NoReturnError
