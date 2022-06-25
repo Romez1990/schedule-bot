@@ -43,6 +43,10 @@ class List(Sequence[T]):
         return cast(tuple[List[T], List[T2]], tuple(result))
 
     @staticmethod
+    def flatten(self: Iterable[Iterable[T]]) -> List[T]:
+        return List(element for sub_list in self for element in sub_list)
+
+    @staticmethod
     def filter_map(mapper: Callable[[T], Maybe[TResult]], self: Iterable[T]) -> List[TResult]:
         result: list[TResult] = []
 
