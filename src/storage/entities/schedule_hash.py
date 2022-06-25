@@ -12,3 +12,6 @@ class ScheduleHash(Entity):
 
     def set_id(self, schedule_hash_id: int) -> ScheduleHash:
         return ScheduleHash(self.starts_at, self.hash, schedule_hash_id)
+
+    def set_hash(self, hash: int) -> ScheduleHash:
+        return ScheduleHash(self.starts_at, hash, self.id)
