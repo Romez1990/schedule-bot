@@ -4,6 +4,7 @@ from asyncio import (
 from typing import (
     NoReturn,
     Sequence,
+    MutableSequence,
     Callable,
 )
 
@@ -30,7 +31,7 @@ class UpdateCheckerImpl(UpdateChecker):
         self.__week_schedule_changes_determinant = week_schedule_changes_determinant
         self.__schedules: Sequence[Schedule] | None = None
         self.__schedules_fetched = Event()
-        self.__on_update: list[Callable[[Schedule, Sequence[Group]], None]] = []
+        self.__on_update: MutableSequence[Callable[[Schedule, Sequence[Group]], None]] = []
 
     def subscribe_to_updates(self, on_update: Callable[[Schedule, Sequence[Group]], None]) -> None:
         self.__on_update.append(on_update)
