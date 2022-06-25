@@ -1,11 +1,9 @@
 from __future__ import annotations
 from typing import (
-    Generator,
     Awaitable,
     Coroutine,
     Callable,
     TypeVar,
-    Generic,
 )
 
 from data.fp.either import Either, Right, Left

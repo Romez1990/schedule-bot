@@ -1,11 +1,9 @@
 from __future__ import annotations
 from typing import (
     Awaitable,
-    Generator,
     Callable,
     Type,
     TypeVar,
-    Generic,
     Coroutine,
 )
 
