@@ -11,7 +11,7 @@ from schedule_services.update_checker import (
     ScheduleHashing,
     ScheduleHashStorage,
 )
-from tests.schedule_services.schedules import schedule
+from tests.schedule_services.update_checker.schedules import schedule
 
 
 @fixture(autouse=True)

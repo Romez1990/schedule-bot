@@ -33,10 +33,8 @@ schedule_changes_determinant: ScheduleChangesDeterminant
 week_schedule_changes_determinant: WeekScheduleChangesDeterminant
 
 
-@mark.asyncio
-async def test_start__starts_schedule_fetcher() -> None:
-    fetch_interval.start = Mock(return_value=Task.from_value(None))
-
-    # await schedule_update_service.start_checking_for_updates()
-    #
-    # schedule_fetcher.start.assert_called_once_with()
+# @mark.asyncio
+# async def test_start__starts_schedule_fetcher() -> None:
+#     fetch_interval.start = Mock(return_value=Task.from_value(None))
+#
+#     await schedule_update_service.start_checking_for_updates()
