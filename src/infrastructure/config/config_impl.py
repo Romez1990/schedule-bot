@@ -18,3 +18,4 @@ class ConfigImpl(Config):
         self.vk_bot_token = env.get_str('VK_BOT_TOKEN')
 
         self.update_checker_interval = env.get_int('UPDATE_CHECKER_INTERVAL')
+        self.weeks_to_store_schedule_hash = env.get_int('WEEKS_TO_STORE_SCHEDULE_HASH')

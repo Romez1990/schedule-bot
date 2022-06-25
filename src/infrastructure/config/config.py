@@ -14,3 +14,4 @@ class Config(metaclass=ABCMeta):
     vk_bot_token: str
 
     update_checker_interval: int
+    weeks_to_store_schedule_hash: int
