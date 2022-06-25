@@ -45,13 +45,26 @@ class ScheduleHashRepositoryImpl(ScheduleHashRepository, RepositoryBase):
         return List.zip(schedule_hashes, ids) \
             .map(self.__set_id)
 
-    def __entity_to_tuple(self, schedule_hash: ScheduleHash) -> tuple[None, date, int]:
-        return None, schedule_hash.starts_at, schedule_hash.hash
-
     def __set_id(self, t: tuple[ScheduleHash, Mapping[str, object]]) -> ScheduleHash:
         schedule_hash, id_record = t
         id = cast(int, id_record['id'])
         return schedule_hash.set_id(id)
+
+    @taskify
+    async def update_all(self, schedule_hashes: Sequence[ScheduleHash]) -> None:
+        data = List(schedule_hashes) \
+            .map(self.__entity_to_tuple)
+        async with self._get_connection() as connection:
+            await connection.execute('''
+                UPDATE schedule_hashes AS s SET
+                    starts_at = s2.starts_at,
+                    hash = s2.hash
+                FROM unnest($1::schedule_hashes[]) AS s2(id, starts_at, hash)
+                WHERE s2.id = s.id;
+            ''', data)
+
+    def __entity_to_tuple(self, schedule_hash: ScheduleHash) -> tuple[int | None, date, int]:
+        return schedule_hash.id, schedule_hash.starts_at, schedule_hash.hash
 
     @taskify
     async def delete_all(self, schedule_hashes: Sequence[ScheduleHash]) -> None:
@@ -60,7 +73,7 @@ class ScheduleHashRepositoryImpl(ScheduleHashRepository, RepositoryBase):
             await connection.execute_many('''
                 DELETE FROM schedule_hashes
                 WHERE id = ($1)
-            ''', list(ids))
+            ''', ids)
 
     def __get_id(self, schedule_hash: ScheduleHash) -> tuple[int]:
         return schedule_hash.id,
