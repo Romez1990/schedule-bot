@@ -10,6 +10,9 @@ from data.fp.task import Task
 
 class ScheduleHashStorage(metaclass=ABCMeta):
     @abstractmethod
+    def init(self) -> Task[None]: ...
+
+    @abstractmethod
     def get_hashes_by_dates(self, schedule_dates: Sequence[date]) -> Task[Sequence[Maybe[int]]]: ...
 
     @abstractmethod
