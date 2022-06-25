@@ -50,11 +50,7 @@ class ScheduleLinksScraperImpl(ScheduleLinksScraper):
             'заочного',
             'сессия',
         ]
-        for skip_phrase in skip_phrases:
-            if skip_phrase in schedule_links_elements.title:
-                return False
-
-        return True
+        return all(skip_phrase not in schedule_links_elements.title for skip_phrase in skip_phrases)
 
     def __get_schedule_links(self, schedule_links_elements: ScheduleLinksElements) -> ScheduleLinks:
         start = self.__get_starts_at(schedule_links_elements.title)
