@@ -7,6 +7,11 @@ class Entity:
             raise RuntimeError('entity is readonly')
         super().__setattr__(key, value)
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__.items() == other.__dict__.items()
+
     def __repr__(self) -> str:
         entity_name = self.__class__.__name__
         attributes = List(self.__dict__.items()) \
