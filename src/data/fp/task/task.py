@@ -33,11 +33,7 @@ class Task(CoroutineBase[T]):
     @staticmethod
     def series(tasks: Iterable[Task[T]]) -> Task[list[T]]:
         async def async_series() -> list[T]:
-            results = []
-            for task in tasks:
-                value = await task
-                results.append(value)
-            return results
+            return [await task for task in tasks]
 
         return Task(async_series())
 
