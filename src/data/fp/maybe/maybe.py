@@ -59,3 +59,6 @@ class Maybe(Generic[T], metaclass=ABCMeta):
 
     @abstractmethod
     def get_or_raise(self) -> T: ...
+
+    @abstractmethod
+    def __eq__(self, other: object) -> bool: ...

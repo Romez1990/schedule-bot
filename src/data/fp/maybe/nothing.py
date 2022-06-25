@@ -39,6 +39,9 @@ class _Nothing(Maybe[T]):
     def get_or_raise(self) -> T:
         raise NothingError()
 
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, _Nothing)
+
     def __repr__(self) -> str:
         return 'Nothing'
 

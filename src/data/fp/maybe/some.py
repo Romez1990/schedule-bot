@@ -40,5 +40,10 @@ class Some(Maybe[T]):
     def get_or_raise(self) -> T:
         return self.__value
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Some):
+            return False
+        return self.__value == other.__value
+
     def __repr__(self) -> str:
         return f'Some({repr(self.__value)})'
