@@ -22,6 +22,9 @@ class ScheduleChangesDeterminantImpl(ScheduleChangesDeterminant):
         self.__object_hashing = object_hashing
         self.__schedule_hash_storage = schedule_hash_storage
 
+    async def init(self) -> None:
+        await self.__schedule_hash_storage.init()
+
     async def get_changed_schedules(self, schedules: Sequence[Schedule]) -> Sequence[Schedule]:
         previous_hashes = await self.__get_previous_hashes(schedules)
         schedules, hashes = List.unzip(self.__get_new_schedule_hashes(schedules, previous_hashes))

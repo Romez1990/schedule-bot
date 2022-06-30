@@ -89,6 +89,7 @@ async def test_save__calls_repository_update_all__when_called_with_same_dates() 
         (date(2022, 1, 1), 111),
         (date(2022, 2, 2), 222),
     ])
+    schedule_hash_repository.save_all.reset_mock()
 
     await schedule_hash_storage.save([
         (date(2022, 2, 2), 999),
@@ -97,7 +98,7 @@ async def test_save__calls_repository_update_all__when_called_with_same_dates() 
 
     hashes = schedule_hash_storage.get_hashes_by_dates([date(2022, 1, 1), date(2022, 2, 2), date(2022, 3, 3)])
     assert hashes == [Some(111), Some(999), Some(333)]
-    schedule_hash_repository.save_all.assert_called_with([
+    schedule_hash_repository.save_all.assert_called_once_with([
         ScheduleHash(date(2022, 3, 3), 333),
     ])
     schedule_hash_repository.update_all.assert_called_once_with([
@@ -116,6 +117,7 @@ async def test_save__calls_repository_delete_all__when_got_over_sized() -> None:
         (date(2022, 2, 2), 222),
         (date(2022, 3, 3), 333),
     ])
+    schedule_hash_repository.save_all.reset_mock()
 
     await schedule_hash_storage.save([
         (date(2022, 3, 3), 999),
@@ -126,7 +128,7 @@ async def test_save__calls_repository_delete_all__when_got_over_sized() -> None:
     hashes = schedule_hash_storage.get_hashes_by_dates([date(2022, 1, 1), date(2022, 2, 2), date(2022, 3, 3),
                                                         date(2022, 4, 4), date(2022, 5, 5)])
     assert hashes == [Nothing, Nothing, Some(999), Some(444), Some(555)]
-    schedule_hash_repository.save_all.assert_called_with([
+    schedule_hash_repository.save_all.assert_called_once_with([
         ScheduleHash(date(2022, 4, 4), 444),
         ScheduleHash(date(2022, 5, 5), 555),
     ])

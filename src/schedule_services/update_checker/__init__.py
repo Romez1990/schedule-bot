@@ -1,5 +1,5 @@
-from .update_checker import UpdateChecker
-from .update_checker_impl import UpdateCheckerImpl
+from .schedule_update_checker import ScheduleUpdateChecker
+from .schedule_update_checker_impl import ScheduleUpdateCheckerImpl
 from .schedule_changes_determinant import ScheduleChangesDeterminant
 from .schedule_changes_determinant_impl import ScheduleChangesDeterminantImpl
 from .week_schedule_changes_determinant import WeekScheduleChangesDeterminant
