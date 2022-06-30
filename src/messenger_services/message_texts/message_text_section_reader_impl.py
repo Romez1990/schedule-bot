@@ -21,6 +21,5 @@ class MessageTextSectionReaderImpl(MessageTextSectionReader):
         if path.is_dir():
             raise Exception('there must be no directories inside message texts directory')
 
-        with open(path, 'r') as file:
-            content = file.read()
+        content = path.read_text()
         return MessageTextSection(path, content)
