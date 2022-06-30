@@ -10,16 +10,16 @@ from data.fp.function import const
 from data.fp.maybe import Maybe, Some, Nothing
 from data.fp.task import Task
 from data.vector import List
+from data.hashing import Md5ObjectHashing
 from schedule_services.schedule import Schedule
 from .schedule_changes_determinant import ScheduleChangesDeterminant
-from .schedule_hashing import ScheduleHashing
 from .schedule_hash_storage import ScheduleHashStorage
 
 
 @service
 class ScheduleChangesDeterminantImpl(ScheduleChangesDeterminant):
-    def __init__(self, schedule_hashing: ScheduleHashing, schedule_hash_storage: ScheduleHashStorage) -> None:
-        self.__schedule_hashing = schedule_hashing
+    def __init__(self, object_hashing: Md5ObjectHashing, schedule_hash_storage: ScheduleHashStorage) -> None:
+        self.__object_hashing = object_hashing
         self.__schedule_hash_storage = schedule_hash_storage
 
     async def get_changed_schedules(self, schedules: Sequence[Schedule]) -> Sequence[Schedule]:
@@ -39,7 +39,7 @@ class ScheduleChangesDeterminantImpl(ScheduleChangesDeterminant):
 
     def __get_new_schedule_hash(self, t: tuple[Schedule, Maybe[int]]) -> Maybe[tuple[Schedule, int]]:
         schedule, previous_hash = t
-        schedule_hash = self.__schedule_hashing.hash(schedule)
+        schedule_hash = self.__object_hashing.hash(schedule)
         return previous_hash.match(
             const(cast(Maybe[tuple[Schedule, int]], Some((schedule, schedule_hash)))),
             self.__get_new_schedule_hash_if_it_needs_to_be_stored(schedule, schedule_hash),

@@ -5,6 +5,5 @@ from .schedule_changes_determinant_impl import ScheduleChangesDeterminantImpl
 from .week_schedule_changes_determinant import WeekScheduleChangesDeterminant
 from .week_schedule_changes_determinant_impl import WeekScheduleChangesDeterminantImpl
 from .fetcher_interval import FetchInterval
-from .schedule_hashing import ScheduleHashing
 from .schedule_hash_storage import ScheduleHashStorage
 from .schedule_hash_storage_impl import ScheduleHashStorageImpl
