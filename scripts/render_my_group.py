@@ -23,17 +23,18 @@ class RenderMyGroupScript(AsyncScript):
         schedules = await self.schedule_scraper.scrap_schedules()
         if len(schedules) == 0:
             self.logger.info('No schedule')
-        else:
-            schedule, *_ = schedules
-            filtered_schedule = self.schedule_filter.filter(schedule, [
-                Group('ИС-20-Д'),
-                Group('ИС-19-Д'),
-            ])
-            light_schedule = self.renderer.render(filtered_schedule, 'light')
-            dark_schedule = self.renderer.render(filtered_schedule, 'dark')
-            self.save(light_schedule, 'light.jpg')
-            self.save(dark_schedule, 'dark.jpg')
-            self.logger.info('Schedule saved')
+            return
+
+        schedule, *_ = schedules
+        filtered_schedule = self.schedule_filter.filter(schedule, [
+            Group('ИС-20-Д'),
+            Group('ИС-19-Д'),
+        ])
+        light_schedule = self.renderer.render(filtered_schedule, 'light')
+        dark_schedule = self.renderer.render(filtered_schedule, 'dark')
+        self.save(light_schedule, 'light.jpg')
+        self.save(dark_schedule, 'dark.jpg')
+        self.logger.info('Schedule saved')
 
     def save(self, image_bytes: bytes, filename: str) -> None:
         scripts_path = Path(__file__).parent
