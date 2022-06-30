@@ -14,7 +14,8 @@ from messenger_services.messenger_service import MessageHandlerRegistrar
 
 @script
 class StartScript(AsyncScript):
-    def __init__(self, logger_factory: LoggerFactory, connection_pool: ConnectionPool,
+    def __init__(self, logger_factory: LoggerFactory,
+                 connection_pool: ConnectionPool,
                  schedule_update_service: ScheduleUpdateChecker,
                  message_handler_registrar: MessageHandlerRegistrar) -> None:
         self.logger = logger_factory.create()
