@@ -38,5 +38,5 @@ class RenderMyGroupScript(AsyncScript):
 
     def save(self, image_bytes: bytes, filename: str) -> None:
         scripts_path = Path(__file__).parent
-        with open(scripts_path / filename, 'wb') as file:
-            file.write(image_bytes)
+        file_path = scripts_path / filename
+        file_path.write_bytes(image_bytes)
