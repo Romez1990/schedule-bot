@@ -51,7 +51,7 @@ class GroupScheduleScraperImpl(GroupScheduleScraper):
         entries = entry_tags.map(self.__get_entry)
         truncated_entries = self.__truncate_entries(entries)
         if len(truncated_entries) == 0:
-            return DaySchedule([Nothing])
+            return DaySchedule.empty
         return DaySchedule(truncated_entries)
 
     def __truncate_entries(self, entries: List[Maybe[Entry]]) -> list[Maybe[Entry]]:

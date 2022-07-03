@@ -1,3 +1,4 @@
+from __future__ import annotations
 from collections.abc import Sequence
 from typing import (
     Iterable,
@@ -12,6 +13,8 @@ class DaySchedule(Sequence[Maybe[Entry]]):
     def __init__(self, entries: Iterable[Maybe[Entry]]) -> None:
         self.__entries = tuple(entries)
 
+    empty: DaySchedule
+
     def __getitem__(self, index: int | slice) -> Maybe[Entry]:
         return self.__entries[index]
 
@@ -23,3 +26,6 @@ class DaySchedule(Sequence[Maybe[Entry]]):
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({repr_list(self.__entries)})'
+
+
+DaySchedule.empty = DaySchedule([Nothing])
