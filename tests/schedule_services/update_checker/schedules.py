@@ -5,14 +5,14 @@ from data.serializers import BytesSerializerImpl
 from schedule_services.schedule import (
     Schedule,
     Group,
-    WeekSchedule,
+    GroupSchedule,
     DayOfWeek,
     DaySchedule,
     Entry,
 )
 
 schedule = Schedule(date(2022, 3, 21), {
-    Group('ИС-20-Д'): WeekSchedule(DayOfWeek.monday, [
+    Group('ИС-20-Д'): GroupSchedule(DayOfWeek.monday, [
         DaySchedule([
             Nothing,
             Some(
@@ -48,7 +48,7 @@ schedule = Schedule(date(2022, 3, 21), {
 })
 
 schedule_3 = Schedule(date(2022, 3, 21), {
-    Group('ИС-20-Д'): WeekSchedule(DayOfWeek.monday, [
+    Group('ИС-20-Д'): GroupSchedule(DayOfWeek.monday, [
         DaySchedule([
             Nothing,
             Some(
@@ -92,7 +92,7 @@ schedule_3 = Schedule(date(2022, 3, 21), {
             Some(Entry('Архитектура ЭВМ', 'лаб.', 'Толстов В.А., доцент', '1-418')),
         ]),
     ]),
-    Group('ИС-19-Д'): WeekSchedule(DayOfWeek.monday, [
+    Group('ИС-19-Д'): GroupSchedule(DayOfWeek.monday, [
         DaySchedule([
             Some(Entry('Теория информационных процессов и систем', 'лекц.', 'Чернов А.В., профессор', '1-410')),
             Some(Entry('Web-программирование', 'лекц.', 'Хегай Л.С., доцент', '1-410')),
@@ -130,7 +130,7 @@ def change_schedule() -> Schedule:
     schedule_bytes = serializer.serialize(schedule)
     schedule_2 = serializer.deserialize(schedule_bytes, Schedule)
     group_schedule = schedule_2._ScheduleBase__data[Group('ИС-20-Д')]
-    friday_schedule = group_schedule._WeekSchedule__day_schedules[-1]
+    friday_schedule = group_schedule._GroupSchedule__day_schedules[-1]
     friday_entries = list(friday_schedule._DaySchedule__entries)
     friday_entries[0] = Nothing
     friday_schedule._DaySchedule__entries = tuple(friday_entries)

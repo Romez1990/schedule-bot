@@ -9,7 +9,7 @@ from infrastructure.ioc_container import service
 from infrastructure.paths import Paths
 from schedule_services.schedule import (
     Schedule,
-    WeekSchedule,
+    GroupSchedule,
     DayOfWeek,
     DayOfWeekTranslator,
     DaySchedule,
@@ -220,12 +220,12 @@ class ScheduleRendererImpl(ScheduleRenderer):
                     position = self._get_position(group_number, day_of_week, entry_number)
                     row_number = self._schedule_metrics.day_offsets[day_index] + entry_number
                     self._render_stripe(row_number, position)
-            week_schedule = schedule[group]
-            self._render_week_schedule(week_schedule, group_number)
+            group_schedule = schedule[group]
+            self._render_group_schedule(group_schedule, group_number)
 
-    def _render_week_schedule(self, week_schedule: WeekSchedule, group_number: int) -> None:
-        for day_index, day_schedule in enumerate(week_schedule):
-            day_of_week = DayOfWeek(week_schedule.starts_from.value + day_index)
+    def _render_group_schedule(self, group_schedule: GroupSchedule, group_number: int) -> None:
+        for day_index, day_schedule in enumerate(group_schedule):
+            day_of_week = DayOfWeek(group_schedule.starts_from.value + day_index)
             self._render_day_schedule(day_schedule, group_number, day_of_week)
 
     def _render_day_schedule(self, day_schedule: DaySchedule, group_number: int, day_of_week: DayOfWeek) -> None:

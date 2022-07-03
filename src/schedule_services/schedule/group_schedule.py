@@ -10,7 +10,7 @@ from .day_of_week import DayOfWeek
 from .day_schedule import DaySchedule
 
 
-class WeekSchedule(Sequence[DaySchedule]):
+class GroupSchedule(Sequence[DaySchedule]):
     def __init__(self, starts_from: DayOfWeek, day_schedules: Iterable[DaySchedule]) -> None:
         self.starts_from = starts_from
         self.__day_schedules = tuple(day_schedules)

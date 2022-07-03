@@ -9,7 +9,7 @@ from schedule_services.schedule import (
 )
 
 
-class WeekScheduleChangesDeterminant(metaclass=ABCMeta):
+class GroupScheduleChangesDeterminant(metaclass=ABCMeta):
     @abstractmethod
     def init(self) -> Awaitable[None]: ...
 

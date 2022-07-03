@@ -8,17 +8,17 @@ from data.vector import List
 from schedule_services.schedule import (
     Schedule,
     ScheduleLinks,
-    WeekSchedule,
+    GroupSchedule,
 )
 from .university_schedule_scraper import UniversityScheduleScraper
 from .schedule_links_scraper import ScheduleLinksScraper
-from .week_schedule_scraper import WeekScheduleScraper
+from .group_schedule_scraper import GroupScheduleScraper
 
 
 @service
 class UniversityScheduleScraperImpl(UniversityScheduleScraper):
     def __init__(self, schedule_links_scraper: ScheduleLinksScraper,
-                 group_schedule_scraper: WeekScheduleScraper) -> None:
+                 group_schedule_scraper: GroupScheduleScraper) -> None:
         self.__schedule_links_scraper = schedule_links_scraper
         self.__group_schedule_scraper = group_schedule_scraper
 
@@ -37,11 +37,11 @@ class UniversityScheduleScraperImpl(UniversityScheduleScraper):
     async def __get_schedule_from_links(self, links: ScheduleLinks) -> Schedule:
         starts_at = links.starts_at
         links = {group: schedule for group, schedule in links.items() if str(group) in ['ИС-20-Д', 'ИС-19-Д']}
-        week_schedules_tasks = List(links.values()) \
-            .map(self.__get_week_schedule)
-        week_schedules = await Task.parallel(week_schedules_tasks)
-        schedule_dict = {group: week_schedule for group, week_schedule in zip(links.keys(), week_schedules)}
+        group_schedules_tasks = List(links.values()) \
+            .map(self.__get_group_schedule)
+        group_schedules = await Task.parallel(group_schedules_tasks)
+        schedule_dict = {group: group_schedule for group, group_schedule in zip(links.keys(), group_schedules)}
         return Schedule(starts_at, schedule_dict)
 
-    def __get_week_schedule(self, link: str) -> Task[WeekSchedule]:
-        return self.__group_schedule_scraper.scrap_week_schedule(link).get_or_raise()
+    def __get_group_schedule(self, link: str) -> Task[GroupSchedule]:
+        return self.__group_schedule_scraper.scrap_group_schedule(link).get_or_raise()

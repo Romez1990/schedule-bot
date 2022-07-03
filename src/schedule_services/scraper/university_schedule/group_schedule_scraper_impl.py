@@ -5,7 +5,7 @@ from typing import (
 
 from infrastructure.ioc_container import service
 from schedule_services.schedule import (
-    WeekSchedule,
+    GroupSchedule,
     DayOfWeek,
     DaySchedule,
     Entry,
@@ -20,25 +20,25 @@ from data.html_parser import (
 from data.fp.task_either import TaskEither
 from data.fp.maybe import Maybe, Some, Nothing
 from data.vector import List
-from .week_schedule_scraper import WeekScheduleScraper
+from .group_schedule_scraper import GroupScheduleScraper
 
 
 @service
-class WeekScheduleScraperImpl(WeekScheduleScraper):
+class GroupScheduleScraperImpl(GroupScheduleScraper):
     def __init__(self, http_client: HttpClient, html_parser: HtmlParser) -> None:
         self.__http_client = http_client
         self.__html_parser = html_parser
 
-    def scrap_week_schedule(self, link: str) -> TaskEither[Exception, WeekSchedule]:
+    def scrap_group_schedule(self, link: str) -> TaskEither[Exception, GroupSchedule]:
         return self.__http_client.get_text(link) \
             .map(self.__html_parser.parse) \
             .map(self.__scrap_from_document)
 
-    def __scrap_from_document(self, document: Document) -> WeekSchedule:
+    def __scrap_from_document(self, document: Document) -> GroupSchedule:
         day_elements = document.select_all('tr')[2:]
         day_schedules = day_elements.map(self.__get_day_schedule)
         starts_from, truncated_days = self.__truncate_days(DayOfWeek.monday, day_schedules)
-        return WeekSchedule(starts_from, truncated_days)
+        return GroupSchedule(starts_from, truncated_days)
 
     def __truncate_days(self, starts_from: DayOfWeek, days: List[DaySchedule]) -> tuple[DayOfWeek, List[DaySchedule]]:
         truncated_from_start = list(dropwhile(DaySchedule.is_empty, days))

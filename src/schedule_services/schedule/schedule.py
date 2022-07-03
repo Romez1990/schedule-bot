@@ -5,12 +5,12 @@ from typing import (
 
 from data.repr import repr_dict
 from .schedule_base import ScheduleBase
-from .week_schedule import WeekSchedule
+from .group_schedule import GroupSchedule
 from .group import Group
 
 
-class Schedule(ScheduleBase[WeekSchedule]):
-    def __init__(self, starts_at: date, schedule: Mapping[Group, WeekSchedule]) -> None:
+class Schedule(ScheduleBase[GroupSchedule]):
+    def __init__(self, starts_at: date, schedule: Mapping[Group, GroupSchedule]) -> None:
         super().__init__(starts_at, schedule)
 
     def __repr__(self) -> str:
