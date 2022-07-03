@@ -4,7 +4,7 @@ from typing import (
 )
 
 from infrastructure.ioc_container import service
-from data.fp.maybe import Maybe
+from data.fp.maybe import Maybe, Nothing
 from data.vector import List
 from .schedule_filter import ScheduleFilter
 from .schedule import Schedule
@@ -16,18 +16,11 @@ from .day_of_week import DayOfWeek
 @service
 class ScheduleFilterImpl(ScheduleFilter):
     def filter(self, schedule: Schedule, groups: Iterable[Group], day_of_week: DayOfWeek = None) -> Schedule:
-        existing_groups = List(groups).filter(self.__group_exists(schedule))
-        group_schedules = existing_groups \
+        group_schedules = List(groups) \
             .map(self.__get_group_schedule(schedule)) \
-            .map(self.__try_select_day(day_of_week))
-        schedule_dict = {group: group_schedule for group, group_schedule in zip(existing_groups, group_schedules)}
+            .map(self.__select_day_if_specified(day_of_week))
+        schedule_dict = {group: group_schedule for group, group_schedule in zip(groups, group_schedules)}
         return Schedule(schedule.starts_at, schedule_dict)
-
-    def __group_exists(self, schedule: Schedule) -> Callable[[Group], bool]:
-        def group_exists(group: Group) -> bool:
-            return group in schedule
-
-        return group_exists
 
     def __get_group_schedule(self, schedule: Schedule) -> Callable[[Group], GroupSchedule]:
         def get_group_schedule(group: Group) -> GroupSchedule:
@@ -35,7 +28,7 @@ class ScheduleFilterImpl(ScheduleFilter):
 
         return get_group_schedule
 
-    def __try_select_day(self, day_of_week: DayOfWeek | None) -> Callable[[GroupSchedule], GroupSchedule]:
+    def __select_day_if_specified(self, day_of_week: DayOfWeek | None) -> Callable[[GroupSchedule], GroupSchedule]:
         def try_select_day(group_schedule: GroupSchedule) -> GroupSchedule:
             return Maybe.from_optional(day_of_week) \
                 .map(self.__select_day(group_schedule)) \
