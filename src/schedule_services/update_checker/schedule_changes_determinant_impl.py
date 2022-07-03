@@ -8,7 +8,6 @@ from typing import (
 from infrastructure.ioc_container import service
 from data.fp.function import const
 from data.fp.maybe import Maybe, Some, Nothing
-from data.fp.task import Task
 from data.vector import List
 from data.hashing import Md5ObjectHashing
 from schedule_services.schedule import Schedule
@@ -26,12 +25,12 @@ class ScheduleChangesDeterminantImpl(ScheduleChangesDeterminant):
         await self.__schedule_hash_storage.init()
 
     async def get_changed_schedules(self, schedules: Sequence[Schedule]) -> Sequence[Schedule]:
-        previous_hashes = await self.__get_previous_hashes(schedules)
+        previous_hashes = self.__get_previous_hashes(schedules)
         schedules, hashes = List.unzip(self.__get_new_schedule_hashes(schedules, previous_hashes))
         await self.__save_hashes(schedules, hashes)
         return schedules
 
-    def __get_previous_hashes(self, schedules: Sequence[Schedule]) -> Task[Sequence[Maybe[int]]]:
+    def __get_previous_hashes(self, schedules: Sequence[Schedule]) -> Sequence[Maybe[int]]:
         dates = List(schedules) \
             .map(self.__get_starts_at)
         return self.__schedule_hash_storage.get_hashes_by_dates(dates)

@@ -8,13 +8,12 @@ from typing import (
 
 from schedule_services.schedule import (
     Schedule,
-    Group,
 )
 
 
-class ScheduleUpdateChecker(metaclass=ABCMeta):
+class ScheduleUpdateService(metaclass=ABCMeta):
     @abstractmethod
-    def subscribe_to_updates(self, on_update: Callable[[Sequence[tuple[Schedule, Sequence[Group]]]], None]) -> None: ...
+    def subscribe_to_updates(self, on_update: Callable[[Sequence[Schedule]], None]) -> None: ...
 
     @abstractmethod
     def init(self) -> Awaitable[None]: ...

@@ -1,8 +1,9 @@
 from abc import ABCMeta, abstractmethod
-
-from data.fp.task import Task
+from typing import (
+    Awaitable,
+)
 
 
 class FetchInterval(metaclass=ABCMeta):
     @abstractmethod
-    def wait(self) -> Task[None]: ...
+    def wait(self) -> Awaitable[None]: ...

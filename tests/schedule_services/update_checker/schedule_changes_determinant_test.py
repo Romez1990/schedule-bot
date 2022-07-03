@@ -41,7 +41,7 @@ async def test_schedule_fetched__saves_hash_to_storage__when_no_hash_found_in_st
     schedules = [schedule]
     schedule_hash = 123
     object_hashing.hash = Mock(return_value=schedule_hash)
-    schedule_hash_storage.get_hashes_by_dates = Mock(return_value=Task.from_value([Nothing]))
+    schedule_hash_storage.get_hashes_by_dates = Mock(return_value=[Nothing])
     schedule_hash_storage.save = Mock(return_value=Task.from_value(None))
 
     changed_schedules = await schedule_changes_determinant.get_changed_schedules(schedules)

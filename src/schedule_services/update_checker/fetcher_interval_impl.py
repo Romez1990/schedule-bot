@@ -2,7 +2,6 @@ from asyncio import sleep
 
 from infrastructure.ioc_container import service
 from infrastructure.config import Config
-from data.fp.task import taskify
 from .fetcher_interval import FetchInterval
 
 
@@ -18,6 +17,5 @@ class FetchIntervalImpl(FetchInterval):
     def __minutes_to_seconds(self, minutes: int) -> int:
         return minutes * 60
 
-    @taskify
     async def wait(self) -> None:
         await sleep(self.__interval)

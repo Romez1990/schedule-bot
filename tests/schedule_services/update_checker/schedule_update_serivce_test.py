@@ -1,3 +1,8 @@
+from asyncio import (
+    Future,
+    create_task,
+    sleep,
+)
 from pytest import (
     raises,
     fixture,
@@ -7,33 +12,27 @@ from unittest.mock import Mock
 
 from data.fp.task import Task
 from schedule_services.schedule import Group
-from schedule_services.scraper import ScheduleScraper
 from schedule_services.update_checker import (
-    ScheduleUpdateCheckerImpl,
+    ScheduleUpdateServiceImpl,
     FetchInterval,
-    ScheduleChangesDeterminant,
-    WeekScheduleChangesDeterminant,
+    ScheduleUpdateFetcher,
 )
-from tests.schedule_services.update_checker.schedules import schedule
+from tests.schedule_services.update_checker.schedules import (
+    schedule,
+)
 
 
 @fixture(autouse=True)
 def setup() -> None:
-    global schedule_update_service, schedule_scraper, fetch_interval, schedule_changes_determinant, \
-        week_schedule_changes_determinant
-    schedule_scraper = Mock()
+    global schedule_update_service, fetch_interval, schedule_update_fetcher
+    schedule_update_fetcher = Mock()
     fetch_interval = Mock()
-    schedule_changes_determinant = Mock()
-    week_schedule_changes_determinant = Mock()
-    schedule_update_service = ScheduleUpdateCheckerImpl(schedule_scraper, fetch_interval, schedule_changes_determinant,
-                                                        week_schedule_changes_determinant)
+    schedule_update_service = ScheduleUpdateServiceImpl(schedule_update_fetcher, fetch_interval)
 
 
-schedule_update_service: ScheduleUpdateCheckerImpl
-schedule_scraper: ScheduleScraper
+schedule_update_service: ScheduleUpdateServiceImpl
+schedule_update_fetcher: ScheduleUpdateFetcher
 fetch_interval: FetchInterval
-schedule_changes_determinant: ScheduleChangesDeterminant
-week_schedule_changes_determinant: WeekScheduleChangesDeterminant
 
 
 @mark.asyncio
@@ -43,22 +42,50 @@ async def test_get_schedules__raises_error__when_init_is_not_called() -> None:
 
 
 @mark.asyncio
-async def test_init__() -> None:
-    schedules_1 = [schedule]
-    schedules_2 = [schedule]
-    schedules_3 = [(schedule, [Group('ИС-20-Д')])]
-    schedule_changes_determinant.init = Mock(return_value=Task.from_value(None))
-    week_schedule_changes_determinant.init = Mock(return_value=Task.from_value(None))
-    schedule_scraper.scrap_schedules = Mock(return_value=Task.from_value(schedules_1))
-    schedule_changes_determinant.get_changed_schedules = Mock(return_value=Task.from_value(schedules_2))
-    week_schedule_changes_determinant.get_changed_groups = Mock(return_value=Task.from_value(schedules_3))
+async def test_init__gets_schedules_and_calls_subscribers() -> None:
+    schedules = [schedule]
+    updates = [(schedule, [Group('ИС-20-Д')])]
+    fetch_result = schedules, updates
+    schedule_update_fetcher.init = Mock(return_value=Task.from_value(None))
+    schedule_update_fetcher.fetch_updates = Mock(return_value=Task.from_value(fetch_result))
+    subscriber_1 = Mock()
+    subscriber_2 = Mock()
 
+    schedule_update_service.subscribe_to_updates(subscriber_1)
+    schedule_update_service.subscribe_to_updates(subscriber_2)
     await schedule_update_service.init()
     result_schedules = schedule_update_service.get_schedules()
 
-    schedule_changes_determinant.init.assert_called_once_with()
-    week_schedule_changes_determinant.init.assert_called_once_with()
-    schedule_scraper.scrap_schedules.assert_called_once_with()
-    assert result_schedules is schedules_1
-    schedule_changes_determinant.get_changed_schedules.assert_called_once_with(schedules_1)
-    week_schedule_changes_determinant.get_changed_groups.assert_called_once_with(schedules_2)
+    schedule_update_fetcher.init.assert_called_once_with()
+    schedule_update_fetcher.fetch_updates.assert_called_once_with()
+    assert result_schedules is schedules
+    subscriber_1.assert_called_once_with(updates)
+    subscriber_2.assert_called_once_with(updates)
+
+
+@mark.asyncio
+async def test_start_checking_for_updates() -> None:
+    schedules = [schedule]
+    updates = [(schedule, [Group('ИС-20-Д')])]
+    fetch_result = schedules, updates
+    schedule_update_fetcher.fetch_updates = Mock(return_value=Task.from_value(fetch_result))
+    future_1: Future[None] = Future()
+    future_2: Future[None] = Future()
+    fetch_interval.wait = Mock(side_effect=[future_1, future_2])
+    subscriber_1 = Mock()
+    subscriber_2 = Mock()
+
+    schedule_update_service.subscribe_to_updates(subscriber_1)
+    schedule_update_service.subscribe_to_updates(subscriber_2)
+    task = create_task(schedule_update_service.start_checking_for_updates())
+    await sleep(0)
+    fetch_interval.wait.assert_called_once_with()
+    future_1.set_result(None)
+    await sleep(0)
+    result_schedules = schedule_update_service.get_schedules()
+
+    assert result_schedules is schedules
+    schedule_update_fetcher.fetch_updates.assert_called_once_with()
+    subscriber_1.assert_called_once_with(updates)
+    subscriber_2.assert_called_once_with(updates)
+    task.cancel()
