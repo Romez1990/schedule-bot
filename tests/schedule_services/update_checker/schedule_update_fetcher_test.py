@@ -5,7 +5,10 @@ from pytest import (
 from unittest.mock import Mock
 
 from data.fp.task import Task
-from schedule_services.schedule import Group
+from schedule_services.schedule import (
+    Group,
+    ScheduleFilterImpl,
+)
 from schedule_services.scraper import ScheduleScraper
 from schedule_services.update_checker import (
     ScheduleUpdateFetcherImpl,
@@ -32,6 +35,7 @@ schedule_update_fetcher: ScheduleUpdateFetcherImpl
 schedule_scraper: ScheduleScraper
 schedule_changes_determinant: ScheduleChangesDeterminant
 group_schedule_changes_determinant: GroupScheduleChangesDeterminant
+schedule_filter = ScheduleFilterImpl()
 
 
 @mark.asyncio
@@ -49,7 +53,7 @@ async def test_init__calls_init_of_determinants() -> None:
 async def test_fetch_updates() -> None:
     schedules_1 = [schedule, schedule_2]
     schedules_2 = [schedule]
-    schedules_3 = [(schedule, [Group('ИС-20-Д')])]
+    schedules_3 = [schedule_filter.filter(schedule, [Group('ИС-20-Д')])]
     schedule_scraper.scrap_schedules = Mock(return_value=Task.from_value(schedules_1))
     schedule_changes_determinant.get_changed_schedules = Mock(return_value=Task.from_value(schedules_2))
     group_schedule_changes_determinant.get_changed_groups = Mock(return_value=Task.from_value(schedules_3))
