@@ -14,13 +14,13 @@ T = TypeVar('T')
 class ScheduleBase(Mapping[Group, T], Generic[T]):
     def __init__(self, starts_at: date, data: Mapping[Group, T]) -> None:
         self.starts_at = starts_at
-        self._data = data
+        self.__data = data
 
     def __iter__(self) -> Iterator[Group]:
-        return iter(self._data)
+        return iter(self.__data)
 
     def __getitem__(self, key: Group) -> T:
-        return self._data[key]
+        return self.__data[key]
 
     def __len__(self) -> int:
-        return len(self._data)
+        return len(self.__data)

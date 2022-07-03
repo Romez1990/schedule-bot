@@ -15,4 +15,4 @@ class Schedule(ScheduleBase[WeekSchedule]):
 
     def __repr__(self) -> str:
         starts_at = repr(self.starts_at)[len('datetime.'):]
-        return f'{self.__class__.__name__}({starts_at}, {repr_dict(self._data)})'
+        return f'{self.__class__.__name__}({starts_at}, {repr_dict(self)})'

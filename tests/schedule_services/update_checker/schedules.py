@@ -129,7 +129,7 @@ def change_schedule() -> Schedule:
     serializer = BytesSerializerImpl()
     schedule_bytes = serializer.serialize(schedule)
     schedule_2 = serializer.deserialize(schedule_bytes, Schedule)
-    group_schedule = schedule_2._data[Group('ИС-20-Д')]
+    group_schedule = schedule_2._ScheduleBase__data[Group('ИС-20-Д')]
     friday_schedule = group_schedule._WeekSchedule__day_schedules[-1]
     friday_entries = list(friday_schedule._DaySchedule__entries)
     friday_entries[0] = Nothing
