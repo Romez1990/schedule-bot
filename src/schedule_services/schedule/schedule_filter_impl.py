@@ -1,6 +1,6 @@
 from typing import (
-    Callable,
     Iterable,
+    Callable,
 )
 
 from infrastructure.ioc_container import service
