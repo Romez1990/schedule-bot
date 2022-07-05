@@ -1,6 +1,5 @@
 from __future__ import annotations
 from data.fp.maybe import Maybe
-
 from .education_form import EducationForm
 
 
