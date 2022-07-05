@@ -1,13 +1,12 @@
 from __future__ import annotations
+from dataclasses import dataclass
 
-from .entity_base import Entity
 
-
-class User(Entity):
-    def __init__(self, messenger: str, messenger_id: str, id: int = None) -> None:
-        self.id = id
-        self.messenger = messenger
-        self.messenger_id = messenger_id
+@dataclass(frozen=True, eq=False)
+class User:
+    messenger: str
+    messenger_id: str
+    id: int | None = None
 
     def set_id(self, user_id: int) -> User:
         return User(self.messenger, self.messenger_id, user_id)

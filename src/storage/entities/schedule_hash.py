@@ -1,14 +1,13 @@
 from __future__ import annotations
+from dataclasses import dataclass
 from datetime import date
 
-from .entity_base import Entity
 
-
-class ScheduleHash(Entity):
-    def __init__(self, starts_at: date, hash: int, id: int = None) -> None:
-        self.id = id
-        self.starts_at = starts_at
-        self.hash = hash
+@dataclass(frozen=True)
+class ScheduleHash:
+    starts_at: date
+    hash: int
+    id: int | None = None
 
     def set_id(self, schedule_hash_id: int) -> ScheduleHash:
         return ScheduleHash(self.starts_at, self.hash, schedule_hash_id)
