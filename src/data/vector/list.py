@@ -47,7 +47,7 @@ class List(Sequence[T]):
         return List(element for sub_list in self for element in sub_list)
 
     @staticmethod
-    def filter_map(mapper: Callable[[T], Maybe[TResult]], self: Iterable[T]) -> List[TResult]:
+    def filter_map(self: Iterable[T], mapper: Callable[[T], Maybe[TResult]]) -> List[TResult]:
         result: list[TResult] = []
 
         def add_value(value: TResult) -> None:
