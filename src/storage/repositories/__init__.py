@@ -1,2 +1,3 @@
 from .user_repository import UserRepository
 from .schedule_hash_repository import ScheduleHashRepository
+from .group_schedule_hash_repository import GroupScheduleHashRepository

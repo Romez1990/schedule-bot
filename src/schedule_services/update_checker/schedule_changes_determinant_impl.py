@@ -10,7 +10,9 @@ from data.fp.function import const
 from data.fp.maybe import Maybe, Some, Nothing
 from data.vector import List
 from data.hashing import Md5ObjectHashing
-from schedule_services.schedule import Schedule
+from schedule_services.schedule import (
+    Schedule,
+)
 from .schedule_changes_determinant import ScheduleChangesDeterminant
 from .schedule_hash_storage import ScheduleHashStorage
 
@@ -26,9 +28,12 @@ class ScheduleChangesDeterminantImpl(ScheduleChangesDeterminant):
 
     async def get_changed_schedules(self, schedules: Sequence[Schedule]) -> Sequence[Schedule]:
         previous_hashes = self.__get_previous_hashes(schedules)
-        schedules, hashes = List.unzip(self.__get_new_schedule_hashes(schedules, previous_hashes))
-        await self.__save_hashes(schedules, hashes)
-        return schedules
+        changed_schedules_and_hashes = self.__get_new_schedule_hashes(schedules, previous_hashes)
+        if len(changed_schedules_and_hashes) == 0:
+            return schedules
+        changed_schedules, hashes = List.unzip(changed_schedules_and_hashes)
+        await self.__save_hashes(changed_schedules, hashes)
+        return changed_schedules
 
     def __get_previous_hashes(self, schedules: Sequence[Schedule]) -> Sequence[Maybe[int]]:
         dates = List(schedules) \
@@ -37,7 +42,7 @@ class ScheduleChangesDeterminantImpl(ScheduleChangesDeterminant):
 
     def __get_new_schedule_hashes(self, schedules: Sequence[Schedule],
                                   previous_hashes: Sequence[Maybe[int]]) -> Sequence[tuple[Schedule, int]]:
-        return List.filter_map(self.__get_new_schedule_hash, zip(schedules, previous_hashes))
+        return List.filter_map(zip(schedules, previous_hashes),  self.__get_new_schedule_hash)
 
     def __get_new_schedule_hash(self, t: tuple[Schedule, Maybe[int]]) -> Maybe[tuple[Schedule, int]]:
         schedule, previous_hash = t
