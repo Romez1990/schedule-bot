@@ -5,10 +5,12 @@ from typing import (
 )
 
 from infrastructure.ioc_container import service
+from .structures import (
+    Message,
+)
 from .message_handler_adapter import MessageHandlerAdapter
 from .messenger_controller import MessengerController
 from .messenger_adapter import MessengerAdapter
-from .message import Message
 
 T = TypeVar('T')
 

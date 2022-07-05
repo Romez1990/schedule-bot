@@ -8,8 +8,10 @@ from typing import (
     TYPE_CHECKING,
 )
 
-from .user import User
-from .message import Message
+from .structures import (
+    Message,
+    User,
+)
 
 if TYPE_CHECKING:
     from .message_handler_decorator import MessageHandlerParameters

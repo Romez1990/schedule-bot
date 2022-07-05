@@ -7,9 +7,11 @@ from typing import (
 from infrastructure.decorator import (
     check_decorating_callable,
 )
-from .message import Message
+from .structures import (
+    Message,
+    MessageHandlerParameters,
+)
 from .messenger_controller import MessengerController
-from .messege_handler_parameters import MessageHandlerParameters
 
 message_handler_parameters: list[MessageHandlerParameters] = []
 

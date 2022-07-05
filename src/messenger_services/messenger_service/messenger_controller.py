@@ -1,7 +1,9 @@
 from abc import ABCMeta
 
+from .structures import (
+    User,
+)
 from .messenger_adapter import MessengerAdapter
-from .user import User
 
 
 class MessengerController(metaclass=ABCMeta):

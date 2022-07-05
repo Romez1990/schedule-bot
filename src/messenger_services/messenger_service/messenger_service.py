@@ -5,8 +5,10 @@ from typing import (
     NoReturn,
 )
 
+from .structures import (
+    MessageHandlerParameters,
+)
 from .messenger_adapter import MessengerAdapter
-from .messege_handler_parameters import MessageHandlerParameters
 
 
 class MessengerService(metaclass=ABCMeta):
