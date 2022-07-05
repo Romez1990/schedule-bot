@@ -1,20 +1,11 @@
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True, eq=False)
 class Color:
-    def __init__(self, red: int, green: int, blue: int) -> None:
-        self.__red = red
-        self.__green = green
-        self.__blue = blue
-
-    @property
-    def red(self) -> int:
-        return self.__red
-
-    @property
-    def green(self) -> int:
-        return self.__green
-
-    @property
-    def blue(self) -> int:
-        return self.__blue
+    red: int
+    green: int
+    blue: int
 
     def to_tuple(self) -> tuple[int, int, int]:
-        return self.__red, self.__green, self.__blue
+        return self.red, self.green, self.blue

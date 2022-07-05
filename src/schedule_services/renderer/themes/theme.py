@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import (
     Sequence,
 )
@@ -5,8 +6,8 @@ from typing import (
 from .color import Color
 
 
+@dataclass(kw_only=True, frozen=True, eq=False)
 class Theme:
-    def __init__(self, *, name: str, text_color: Color, background_colors: Sequence[Color]) -> None:
-        self.name = name
-        self.text_color = text_color
-        self.background_colors = background_colors
+    name: str
+    text_color: Color
+    background_colors: Sequence[Color]
