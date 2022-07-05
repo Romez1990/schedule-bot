@@ -1,4 +1,5 @@
 from pathlib import Path
+from io import BytesIO
 
 from infrastructure.script_runner import AsyncScript, script
 from schedule_services.scraper import ScheduleScraper
@@ -36,7 +37,7 @@ class RenderMyGroupScript(AsyncScript):
         self.save(dark_schedule, 'dark.jpg')
         self.logger.info('Schedule saved')
 
-    def save(self, image_bytes: bytes, filename: str) -> None:
+    def save(self, image_bytes: BytesIO, filename: str) -> None:
         scripts_path = Path(__file__).parent
         file_path = scripts_path / filename
-        file_path.write_bytes(image_bytes)
+        file_path.write_bytes(image_bytes.getvalue())
