@@ -8,7 +8,12 @@ from vkbottle.bot import (
 )
 from vkbottle.dispatch.rules.base import CommandRule
 
-from messenger_services.messenger_service import MessengerAdapter, MessageHandlerParameters, Message, User
+from messenger_services.messenger_service import (
+    MessengerAdapter,
+    Message,
+    User,
+    MessageHandlerParameters,
+)
 
 
 class VkAdapter(MessengerAdapter[VkMessage]):

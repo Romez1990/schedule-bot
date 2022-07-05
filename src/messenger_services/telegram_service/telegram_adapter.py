@@ -13,8 +13,8 @@ from messenger_services.messenger_service import (
     MessengerAdapter,
     User,
     Message,
+    MessageHandlerParameters,
 )
-from messenger_services.messenger_service.message_handler_decorator import MessageHandlerParameters
 
 
 class TelegramAdapter(MessengerAdapter[TelegramMessage]):
