@@ -1,19 +1,14 @@
 from __future__ import annotations
+from dataclasses import dataclass
 
 
+@dataclass(frozen=True)
 class EducationForm:
-    def __init__(self, form: str) -> None:
-        self.__form = form
+    form: str
 
-    def __eq__(self, other: object) -> bool:
-        if isinstance(other, EducationForm):
-            return str(self) == str(other)
-
-        raise NotImplemented
-
-    def __gt__(self, other: EducationForm) -> bool:
-        self_index, other_index = self.__get_compare_indexes(other)
-        return self_index > other_index
+    def __post_init__(self) -> None:
+        if not self.form.isupper():
+            raise ValueError(f'form must be upper, got {self.form}')
 
     def __lt__(self, other: EducationForm) -> bool:
         self_index, other_index = self.__get_compare_indexes(other)
@@ -22,11 +17,11 @@ class EducationForm:
     __forms = ['Д', 'В']
 
     def __get_compare_indexes(self, other: EducationForm) -> tuple[int, int]:
-        self_char = str(self)[0].upper()
-        other_char = str(other)[0].upper()
+        self_char = str(self)[0]
+        other_char = str(other)[0]
         self_index = self.__forms.index(self_char)
         other_index = self.__forms.index(other_char)
         return self_index, other_index
 
     def __str__(self) -> str:
-        return self.__form
+        return self.form
