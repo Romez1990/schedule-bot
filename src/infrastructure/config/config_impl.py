@@ -1,10 +1,11 @@
+from data.object import Frozen
 from infrastructure.ioc_container import service
 from infrastructure.env import Env
 from .config import Config
 
 
 @service
-class ConfigImpl(Config):
+class ConfigImpl(Config, Frozen):
     def __init__(self, env: Env) -> None:
         self.db_host = env.get_str('DB_HOST')
         self.db_name = env.get_str('DB_NAME')
