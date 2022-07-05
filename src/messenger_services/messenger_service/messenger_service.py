@@ -2,7 +2,6 @@ from abc import ABCMeta, abstractmethod
 from typing import (
     Callable,
     Awaitable,
-    Coroutine,
     NoReturn,
 )
 
@@ -23,4 +22,4 @@ class MessengerService(metaclass=ABCMeta):
         self.adapter.add_message_handler(parameters, method)
 
     @abstractmethod
-    def start(self) -> Coroutine[object, None, NoReturn]: ...
+    def start(self) -> Awaitable[NoReturn]: ...
