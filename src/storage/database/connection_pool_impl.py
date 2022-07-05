@@ -73,10 +73,10 @@ class ConnectionPoolImpl(ConnectionPool):
             self.__move_connection_to_unused(connection)
 
         connection = self.__connection_factory.create(on_connection_released)
+        await connection.open()
         add_to_collection(connection)
         if self.__get_connection_lock.locked():
             self.__get_connection_lock.release()
-        await connection.open()
         return connection
 
     async def __wait_for_connection(self) -> PoolConnection:
