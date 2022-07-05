@@ -11,7 +11,7 @@ from vkbottle.dispatch.rules.base import CommandRule
 from messenger_services.messenger_service import MessengerAdapter, MessageHandlerParameters, Message, User
 
 
-class VkBottleAdapter(MessengerAdapter[VkMessage]):
+class VkAdapter(MessengerAdapter[VkMessage]):
     def __init__(self, bot: Bot) -> None:
         self.__bot = bot
         self.__api = self.__bot.api

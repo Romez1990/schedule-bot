@@ -3,6 +3,7 @@ from typing import (
     Awaitable,
 )
 from aiogram import Bot, Dispatcher
+from aiogram.dispatcher.filters import Command
 from aiogram.types import (
     Message as TelegramMessage,
     Chat,
@@ -33,4 +34,4 @@ class TelegramAdapter(MessengerAdapter[TelegramMessage]):
 
     def add_message_handler(self, parameters: MessageHandlerParameters,
                             method: Callable[[TelegramMessage], Awaitable[None]]) -> None:
-        self.__dispatcher.message_handler(commands=[parameters.command])(method)
+        self.__dispatcher.message_handler(Command(parameters.command, prefixes=['/', '']))(method)

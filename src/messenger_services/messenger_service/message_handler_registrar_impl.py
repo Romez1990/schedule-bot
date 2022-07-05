@@ -8,7 +8,7 @@ from infrastructure.errors import NoReturnError
 from data.fp.task import Task
 from data.vector import List
 from messenger_services.telegram_service import TelegramService
-from messenger_services.vk_service import VkBottleService
+from messenger_services.vk_service import VkService
 from .message_handler_registrar import MessageHandlerRegistrar
 from .controller_decorator import messenger_controllers
 from .message_handler_adapter import MessageHandlerAdapter
@@ -21,11 +21,11 @@ from .message_handler_decorator import message_handler_parameters
 @service
 class MessageHandlerRegistrarImpl(MessageHandlerRegistrar):
     def __init__(self, message_handler_adapter: MessageHandlerAdapter, telegram: TelegramService,
-                 vk_bottle: VkBottleService) -> None:
+                 vk: VkService) -> None:
         self.__message_handler_adapter = message_handler_adapter
         self.__messenger_services: list[MessengerService] = [
             telegram,
-            vk_bottle,
+            vk,
         ]
 
     def register(self, container: Container) -> None:

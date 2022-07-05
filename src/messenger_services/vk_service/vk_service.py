@@ -7,14 +7,14 @@ from infrastructure.ioc_container import service
 from infrastructure.config import Config
 from infrastructure.errors import NoReturnError
 from messenger_services.messenger_service import MessengerService
-from .vk_bottle_adapter import VkBottleAdapter
+from .vk_adapter import VkAdapter
 
 
 @service(to_self=True)
-class VkBottleService(MessengerService):
+class VkService(MessengerService):
     def __init__(self, config: Config) -> None:
         self.__bot = Bot(config.vk_bot_token)
-        adapter = VkBottleAdapter(self.__bot)
+        adapter = VkAdapter(self.__bot)
         super().__init__(adapter)
 
     async def start(self) -> NoReturn:
