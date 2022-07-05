@@ -4,7 +4,6 @@ from asyncio import (
 )
 from typing import (
     Awaitable,
-    Coroutine,
     Iterable,
     Callable,
     TypeVar,
@@ -19,7 +18,7 @@ TResult = TypeVar('TResult')
 
 
 class Task(CoroutineBase[T]):
-    def __init__(self, coroutine: Coroutine[object, None, T]) -> None:
+    def __init__(self, coroutine: Awaitable[T]) -> None:
         super().__init__(coroutine)
 
     @staticmethod
@@ -28,7 +27,7 @@ class Task(CoroutineBase[T]):
 
     @staticmethod
     def parallel(tasks: Iterable[Awaitable[T]]) -> Task[list[T]]:
-        return Task(cast(Coroutine[object, None, list[T]], gather(*tasks)))
+        return Task(cast(Awaitable[list[T]], gather(*tasks)))
 
     @staticmethod
     def series(tasks: Iterable[Task[T]]) -> Task[list[T]]:

@@ -4,7 +4,6 @@ from typing import (
     Callable,
     Type,
     TypeVar,
-    Coroutine,
 )
 
 from data.fp.maybe import Maybe, Some, Nothing
@@ -15,7 +14,7 @@ TResult = TypeVar('TResult')
 
 
 class TaskMaybe(CoroutineBase[Maybe[T]]):
-    def __init__(self, maybe_coroutine: Coroutine[object, None, Maybe[T]]) -> None:
+    def __init__(self, maybe_coroutine: Awaitable[Maybe[T]]) -> None:
         super().__init__(maybe_coroutine)
 
     @staticmethod

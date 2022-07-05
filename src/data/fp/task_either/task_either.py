@@ -1,7 +1,6 @@
 from __future__ import annotations
 from typing import (
     Awaitable,
-    Coroutine,
     Callable,
     TypeVar,
 )
@@ -17,7 +16,7 @@ TResult = TypeVar('TResult')
 
 
 class TaskEither(CoroutineBase[Either[L, R]]):
-    def __init__(self, either_coroutine: Coroutine[object, None, Either[L, R]]) -> None:
+    def __init__(self, either_coroutine: Awaitable[Either[L, R]]) -> None:
         super().__init__(either_coroutine)
 
     @staticmethod

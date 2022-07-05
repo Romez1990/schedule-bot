@@ -8,6 +8,8 @@ from typing import (
     Type,
     TypeVar,
     Generic,
+    Awaitable,
+    Coroutine,
     cast,
 )
 
@@ -15,8 +17,11 @@ T = TypeVar('T')
 
 
 class CoroutineBase(Coroutine[object, None, T], Generic[T]):
-    def __init__(self, coroutine: Coroutine[object, None, T]) -> None:
-        self._coroutine = coroutine
+    def __init__(self, awaitable: Awaitable[T]) -> None:
+        self._coroutine = awaitable if isinstance(awaitable, Coroutine) else self.__to_coroutine(awaitable)
+
+    async def __to_coroutine(self, awaitable: Awaitable[T]) -> T:
+        return await awaitable
 
     def __await__(self) -> Generator[object, None, T]:
         return self._coroutine.__await__()
