@@ -2,7 +2,7 @@ from types import (
     TracebackType,
 )
 from typing import (
-    Coroutine,
+    Awaitable,
     Type,
 )
 
@@ -11,7 +11,7 @@ from .pool_connection import PoolConnection
 
 
 class PoolConnectionContextManager(CoroutineBase[PoolConnection]):
-    def __init__(self, coroutine: Coroutine[object, None, PoolConnection]) -> None:
+    def __init__(self, coroutine: Awaitable[PoolConnection]) -> None:
         super().__init__(coroutine)
 
     __connection: PoolConnection
