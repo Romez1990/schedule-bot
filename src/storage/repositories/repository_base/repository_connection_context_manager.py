@@ -2,7 +2,7 @@ from types import (
     TracebackType,
 )
 from typing import (
-    Coroutine,
+    Awaitable,
     Type,
 )
 
@@ -12,7 +12,7 @@ from .repository_connection import RepositoryConnection
 
 
 class RepositoryConnectionContextManager(CoroutineBase[ManageableRepositoryConnection]):
-    def __init__(self, connection_coroutine: Coroutine[object, None, ManageableRepositoryConnection]) -> None:
+    def __init__(self, connection_coroutine: Awaitable[ManageableRepositoryConnection]) -> None:
         super().__init__(connection_coroutine)
 
     __connection: ManageableRepositoryConnection
