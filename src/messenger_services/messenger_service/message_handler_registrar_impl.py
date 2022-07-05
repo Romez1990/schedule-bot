@@ -1,5 +1,6 @@
 from typing import (
     Type,
+    Awaitable,
     NoReturn,
 )
 
@@ -67,5 +68,5 @@ class MessageHandlerRegistrarImpl(MessageHandlerRegistrar):
         await Task.parallel(tasks)
         raise NoReturnError
 
-    def __start_messenger_service(self, messenger_service: MessengerService) -> Task[NoReturn]:
-        return Task(messenger_service.start())
+    def __start_messenger_service(self, messenger_service: MessengerService) -> Awaitable[NoReturn]:
+        return messenger_service.start()
