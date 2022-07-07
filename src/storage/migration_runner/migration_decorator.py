@@ -1,4 +1,5 @@
 from typing import (
+    MutableSequence,
     Type,
     TypeVar,
 )
@@ -11,7 +12,7 @@ from .migration import Migration
 
 T = TypeVar('T', bound=Migration)
 
-migrations: list[Type[Migration]] = []
+migrations: MutableSequence[Type[Migration]] = []
 
 
 def migration(class_type: Type[T]) -> Type[T]:

@@ -1,4 +1,5 @@
 from typing import (
+    Sequence,
     Type,
 )
 
@@ -11,5 +12,5 @@ from .migration_decorator import migrations
 @service
 class MigrationRepositoryImpl(MigrationRepository):
     @property
-    def migrations(self) -> list[Type[Migration]]:
+    def migrations(self) -> Sequence[Type[Migration]]:
         return migrations
