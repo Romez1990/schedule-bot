@@ -10,4 +10,5 @@ from .button import (
     Button,
     InlineButton,
 )
+from .payload import Payload
 from .messege_handler_parameters import MessageHandlerParameters
