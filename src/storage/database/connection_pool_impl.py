@@ -40,6 +40,7 @@ class ConnectionPoolImpl(ConnectionPool):
     async def init(self) -> None:
         if len(self.__used_connections) > 0 or not self.__unused_connections.empty():
             raise RuntimeError('pool is already inited')
+        await self.__get_connection_lock.acquire()
         await self.__create_connection_and_add(self.__unused_connections.put_nowait)
 
     def get_connection(self) -> PoolConnectionContextManager:
@@ -75,8 +76,7 @@ class ConnectionPoolImpl(ConnectionPool):
         connection = self.__connection_factory.create(on_connection_released)
         await connection.open()
         add_to_collection(connection)
-        if self.__get_connection_lock.locked():
-            self.__get_connection_lock.release()
+        self.__get_connection_lock.release()
         return connection
 
     async def __wait_for_connection(self) -> PoolConnection:
