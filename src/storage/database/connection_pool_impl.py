@@ -5,6 +5,7 @@ from asyncio import (
     wait_for,
 )
 from typing import (
+    MutableSequence,
     Callable,
 )
 
@@ -25,7 +26,7 @@ class ConnectionPoolImpl(ConnectionPool):
     def __init__(self, connection_factory: PoolConnectionFactory, config: Config) -> None:
         self.__connection_factory = connection_factory
         self.__config = config
-        self.__used_connections: list[ManageablePoolConnection] = []
+        self.__used_connections: MutableSequence[ManageablePoolConnection] = []
         self.__unused_connections: Queue[ManageablePoolConnection] = Queue()
         self.__get_connection_lock = Lock()
 
