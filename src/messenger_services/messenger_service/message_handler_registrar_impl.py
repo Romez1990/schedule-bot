@@ -65,7 +65,7 @@ class MessageHandlerRegistrarImpl(MessageHandlerRegistrar):
     async def start(self) -> NoReturn:
         tasks = List(self.__messenger_services) \
             .map(self.__start_messenger_service)
-        await Task.parallel(tasks)
+        await Task.parallel(*tasks)
         raise NoReturnError
 
     def __start_messenger_service(self, messenger_service: MessengerService) -> Awaitable[NoReturn]:

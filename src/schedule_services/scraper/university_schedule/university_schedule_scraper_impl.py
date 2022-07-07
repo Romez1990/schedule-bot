@@ -29,7 +29,7 @@ class UniversityScheduleScraperImpl(UniversityScheduleScraper):
 
     def __get_schedules_from_links(self, links: Sequence[ScheduleLinks]) -> Task[Sequence[Schedule]]:
         tasks = List(links).map(self.__get_schedule_from_links_or_raise)
-        return Task.parallel(tasks)
+        return Task.parallel(*tasks)
 
     def __get_schedule_from_links_or_raise(self, links: ScheduleLinks) -> Task[Schedule]:
         return Task(self.__get_schedule_from_links(links))
@@ -39,7 +39,7 @@ class UniversityScheduleScraperImpl(UniversityScheduleScraper):
         links = {group: schedule for group, schedule in links.items() if str(group) in ['ИС-20-Д', 'ИС-19-Д']}
         group_schedules_tasks = List(links.values()) \
             .map(self.__get_group_schedule)
-        group_schedules = await Task.parallel(group_schedules_tasks)
+        group_schedules = await Task.parallel(*group_schedules_tasks)
         schedule_dict = {group: group_schedule for group, group_schedule in zip(links.keys(), group_schedules)}
         return Schedule(starts_at, schedule_dict)
 

@@ -26,7 +26,7 @@ class Task(CoroutineBase[T]):
         return Task(async_identity(value))
 
     @staticmethod
-    def parallel(tasks: Iterable[Awaitable[T]]) -> Task[list[T]]:
+    def parallel(*tasks: Awaitable[T]) -> Task[list[T]]:
         return Task(cast(Awaitable[list[T]], gather(*tasks)))
 
     @staticmethod

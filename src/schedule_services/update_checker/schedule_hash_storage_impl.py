@@ -46,11 +46,11 @@ class ScheduleHashStorageImpl(ScheduleHashStorage):
         hashes_to_save, hashes_to_update, hashes_to_delete = List(zip(*results)) \
             .map(List.flatten) \
             .map(self.__hashes_to_maybe)
-        new_hashes, *_ = await Task.parallel([
+        new_hashes, *_ = await Task.parallel(
             hashes_to_save.map(self.__schedule_hash_repository.save_all).get_or_call(lambda: Task.from_value([])),
             hashes_to_update.map(self.__schedule_hash_repository.update_all).get_or_call(lambda: Task.from_value(None)),
             hashes_to_delete.map(self.__schedule_hash_repository.delete_all).get_or_call(lambda: Task.from_value(None)),
-        ])
+        )
         self.__hashes.update({new_hash.starts_at: new_hash for new_hash in new_hashes})
 
     def __process_hash(self, hash_tuple: tuple[date, int]
