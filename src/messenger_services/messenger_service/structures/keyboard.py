@@ -15,7 +15,7 @@ from .button import (
 class KeyboardBase:
     buttons: MutableSequence[Sequence[ButtonBase]] = field(default_factory=list, init=False)
 
-    def row(self, *buttons: ButtonBase) -> None:
+    def _row(self, *buttons: ButtonBase) -> None:
         self.buttons.append(buttons)
 
 
@@ -25,10 +25,10 @@ class Keyboard(KeyboardBase):
     # one_time: bool = False
 
     def row(self, *buttons: Button) -> None:
-        super().row(*buttons)
+        self._row(*buttons)
 
 
 @dataclass(frozen=True, eq=False, kw_only=True)
 class InlineKeyboard(KeyboardBase):
     def row(self, *buttons: InlineButton) -> None:
-        super().row(*buttons)
+        self._row(*buttons)
