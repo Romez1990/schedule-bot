@@ -4,12 +4,14 @@ from typing import (
     NoReturn,
 )
 
-from infrastructure.ioc_container import Container
+from infrastructure.ioc_container import (
+    Container,
+)
 
 
-class MessageHandlerRegistrar(metaclass=ABCMeta):
+class MessengerManager(metaclass=ABCMeta):
     @abstractmethod
-    def register(self, container: Container) -> None: ...
+    def init(self, container: Container) -> None: ...
 
     @abstractmethod
     def start(self) -> Awaitable[NoReturn]: ...

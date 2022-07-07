@@ -12,7 +12,7 @@ from infrastructure.errors import NoReturnError
 from data.fp.task import Task
 from storage.database import ConnectionPool
 from schedule_services.update_checker import ScheduleUpdateService
-from messenger_services.messenger_service import MessageHandlerRegistrar
+from messenger_services.messenger_service import MessengerManager
 
 
 @script
@@ -20,11 +20,11 @@ class StartScript(AsyncScript):
     def __init__(self, logger_factory: LoggerFactory,
                  connection_pool: ConnectionPool,
                  schedule_update_service: ScheduleUpdateService,
-                 message_handler_registrar: MessageHandlerRegistrar) -> None:
+                 messenger_manager: MessengerManager) -> None:
         self.logger = logger_factory.create()
         self.connection_pool = connection_pool
         self.schedule_update_service = schedule_update_service
-        self.message_handler_registrar = message_handler_registrar
+        self.messenger_manager = messenger_manager
 
     async def run(self) -> NoReturn:
         await self.init()
@@ -37,12 +37,12 @@ class StartScript(AsyncScript):
             self.schedule_update_service.init(),
         ))
         await sleep(0)
-        self.message_handler_registrar.register(self.container)
+        self.messenger_manager.init(self.container)
         await task
 
     async def start(self) -> NoReturn:
         await Task.parallel(
             self.schedule_update_service.start_checking_for_updates(),
-            self.message_handler_registrar.start(),
+            self.messenger_manager.start(),
         )
         raise NoReturnError

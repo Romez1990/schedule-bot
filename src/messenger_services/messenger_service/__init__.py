@@ -10,7 +10,7 @@ from .structures import (
     Payload,
     MessageHandlerParameters,
 )
-from .message_handler_registrar import MessageHandlerRegistrar
+from .messenger_manager import MessengerManager
 from .messenger_service import MessengerService
 from .messenger_adapter import MessengerAdapter
 from .messenger_controller import MessengerController
