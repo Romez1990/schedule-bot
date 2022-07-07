@@ -24,11 +24,11 @@ class Keyboard(KeyboardBase):
     resize: bool = False
     # one_time: bool = False
 
-    def row(self, *buttons: Button):
+    def row(self, *buttons: Button) -> None:
         super().row(*buttons)
 
 
 @dataclass(frozen=True, eq=False, kw_only=True)
 class InlineKeyboard(KeyboardBase):
-    def row(self, *buttons: InlineButton):
+    def row(self, *buttons: InlineButton) -> None:
         super().row(*buttons)
