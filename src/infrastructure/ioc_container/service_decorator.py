@@ -1,4 +1,5 @@
 from typing import (
+    MutableSequence,
     Union,
     Callable,
     Type,
@@ -11,7 +12,7 @@ from infrastructure.decorator import (
 )
 from .service_bind_parameters import ServiceBindParameters
 
-services: list[ServiceBindParameters] = []
+services: MutableSequence[ServiceBindParameters] = []
 
 T = TypeVar('T')
 
