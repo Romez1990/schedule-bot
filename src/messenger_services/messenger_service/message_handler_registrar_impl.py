@@ -49,7 +49,7 @@ class MessageHandlerRegistrarImpl(MessageHandlerRegistrar):
                 additional_parameters = {
                     'adapter': adapter,
                 }
-                controller = container.create(controller_class, **additional_parameters)
+                controller = container.instantiate(controller_class, **additional_parameters)
                 controllers_for_messenger_service[controller_class] = controller
             controllers[type(messenger_service)] = controllers_for_messenger_service
         return controllers

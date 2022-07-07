@@ -72,7 +72,7 @@ class Container:
         self.__instances[base_class] = instance
         return instance
 
-    def create(self, class_type: Type[T], **additional_parameters: object) -> T:
+    def instantiate(self, class_type: Type[T], **additional_parameters: object) -> T:
         return self.__instantiate_type(class_type, additional_parameters)
 
     def __instantiate_type(self, class_type: type, additional_parameters_optional: Mapping[str, object] = None) -> T:

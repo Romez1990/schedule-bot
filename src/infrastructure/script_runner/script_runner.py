@@ -23,7 +23,7 @@ class ScriptRunner:
         self.__container.scan_services(source_root)
 
     def __create_script(self, script_type: Type[ScriptBase]) -> ScriptBase:
-        script = self.__container.create(script_type)
+        script = self.__container.instantiate(script_type)
         script.container = self.__container
         return script
 
