@@ -1,4 +1,7 @@
-from asyncio import create_task
+from asyncio import (
+    create_task,
+    sleep,
+)
 from typing import (
     NoReturn,
 )
@@ -33,6 +36,7 @@ class StartScript(AsyncScript):
             self.connection_pool.init(),
             self.schedule_update_service.init(),
         ]))
+        await sleep(0)
         self.message_handler_registrar.register(self.container)
         await task
 
