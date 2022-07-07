@@ -1,4 +1,5 @@
 from typing import (
+    MutableSequence,
     Type,
     TypeVar,
 )
@@ -9,7 +10,7 @@ from infrastructure.decorator import (
 )
 from .messenger_controller import MessengerController
 
-messenger_controllers: list[Type[MessengerController]] = []
+messenger_controllers: MutableSequence[Type[MessengerController]] = []
 
 T = TypeVar('T', bound=MessengerController)
 

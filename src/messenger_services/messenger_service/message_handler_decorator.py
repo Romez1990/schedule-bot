@@ -1,4 +1,5 @@
 from typing import (
+    MutableSequence,
     Callable,
     Awaitable,
     Type,
@@ -13,7 +14,7 @@ from .structures import (
 )
 from .messenger_controller import MessengerController
 
-message_handler_parameters: list[MessageHandlerParameters] = []
+message_handler_parameters: MutableSequence[MessageHandlerParameters] = []
 
 
 def message_handler(command: str) -> type:
