@@ -1,4 +1,5 @@
 from .message import Message
+from .callback import Callback
 from .chat import Chat
 from .keyboard import (
     KeyboardBase,
@@ -14,5 +15,7 @@ from .payload import Payload
 from .handler_params import (
     MessageHandlerParams,
     MessageHandlerParamsForRegistrar,
+    CallbackHandlerParams,
+    CallbackHandlerParamsForRegistrar,
     HandlerParamsForRegistrar,
 )

@@ -1,12 +1,15 @@
 from messenger_services.messenger_service import (
     MessengerController,
     Message,
+    Callback,
+    KeyboardBase,
     Keyboard,
     InlineKeyboard,
     Button,
     InlineButton,
     controller,
     message_handler,
+    callback_handler,
 )
 from .payloads import (
     DeleteGroupPayload,
@@ -30,6 +33,17 @@ class HelloController(MessengerController):
 
     @message_handler('Выбрать группу')
     async def select_group(self, message: Message) -> None:
+        keyboard = self.__get_groups_keyboard()
+        await self._send_message(message.chat, 'Добавленные группы:', keyboard)
+
+    @callback_handler(DeleteGroupPayload)
+    async def delete_group(self, callback: Callback, payload: DeleteGroupPayload) -> None:
+        message = f'Группа {payload.group} удалена'
+        await callback.answer(message)
+        keyboard = self.__get_groups_keyboard()
+        await self._send_message(callback.message.chat, message, keyboard)
+
+    def __get_groups_keyboard(self) -> KeyboardBase:
         groups = [
             'ИС-20-Д',
             'ИС-19-Д',
@@ -40,7 +54,7 @@ class HelloController(MessengerController):
                 InlineButton(group),
                 InlineButton('Удалить', payload=DeleteGroupPayload(group)),
             )
-        await self._send_message(message.chat, 'Добавленные группы:', keyboard)
+        return keyboard
 
     @message_handler('help')
     async def help(self, message: Message) -> None:

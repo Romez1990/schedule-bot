@@ -15,7 +15,10 @@ from messenger_services.telegram_service import TelegramService
 from messenger_services.vk_service import VkService
 from .structures import (
     Message,
+    Callback,
+    Payload,
     MessageHandlerParamsForRegistrar,
+    CallbackHandlerParamsForRegistrar,
     HandlerParamsForRegistrar,
 )
 from .messenger_controller_registrar import MessengerControllerRegistrar
@@ -25,6 +28,7 @@ from .messenger_controller import MessengerController
 from .decorators import (
     messenger_controllers,
     message_handler_params,
+    callback_handler_params,
 )
 
 TParams = TypeVar('TParams', bound=HandlerParamsForRegistrar)
@@ -73,6 +77,7 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
     def __register_controllers(self,
                                controllers: Mapping[Type[MessengerController], Sequence[MessengerController]]) -> None:
         self.__register_handlers(controllers, message_handler_params, self.__register_message_handler)
+        self.__register_handlers(controllers, callback_handler_params, self.__register_callback_handler)
 
     def __register_handlers(self,
                             controllers: Mapping[Type[MessengerController], Sequence[MessengerController]],
@@ -95,6 +100,11 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
                                    params: MessageHandlerParamsForRegistrar) -> None:
         handler: Callable[[Message], Awaitable[None]] = self.__get_method(controller, params.method_name)
         adapter.register_message_handler(params, handler)
+
+    def __register_callback_handler(self, controller: MessengerController, adapter: MessengerAdapter,
+                                    params: CallbackHandlerParamsForRegistrar) -> None:
+        handler: Callable[[Callback, Payload], Awaitable[None]] = self.__get_method(controller, params.method_name)
+        adapter.register_callback_handler(params, handler)
 
     def __get_method(self, controller: MessengerController, method_name: str) -> Callable[P, Awaitable[None]]:
         method: Callable[Concatenate[MessengerController, P], Awaitable[None]] = getattr(controller, method_name)

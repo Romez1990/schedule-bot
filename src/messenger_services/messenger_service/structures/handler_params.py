@@ -5,6 +5,8 @@ from typing import (
     TYPE_CHECKING,
 )
 
+from .payload import Payload
+
 if TYPE_CHECKING:
     from messenger_services.messenger_service.messenger_controller import MessengerController
 
@@ -22,4 +24,14 @@ class MessageHandlerParams:
 
 @dataclass(frozen=True, eq=False)
 class MessageHandlerParamsForRegistrar(MessageHandlerParams, HandlerParamsForRegistrar):
+    pass
+
+
+@dataclass(frozen=True, eq=False)
+class CallbackHandlerParams:
+    payload_class: Type[Payload]
+
+
+@dataclass(frozen=True, eq=False)
+class CallbackHandlerParamsForRegistrar(CallbackHandlerParams, HandlerParamsForRegistrar):
     pass

@@ -18,7 +18,7 @@ from messenger_services.messenger_service import (
     ButtonBase,
     Button,
     InlineButton,
-    Payload,
+    PayloadSerializer,
 )
 
 TelegramKeyboard: TypeAlias = ReplyKeyboardMarkup | InlineKeyboardMarkup
@@ -27,6 +27,9 @@ TelegramButton: TypeAlias = KeyboardButton | InlineKeyboardButton
 
 @service(to_self=True)
 class TelegramKeyboardAdapter:
+    def __init__(self, payload_serializer: PayloadSerializer) -> None:
+        self.__payload_serializer = payload_serializer
+
     def map_keyboard(self, keyboard: KeyboardBase) -> TelegramKeyboard:
         messenger_keyboard = self.__create_keyboard(keyboard)
         rows = List(keyboard.buttons) \
@@ -54,12 +57,7 @@ class TelegramKeyboardAdapter:
             case Button():
                 return KeyboardButton(*args_base)
             case InlineButton(payload=payload):
-                return InlineKeyboardButton(*args_base, callback_data=self.__serialize_payload(payload))
+                data = self.__payload_serializer.serialize(payload)
+                return InlineKeyboardButton(*args_base, callback_data=data)
             case _:
                 raise RuntimeError
-
-    def __serialize_payload(self, payload: Payload) -> str:
-        import json
-        payload_dict = payload.__dict__
-        payload_dict['type'] = payload.type
-        return json.dumps(payload_dict, ensure_ascii=False)

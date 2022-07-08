@@ -13,7 +13,7 @@ from messenger_services.messenger_service import (
     Message,
     Chat,
     KeyboardBase,
-    MessageHandlerParams,
+    MessageHandlerParams, CallbackHandlerParams, Callback,
 )
 
 
@@ -30,6 +30,10 @@ class VkAdapter(MessengerAdapter):
         rule = CommandRule(params.command, prefixes=['/', ''])
         messenger_handler = self.__map_message_handler(handler)
         self.__bot.on.message(rule)(messenger_handler)
+
+    def register_callback_handler(self, params: CallbackHandlerParams,
+                                  handler: Callable[[Callback], Awaitable[None]]) -> None:
+        ...
 
     def __map_message_handler(self, handler: Callable[[Message], Awaitable[None]]
                               ) -> Callable[[VkMessage], Awaitable[None]]:
