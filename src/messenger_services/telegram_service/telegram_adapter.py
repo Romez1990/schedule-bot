@@ -1,5 +1,4 @@
 from typing import (
-    Sequence,
     Callable,
     Awaitable,
 )
@@ -11,69 +10,30 @@ from aiogram.dispatcher.filters import (
 from aiogram.types import (
     Message as TelegramMessage,
     Chat as TelegramChat,
-    ReplyKeyboardMarkup,
-    InlineKeyboardMarkup,
-    KeyboardButton,
-    InlineKeyboardButton,
 )
 
 from data.fp.maybe import Maybe
-from data.vector import List
 from messenger_services.messenger_service import (
     MessengerAdapter,
     Chat,
     Message,
     KeyboardBase,
-    Keyboard,
-    InlineKeyboard,
-    ButtonBase,
-    Button,
-    InlineButton,
     MessageHandlerParams,
 )
+from .telegram_keyboard_adapter import TelegramKeyboardAdapter
 
 
 class TelegramAdapter(MessengerAdapter):
-    def __init__(self, bot: Bot, dispatcher: Dispatcher) -> None:
+    def __init__(self, bot: Bot, dispatcher: Dispatcher, keyboard_adapter: TelegramKeyboardAdapter) -> None:
         self.__bot = bot
         self.__dispatcher = dispatcher
+        self.__keyboard_adapter = keyboard_adapter
 
     async def send_message(self, chat: Chat, text: str, keyboard: KeyboardBase = None) -> None:
         messenger_keyboard = Maybe.from_optional(keyboard) \
-            .map(self.__map_keyboard) \
+            .map(self.__keyboard_adapter.map_keyboard) \
             .get_or_none()
         await self.__bot.send_message(chat.id, text, reply_markup=messenger_keyboard)
-
-    def __map_keyboard(self, keyboard: KeyboardBase) -> ReplyKeyboardMarkup | InlineKeyboardMarkup:
-        messenger_keyboard = self.__create_keyboard(keyboard)
-        rows = List(keyboard.buttons) \
-            .map(self.__map_row)
-        for row in rows:
-            messenger_keyboard.row(*row)
-        return messenger_keyboard
-
-    def __create_keyboard(self, keyboard: KeyboardBase) -> ReplyKeyboardMarkup | InlineKeyboardMarkup:
-        match keyboard:
-            case Keyboard(resize=resize):
-                return ReplyKeyboardMarkup(resize_keyboard=resize)
-            case InlineKeyboard():
-                return InlineKeyboardMarkup()
-            case _:
-                raise RuntimeError
-
-    def __map_row(self, buttons: Sequence[ButtonBase]) -> Sequence[KeyboardButton | InlineKeyboardButton]:
-        return List(buttons) \
-            .map(self.__map_button)
-
-    def __map_button(self, button: ButtonBase) -> KeyboardButton | InlineKeyboardButton:
-        args_base = [button.text]
-        match button:
-            case Button():
-                return KeyboardButton(*args_base)
-            case InlineButton(payload):
-                return InlineKeyboardButton(*args_base, callback_data=payload)
-            case _:
-                raise RuntimeError
 
     def register_message_handler(self, params: MessageHandlerParams,
                                  handler: Callable[[Message], Awaitable[None]]) -> None:
