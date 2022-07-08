@@ -10,7 +10,7 @@ from aiogram.dispatcher.filters import (
 )
 from aiogram.types import (
     Message as TelegramMessage,
-    Chat,
+    Chat as TelegramChat,
     ReplyKeyboardMarkup,
     InlineKeyboardMarkup,
     KeyboardButton,
@@ -21,7 +21,7 @@ from data.fp.maybe import Maybe
 from data.vector import List
 from messenger_services.messenger_service import (
     MessengerAdapter,
-    User,
+    Chat,
     Message,
     KeyboardBase,
     Keyboard,
@@ -38,11 +38,11 @@ class TelegramAdapter(MessengerAdapter):
         self.__bot = bot
         self.__dispatcher = dispatcher
 
-    async def send_message(self, user: User, text: str, keyboard: KeyboardBase = None) -> None:
+    async def send_message(self, chat: Chat, text: str, keyboard: KeyboardBase = None) -> None:
         messenger_keyboard = Maybe.from_optional(keyboard) \
             .map(self.__map_keyboard) \
             .get_or_none()
-        await self.__bot.send_message(user.chat_id, text, reply_markup=messenger_keyboard)
+        await self.__bot.send_message(chat.id, text, reply_markup=messenger_keyboard)
 
     def __map_keyboard(self, keyboard: KeyboardBase) -> ReplyKeyboardMarkup | InlineKeyboardMarkup:
         messenger_keyboard = self.__create_keyboard(keyboard)
@@ -90,8 +90,8 @@ class TelegramAdapter(MessengerAdapter):
         return messenger_handler
 
     def __map_message(self, message: TelegramMessage) -> Message:
-        user = self.__map_user(message.chat)
-        return Message(user, message.text)
+        chat = self.__map_chat(message.chat)
+        return Message(chat, message.text)
 
-    def __map_user(self, chat: Chat) -> User:
-        return User(chat.id)
+    def __map_chat(self, chat: TelegramChat) -> Chat:
+        return Chat(chat.id)

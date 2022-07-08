@@ -6,7 +6,7 @@ from typing import (
 
 from .structures import (
     Message,
-    User,
+    Chat,
     KeyboardBase,
     MessageHandlerParams,
 )
@@ -14,7 +14,7 @@ from .structures import (
 
 class MessengerAdapter(metaclass=ABCMeta):
     @abstractmethod
-    def send_message(self, user: User, text: str, keyboard: KeyboardBase = None) -> Awaitable[None]: ...
+    def send_message(self, chat: Chat, text: str, keyboard: KeyboardBase = None) -> Awaitable[None]: ...
 
     @abstractmethod
     def register_message_handler(self, params: MessageHandlerParams,

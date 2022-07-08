@@ -11,7 +11,7 @@ from vkbottle.dispatch.rules.base import CommandRule
 from messenger_services.messenger_service import (
     MessengerAdapter,
     Message,
-    User,
+    Chat,
     KeyboardBase,
     MessageHandlerParams,
 )
@@ -22,8 +22,8 @@ class VkAdapter(MessengerAdapter):
         self.__bot = bot
         self.__api = self.__bot.api
 
-    async def send_message(self, user: User, text: str, keyboard: KeyboardBase = None) -> None:
-        await self.__api.messages.send(user.chat_id, message=text, random_id=0)
+    async def send_message(self, chat: Chat, text: str, keyboard: KeyboardBase = None) -> None:
+        await self.__api.messages.send(chat.id, message=text, random_id=0)
 
     def register_message_handler(self, params: MessageHandlerParams,
                                  handler: Callable[[Message], Awaitable[None]]) -> None:
@@ -40,8 +40,8 @@ class VkAdapter(MessengerAdapter):
         return messenger_handler
 
     def __map_message(self, message: VkMessage) -> Message:
-        user = self.__map_user(message)
-        return Message(user, message.text)
+        chat = self.__map_chat(message)
+        return Message(chat, message.text)
 
-    def __map_user(self, message: VkMessage) -> User:
-        return User(message.peer_id)
+    def __map_chat(self, message: VkMessage) -> Chat:
+        return Chat(message.peer_id)

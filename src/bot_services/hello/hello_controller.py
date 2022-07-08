@@ -27,7 +27,7 @@ class HelloController(MessengerController):
             Button('Тек. расписание'),
             Button('След. расписание'),
         )
-        await self._send_message(message.user, 'Welcome to the world of schedule', keyboard)
+        await self._send_message(message.chat, 'Welcome to the world of schedule', keyboard)
 
     @message_handler('Выбрать группу')
     async def select_group(self, message: Message) -> None:
@@ -41,8 +41,8 @@ class HelloController(MessengerController):
                 InlineButton(group, payload=Payload.none),
                 InlineButton('Удалить', payload=DeleteGroupPayload(group)),
             )
-        await self._send_message(message.user, 'Добавленные группы:', keyboard)
+        await self._send_message(message.chat, 'Добавленные группы:', keyboard)
 
     @message_handler('help')
     async def help(self, message: Message) -> None:
-        await self._send_message(message.user, 'Sorry, I have not been taught to help yet')
+        await self._send_message(message.chat, 'Sorry, I have not been taught to help yet')

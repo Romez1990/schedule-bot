@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from .user import User
+from .chat import Chat
 
 
 @dataclass(frozen=True, eq=False)
 class Message:
-    user: User
+    chat: Chat
     text: str

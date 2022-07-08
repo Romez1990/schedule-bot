@@ -1,6 +1,6 @@
 from .structures import (
     Message,
-    User,
+    Chat,
     KeyboardBase,
     Keyboard,
     InlineKeyboard,
