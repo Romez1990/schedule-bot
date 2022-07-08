@@ -29,9 +29,9 @@ class CoroutineBase(Coroutine[object, None, T], Generic[T]):
     def send(self, value: None) -> object:
         return self._coroutine.send(value)
 
-    def throw(self, exception_type: BaseException | Type[BaseException], value: object | None = None,
+    def throw(self, exception_class: BaseException | Type[BaseException], value: object | None = None,
               traceback: TracebackType = None) -> object:
-        return self._coroutine.throw(cast(Type[BaseException], exception_type), value, traceback)
+        return self._coroutine.throw(cast(Type[BaseException], exception_class), value, traceback)
 
     def close(self) -> None:
         self._coroutine.close()
