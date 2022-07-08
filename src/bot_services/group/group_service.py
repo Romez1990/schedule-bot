@@ -4,10 +4,10 @@ from typing import (
 )
 
 from storage.entities import (
-    User,
+    Chat,
 )
 
 
 class GroupController(metaclass=ABCMeta):
     @abstractmethod
-    def add_group(self, user: User, group: str) -> Awaitable[None]: ...
+    def add_group(self, chat: Chat, group: str) -> Awaitable[None]: ...
