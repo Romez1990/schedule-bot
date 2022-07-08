@@ -4,7 +4,10 @@ from typing import (
     Awaitable,
 )
 from aiogram import Bot, Dispatcher
-from aiogram.dispatcher.filters import Command
+from aiogram.dispatcher.filters import (
+    Command,
+    Text,
+)
 from aiogram.types import (
     Message as TelegramMessage,
     Chat,
@@ -74,9 +77,9 @@ class TelegramAdapter(MessengerAdapter):
 
     def register_message_handler(self, params: MessageHandlerParams,
                                  handler: Callable[[Message], Awaitable[None]]) -> None:
-        filter = Command(params.command, prefixes=['/', ''])
+        filters = Command(params.command) | Text(params.command)
         messenger_handler = self.__map_message_handler(handler)
-        self.__dispatcher.message_handler(filter)(messenger_handler)
+        self.__dispatcher.message_handler(filters)(messenger_handler)
 
     def __map_message_handler(self, handler: Callable[[Message], Awaitable[None]]
                               ) -> Callable[[TelegramMessage], Awaitable[None]]:
