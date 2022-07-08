@@ -51,7 +51,7 @@ class Container:
 
     def __bind_type(self, class_type: type, base_class_optional: type | None, to_self: bool) -> None:
         base_class = cast(type, base_class_optional) if not to_self else class_type
-        if not to_self and base_class.__class__ is not ABCMeta:
+        if not to_self and not self.__is_class_abstract(base_class):
             raise RuntimeError(f'base_class "{base_class.__name__}" is not abstract class')
         if not issubclass(class_type, base_class):
             raise SubclassError(class_type, base_class)
@@ -62,6 +62,9 @@ class Container:
             instance = self.__instances[base_class]
             raise TypeAlreadyBoundError(base_class, type(instance))
         self.__types[base_class] = class_type
+
+    def __is_class_abstract(self, base_class: type) -> bool:
+        return type(base_class) is ABCMeta
 
     def get(self, base_class: Type[T]) -> T:
         if base_class in self.__instances:
