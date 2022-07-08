@@ -16,13 +16,13 @@ class ScriptRunner:
 
     def run(self, script_type: Type[ScriptBase]) -> None:
         self.__scan_services()
-        script = self.__create_script(script_type)
+        script = self.__instantiate_script(script_type)
         self.__run_script_base(script)
 
     def __scan_services(self) -> None:
         self.__container.scan_services(source_root)
 
-    def __create_script(self, script_type: Type[ScriptBase]) -> ScriptBase:
+    def __instantiate_script(self, script_type: Type[ScriptBase]) -> ScriptBase:
         script = self.__container.instantiate(script_type)
         script.container = self.__container
         return script
