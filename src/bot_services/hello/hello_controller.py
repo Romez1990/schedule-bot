@@ -5,7 +5,6 @@ from messenger_services.messenger_service import (
     InlineKeyboard,
     Button,
     InlineButton,
-    Payload,
     controller,
     message_handler,
 )
@@ -38,7 +37,7 @@ class HelloController(MessengerController):
         keyboard = InlineKeyboard()
         for group in groups:
             keyboard.row(
-                InlineButton(group, payload=Payload.none),
+                InlineButton(group),
                 InlineButton('Удалить', payload=DeleteGroupPayload(group)),
             )
         await self._send_message(message.chat, 'Добавленные группы:', keyboard)

@@ -15,4 +15,4 @@ class Button(ButtonBase):
 
 @dataclass(frozen=True, eq=False)
 class InlineButton(ButtonBase):
-    payload: Payload = field(kw_only=True)
+    payload: Payload = field(default=Payload.none, kw_only=True)
