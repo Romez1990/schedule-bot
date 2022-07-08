@@ -13,7 +13,7 @@ from infrastructure.decorator import (
 )
 from .structures import (
     Message,
-    MessageHandlerParams,
+    MessageHandlerParamsForRegistrar,
 )
 from .messenger_controller import MessengerController
 
@@ -28,7 +28,7 @@ def controller(class_type: Type[TController]) -> Type[TController]:
     return class_type
 
 
-message_handler_params: MutableSequence[MessageHandlerParams] = []
+message_handler_params: MutableSequence[MessageHandlerParamsForRegistrar] = []
 
 
 def message_handler(command: str) -> type:
@@ -38,7 +38,7 @@ def message_handler(command: str) -> type:
             self.__method = method
 
         def __set_name__(self, owner: Type[MessengerController], name: str) -> None:
-            message_handler_params.append(MessageHandlerParams(owner, name, command))
+            message_handler_params.append(MessageHandlerParamsForRegistrar(owner, name, command))
 
         async def __call__(self, messenger_controller: MessengerController, message: Message) -> None:
             await self.__method(messenger_controller, message)

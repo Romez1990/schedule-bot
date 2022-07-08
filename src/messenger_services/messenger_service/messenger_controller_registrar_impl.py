@@ -12,7 +12,7 @@ from messenger_services.telegram_service import TelegramService
 from messenger_services.vk_service import VkService
 from .structures import (
     Message,
-    MessageHandlerParams,
+    MessageHandlerParamsForRegistrar,
 )
 from .messenger_controller_registrar import MessengerControllerRegistrar
 from .messenger_service import MessengerService
@@ -70,13 +70,13 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
             self.__register_controllers_for_messengers(controllers_for_messengers, params)
 
     def __register_controllers_for_messengers(self, controllers: Sequence[MessengerController],
-                                              params: MessageHandlerParams) -> None:
+                                              params: MessageHandlerParamsForRegistrar) -> None:
         for messenger_service, controller in zip(self.messenger_services, controllers):
             adapter = messenger_service.adapter
             self.__register_message_handler_for_messenger(adapter, controller, params)
 
     def __register_message_handler_for_messenger(self, adapter: MessengerAdapter, controller: MessengerController,
-                                                 params: MessageHandlerParams) -> None:
+                                                 params: MessageHandlerParamsForRegistrar) -> None:
         message_handler = self.__get_message_handler(controller, adapter, params.method_name)
         adapter.add_message_handler(params, message_handler)
 

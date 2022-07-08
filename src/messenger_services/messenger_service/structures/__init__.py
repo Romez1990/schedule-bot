@@ -13,4 +13,6 @@ from .button import (
 from .payload import Payload
 from .handler_params import (
     MessageHandlerParams,
+    MessageHandlerParamsForRegistrar,
+    HandlerParamsForRegistrar,
 )

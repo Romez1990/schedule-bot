@@ -10,7 +10,16 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True, eq=False)
-class MessageHandlerParams:
+class HandlerParamsForRegistrar:
     controller_class: Type[MessengerController]
     method_name: str
+
+
+@dataclass(frozen=True, eq=False)
+class MessageHandlerParams:
     command: str
+
+
+@dataclass(frozen=True, eq=False)
+class MessageHandlerParamsForRegistrar(MessageHandlerParams, HandlerParamsForRegistrar):
+    pass
