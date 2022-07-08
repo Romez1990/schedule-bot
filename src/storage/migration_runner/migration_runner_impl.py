@@ -28,7 +28,7 @@ class MigrationRunnerImpl(MigrationRunner):
     async def run(self) -> None:
         async with self.__connection_pool.get_connection() as connection:
             create_table_tasks = List(self.__migrations) \
-                .map(self.__create_migration) \
+                .map(self.__instantiate_migration) \
                 .map(self.__create_migration_run(connection)) \
                 .map(self.__run_create_table)
             migration_runs = await Task.series(create_table_tasks)
@@ -36,7 +36,7 @@ class MigrationRunnerImpl(MigrationRunner):
                 .map(self.__run_create_relationship)
             await Task.series(create_relationship_tasks)
 
-    def __create_migration(self, migration_type: Type[Migration]) -> Migration:
+    def __instantiate_migration(self, migration_type: Type[Migration]) -> Migration:
         return migration_type()
 
     def __create_migration_run(self, data_fetcher: DataFetcher) -> Callable[[Migration], MigrationRun]:
