@@ -9,4 +9,4 @@ if TYPE_CHECKING:
 
 class MigrationTableAlreadyExistsError(Exception):
     def __init__(self, migration: Migration) -> None:
-        super().__init__(f'table already exists in migration {type(migration).__name__}')
+        super().__init__(f'table already exists in migration {migration.__class__.__name__}')

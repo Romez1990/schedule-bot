@@ -9,4 +9,4 @@ if TYPE_CHECKING:
 
 class MigrationSyntaxError(Exception):
     def __init__(self, migration: Migration, query_name: str) -> None:
-        super().__init__(f'In migration {type(migration).__name__} syntax error in "{query_name}" query')
+        super().__init__(f'In migration {migration.__class__.__name__} syntax error in "{query_name}" query')
