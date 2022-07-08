@@ -36,8 +36,8 @@ class MigrationRunnerImpl(MigrationRunner):
                 .map(self.__run_create_relationship)
             await Task.series(create_relationship_tasks)
 
-    def __instantiate_migration(self, migration_type: Type[Migration]) -> Migration:
-        return migration_type()
+    def __instantiate_migration(self, migration_class: Type[Migration]) -> Migration:
+        return migration_class()
 
     def __create_migration_run(self, data_fetcher: DataFetcher) -> Callable[[Migration], MigrationRun]:
         def create_migration_run(migration: Migration) -> MigrationRun:
