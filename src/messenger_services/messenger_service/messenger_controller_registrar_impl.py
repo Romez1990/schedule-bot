@@ -57,4 +57,4 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
         adapter = messenger_service.adapter
         message_handler = self.__message_handler_adapter.get_message_handler(controller, adapter,
                                                                              parameters.method_name)
-        messenger_service.add_message_handler(parameters, message_handler)
+        adapter.add_message_handler(parameters, message_handler)
