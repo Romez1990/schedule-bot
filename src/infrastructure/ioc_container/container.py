@@ -1,4 +1,5 @@
 from pathlib import Path
+from abc import ABCMeta
 from typing import (
     Sequence,
     Mapping,
@@ -50,6 +51,8 @@ class Container:
 
     def __bind_type(self, class_type: type, base_class_optional: type | None, to_self: bool) -> None:
         base_class = cast(type, base_class_optional) if not to_self else class_type
+        if not to_self and base_class.__class__ is not ABCMeta:
+            raise RuntimeError(f'base_class "{base_class.__name__}" is not abstract class')
         if not issubclass(class_type, base_class):
             raise SubclassError(class_type, base_class)
         if base_class in self.__types:
