@@ -3,13 +3,13 @@ from abc import ABCMeta, abstractmethod
 from data.fp.task import Task
 from data.fp.task_maybe import TaskMaybe
 from storage.entities import (
-    User,
+    Chat,
 )
 
 
-class UserRepository(metaclass=ABCMeta):
+class ChatRepository(metaclass=ABCMeta):
     @abstractmethod
-    def save(self, user: User) -> Task[User]: ...
+    def save(self, chat: Chat) -> Task[Chat]: ...
 
     @abstractmethod
-    def find(self, messenger: str, messenger_id: str) -> TaskMaybe[User]: ...
+    def find(self, messenger: str, messenger_id: str) -> TaskMaybe[Chat]: ...

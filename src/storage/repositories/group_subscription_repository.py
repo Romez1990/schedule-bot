@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 from data.fp.task import Task
 from data.vector import List
 from storage.entities import (
-    User,
+    Chat,
     GroupSubscription,
 )
 
@@ -16,4 +16,4 @@ class GroupSubscriptionRepository(metaclass=ABCMeta):
     def delete(self, group_subscription: GroupSubscription) -> Task[None]: ...
 
     @abstractmethod
-    def find_all(self, user: User) -> Task[List[GroupSubscription]]: ...
+    def find_all(self, chat: Chat) -> Task[List[GroupSubscription]]: ...
