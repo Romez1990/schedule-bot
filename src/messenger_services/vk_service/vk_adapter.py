@@ -12,6 +12,7 @@ from messenger_services.messenger_service import (
     MessengerAdapter,
     Message,
     User,
+    KeyboardBase,
     MessageHandlerParameters,
 )
 
@@ -21,7 +22,7 @@ class VkAdapter(MessengerAdapter[VkMessage]):
         self.__bot = bot
         self.__api = self.__bot.api
 
-    async def send_message(self, user: User, text: str) -> None:
+    async def send_message(self, user: User, text: str, keyboard: KeyboardBase = None) -> None:
         await self.__api.messages.send(user.chat_id, message=text, random_id=0)
 
     def map_message(self, message: VkMessage) -> Message:

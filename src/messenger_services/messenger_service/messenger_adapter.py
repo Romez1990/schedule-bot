@@ -11,6 +11,7 @@ from typing import (
 from .structures import (
     Message,
     User,
+    KeyboardBase,
 )
 
 if TYPE_CHECKING:
@@ -21,7 +22,7 @@ T = TypeVar('T')
 
 class MessengerAdapter(Generic[T], metaclass=ABCMeta):
     @abstractmethod
-    def send_message(self, user: User, text: str) -> Awaitable[None]: ...
+    def send_message(self, user: User, text: str, keyboard: KeyboardBase = None) -> Awaitable[None]: ...
 
     @abstractmethod
     def map_message(self, messenger_message: T) -> Message: ...

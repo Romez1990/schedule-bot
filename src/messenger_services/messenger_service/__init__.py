@@ -1,6 +1,13 @@
 from .structures import (
     Message,
     User,
+    KeyboardBase,
+    Keyboard,
+    InlineKeyboard,
+    ButtonBase,
+    Button,
+    InlineButton,
+    Payload,
     MessageHandlerParameters,
 )
 from .message_handler_registrar import MessageHandlerRegistrar
