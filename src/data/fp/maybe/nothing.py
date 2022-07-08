@@ -33,6 +33,9 @@ class _Nothing(Maybe[T]):
     def get_or(self, value: T) -> T:
         return value
 
+    def get_or_none(self) -> T | None:
+        return None
+
     def get_or_call(self, fn: Callable[[], T]) -> T:
         return fn()
 

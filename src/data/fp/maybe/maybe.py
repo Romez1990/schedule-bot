@@ -55,6 +55,9 @@ class Maybe(Generic[T], metaclass=ABCMeta):
     def get_or(self, value: T) -> T: ...
 
     @abstractmethod
+    def get_or_none(self) -> T | None: ...
+
+    @abstractmethod
     def get_or_call(self, fn: Callable[[], T]) -> T: ...
 
     @abstractmethod

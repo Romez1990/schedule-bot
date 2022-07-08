@@ -34,6 +34,9 @@ class Some(Maybe[T]):
     def get_or(self, value: T) -> T:
         return self.__value
 
+    def get_or_none(self) -> T | None:
+        return self.__value
+
     def get_or_call(self, fn: Callable[[], T]) -> T:
         return self.__value
 
