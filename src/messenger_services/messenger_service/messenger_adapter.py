@@ -1,21 +1,17 @@
-from __future__ import annotations
 from abc import ABCMeta, abstractmethod
 from typing import (
     Callable,
     Awaitable,
     Generic,
     TypeVar,
-    TYPE_CHECKING,
 )
 
 from .structures import (
     Message,
     User,
     KeyboardBase,
+    MessageHandlerParams,
 )
-
-if TYPE_CHECKING:
-    from .message_handler_decorator import MessageHandlerParameters
 
 T = TypeVar('T')
 
@@ -28,5 +24,4 @@ class MessengerAdapter(Generic[T], metaclass=ABCMeta):
     def map_message(self, messenger_message: T) -> Message: ...
 
     @abstractmethod
-    def add_message_handler(self, parameters: MessageHandlerParameters,
-                            method: Callable[[T], Awaitable[None]]) -> None: ...
+    def add_message_handler(self, params: MessageHandlerParams, method: Callable[[T], Awaitable[None]]) -> None: ...

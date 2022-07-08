@@ -26,7 +26,7 @@ from messenger_services.messenger_service import (
     ButtonBase,
     Button,
     InlineButton,
-    MessageHandlerParameters,
+    MessageHandlerParams,
 )
 
 
@@ -79,6 +79,6 @@ class TelegramAdapter(MessengerAdapter[TelegramMessage]):
     def __map_user(self, chat: Chat) -> User:
         return User(chat.id)
 
-    def add_message_handler(self, parameters: MessageHandlerParameters,
+    def add_message_handler(self, params: MessageHandlerParams,
                             method: Callable[[TelegramMessage], Awaitable[None]]) -> None:
-        self.__dispatcher.message_handler(Command(parameters.command, prefixes=['/', '']))(method)
+        self.__dispatcher.message_handler(Command(params.command, prefixes=['/', '']))(method)

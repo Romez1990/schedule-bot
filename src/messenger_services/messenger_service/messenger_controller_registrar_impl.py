@@ -12,7 +12,7 @@ from messenger_services.telegram_service import TelegramService
 from messenger_services.vk_service import VkService
 from .structures import (
     Message,
-    MessageHandlerParameters,
+    MessageHandlerParams,
 )
 from .messenger_controller_registrar import MessengerControllerRegistrar
 from .messenger_service import MessengerService
@@ -20,7 +20,7 @@ from .messenger_adapter import MessengerAdapter
 from .messenger_controller import MessengerController
 from .decorators import (
     messenger_controllers,
-    message_handler_parameters,
+    message_handler_params,
 )
 
 
@@ -65,20 +65,20 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
 
     def __register_controllers(self,
                                controllers: Mapping[Type[MessengerController], Sequence[MessengerController]]) -> None:
-        for parameters in message_handler_parameters:
-            controllers_for_messengers = controllers[parameters.controller_class]
-            self.__register_controllers_for_messengers(controllers_for_messengers, parameters)
+        for params in message_handler_params:
+            controllers_for_messengers = controllers[params.controller_class]
+            self.__register_controllers_for_messengers(controllers_for_messengers, params)
 
     def __register_controllers_for_messengers(self, controllers: Sequence[MessengerController],
-                                              parameters: MessageHandlerParameters) -> None:
+                                              params: MessageHandlerParams) -> None:
         for messenger_service, controller in zip(self.messenger_services, controllers):
             adapter = messenger_service.adapter
-            self.__register_message_handler_for_messenger(adapter, controller, parameters)
+            self.__register_message_handler_for_messenger(adapter, controller, params)
 
     def __register_message_handler_for_messenger(self, adapter: MessengerAdapter, controller: MessengerController,
-                                                 parameters: MessageHandlerParameters) -> None:
-        message_handler = self.__get_message_handler(controller, adapter, parameters.method_name)
-        adapter.add_message_handler(parameters, message_handler)
+                                                 params: MessageHandlerParams) -> None:
+        message_handler = self.__get_message_handler(controller, adapter, params.method_name)
+        adapter.add_message_handler(params, message_handler)
 
     def __get_message_handler(self, controller: MessengerController, adapter: MessengerAdapter,
                               method_name: str) -> Callable[[object], Awaitable[None]]:

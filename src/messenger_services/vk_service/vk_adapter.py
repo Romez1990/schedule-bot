@@ -13,7 +13,7 @@ from messenger_services.messenger_service import (
     Message,
     User,
     KeyboardBase,
-    MessageHandlerParameters,
+    MessageHandlerParams,
 )
 
 
@@ -32,6 +32,6 @@ class VkAdapter(MessengerAdapter[VkMessage]):
     def __map_user(self, message: VkMessage) -> User:
         return User(message.peer_id)
 
-    def add_message_handler(self, parameters: MessageHandlerParameters,
+    def add_message_handler(self, params: MessageHandlerParams,
                             method: Callable[[VkMessage], Awaitable[None]]) -> None:
-        self.__bot.on.message(CommandRule(parameters.command, prefixes=['/', '']))(method)
+        self.__bot.on.message(CommandRule(params.command, prefixes=['/', '']))(method)

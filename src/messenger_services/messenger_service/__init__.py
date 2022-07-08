@@ -8,7 +8,7 @@ from .structures import (
     Button,
     InlineButton,
     Payload,
-    MessageHandlerParameters,
+    MessageHandlerParams,
 )
 from .messenger_manager import MessengerManager
 from .messenger_service import MessengerService

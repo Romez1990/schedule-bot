@@ -11,4 +11,4 @@ from .button import (
     InlineButton,
 )
 from .payload import Payload
-from .messege_handler_parameters import MessageHandlerParameters
+from .messege_handler_params import MessageHandlerParams

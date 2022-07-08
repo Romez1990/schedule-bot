@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True, eq=False)
-class MessageHandlerParameters:
+class MessageHandlerParams:
     controller_class: Type[MessengerController]
     method_name: str
     command: str
