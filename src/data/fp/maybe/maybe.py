@@ -22,14 +22,14 @@ class Maybe(Generic[T], metaclass=ABCMeta):
         return Some(optional)
 
     @staticmethod
-    def try_except(fn: Callable[[], T], error_type: Type[Exception]) -> Maybe[T]:
+    def try_except(fn: Callable[[], T], error_class: Type[Exception]) -> Maybe[T]:
         from .some import Some
         from .nothing import Nothing
 
         try:
             value = fn()
         except Exception as e:
-            if not isinstance(e, error_type):
+            if not isinstance(e, error_class):
                 raise e
             return Nothing
         return Some(value)

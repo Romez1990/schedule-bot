@@ -22,12 +22,12 @@ class TaskMaybe(CoroutineBase[Maybe[T]]):
         return TaskMaybe(async_identity(maybe))
 
     @staticmethod
-    def try_except(awaitable: Awaitable[T], error_type: Type[Exception]) -> TaskMaybe[T]:
+    def try_except(awaitable: Awaitable[T], error_class: Type[Exception]) -> TaskMaybe[T]:
         async def async_try_except() -> Maybe[T]:
             try:
                 value = await awaitable
             except Exception as e:
-                if not isinstance(e, error_type):
+                if not isinstance(e, error_class):
                     raise e
                 return Nothing
             return Some(value)
