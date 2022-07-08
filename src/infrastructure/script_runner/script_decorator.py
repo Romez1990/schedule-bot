@@ -4,7 +4,7 @@ from typing import (
 )
 
 from infrastructure.decorator import (
-    check_decorating_type,
+    check_decorating_class,
     check_decorating_class_name,
 )
 from .script_runner import ScriptRunner
@@ -14,7 +14,7 @@ T = TypeVar('T', bound=ScriptBase)
 
 
 def script(class_type: Type[T]) -> Type[T]:
-    check_decorating_type(script, ScriptBase, class_type)
+    check_decorating_class(script, ScriptBase, class_type)
     check_decorating_class_name(class_type, 'Script')
 
     script_runner = ScriptRunner()

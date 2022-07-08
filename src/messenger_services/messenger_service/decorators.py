@@ -8,7 +8,7 @@ from typing import (
 
 from infrastructure.decorator import (
     check_decorating_callable,
-    check_decorating_type,
+    check_decorating_class,
     check_decorating_class_name,
 )
 from .structures import (
@@ -22,7 +22,7 @@ TController = TypeVar('TController', bound=MessengerController)
 
 
 def controller(class_type: Type[TController]) -> Type[TController]:
-    check_decorating_type(controller, MessengerController, class_type)
+    check_decorating_class(controller, MessengerController, class_type)
     check_decorating_class_name(class_type, 'Controller')
     messenger_controllers.append(class_type)
     return class_type

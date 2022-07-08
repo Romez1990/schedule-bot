@@ -8,7 +8,7 @@ from typing import (
 )
 
 from infrastructure.decorator import (
-    check_decorating_type,
+    check_decorating_class,
 )
 from .service_bind_parameters import ServiceBindParameters
 
@@ -26,6 +26,6 @@ def service(to_self: bool) -> Union[Type[T], Callable[[Type[T]], Type[T]]]:
 
 
 def add_service(class_type: Type[T], to_self: bool = None) -> Type[T]:
-    check_decorating_type(service, object, class_type)
+    check_decorating_class(service, object, class_type)
     services.append(ServiceBindParameters(class_type, to_self))
     return class_type
