@@ -65,7 +65,7 @@ class MigrationRunImpl(MigrationRun):
             .get_or_raise()
 
     def __log_migration_success(self, _: None) -> None:
-        migration_name = type(self.__migration).__name__
+        migration_name = self.__migration.__class__.__name__
         self.__logger.info(f'Migration {migration_name} applied')
 
     def __log_migration_failure(self, error: MigrationTableAlreadyExistsError) -> None:
