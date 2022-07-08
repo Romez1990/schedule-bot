@@ -18,8 +18,10 @@ from .messenger_controller_registrar import MessengerControllerRegistrar
 from .messenger_service import MessengerService
 from .messenger_adapter import MessengerAdapter
 from .messenger_controller import MessengerController
-from .controller_decorator import messenger_controllers
-from .message_handler_decorator import message_handler_parameters
+from .decorators import (
+    messenger_controllers,
+    message_handler_parameters,
+)
 
 
 @service
