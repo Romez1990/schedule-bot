@@ -21,6 +21,6 @@ class RepositoryConnectionContextManager(CoroutineBase[ManageableRepositoryConne
         self.__connection = await self._coroutine
         return self.__connection
 
-    async def __aexit__(self, exception_type: Type[Exception] | None, exception: Exception | None,
+    async def __aexit__(self, exception_class: Type[Exception] | None, exception: Exception | None,
                         exception_traceback: TracebackType | None) -> None:
         self.__connection.release()
