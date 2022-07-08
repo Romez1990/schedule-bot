@@ -32,6 +32,6 @@ class VkAdapter(MessengerAdapter[VkMessage]):
     def __map_user(self, message: VkMessage) -> User:
         return User(message.peer_id)
 
-    def add_message_handler(self, params: MessageHandlerParams,
-                            method: Callable[[VkMessage], Awaitable[None]]) -> None:
+    def register_message_handler(self, params: MessageHandlerParams,
+                                 method: Callable[[VkMessage], Awaitable[None]]) -> None:
         self.__bot.on.message(CommandRule(params.command, prefixes=['/', '']))(method)

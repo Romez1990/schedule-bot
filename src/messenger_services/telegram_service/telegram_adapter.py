@@ -79,6 +79,6 @@ class TelegramAdapter(MessengerAdapter[TelegramMessage]):
     def __map_user(self, chat: Chat) -> User:
         return User(chat.id)
 
-    def add_message_handler(self, params: MessageHandlerParams,
-                            method: Callable[[TelegramMessage], Awaitable[None]]) -> None:
+    def register_message_handler(self, params: MessageHandlerParams,
+                                 method: Callable[[TelegramMessage], Awaitable[None]]) -> None:
         self.__dispatcher.message_handler(Command(params.command, prefixes=['/', '']))(method)
