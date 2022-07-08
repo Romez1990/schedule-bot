@@ -3,6 +3,9 @@ from typing import (
     Mapping,
     Callable,
     Type,
+    TypeVar,
+    ParamSpec,
+    Concatenate,
     Awaitable,
 )
 
@@ -13,6 +16,7 @@ from messenger_services.vk_service import VkService
 from .structures import (
     Message,
     MessageHandlerParamsForRegistrar,
+    HandlerParamsForRegistrar,
 )
 from .messenger_controller_registrar import MessengerControllerRegistrar
 from .messenger_service import MessengerService
@@ -22,6 +26,9 @@ from .decorators import (
     messenger_controllers,
     message_handler_params,
 )
+
+TParams = TypeVar('TParams', bound=HandlerParamsForRegistrar)
+P = ParamSpec('P')
 
 
 @service
@@ -65,26 +72,35 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
 
     def __register_controllers(self,
                                controllers: Mapping[Type[MessengerController], Sequence[MessengerController]]) -> None:
-        for params in message_handler_params:
-            controllers_for_messengers = controllers[params.controller_class]
-            self.__register_controllers_for_messengers(controllers_for_messengers, params)
+        self.__register_handlers(controllers, message_handler_params, self.__register_message_handler)
 
-    def __register_controllers_for_messengers(self, controllers: Sequence[MessengerController],
-                                              params: MessageHandlerParamsForRegistrar) -> None:
+    def __register_handlers(self,
+                            controllers: Mapping[Type[MessengerController], Sequence[MessengerController]],
+                            all_params: Sequence[TParams],
+                            register_handler: Callable[[MessengerController, MessengerAdapter, TParams], None]) -> None:
+        for params in all_params:
+            controllers_for_messengers = controllers[params.controller_class]
+            self.__register_handler(controllers_for_messengers, params, register_handler)
+
+    def __register_handler(self, controllers: Sequence[MessengerController], params: TParams,
+                           register_handler: Callable[[MessengerController, MessengerAdapter, TParams], None]) -> None:
         for messenger_service, controller in zip(self.messenger_services, controllers):
             adapter = messenger_service.adapter
-            self.__register_message_handler_for_messenger(adapter, controller, params)
+            register_handler(controller, adapter, params)
 
-    def __register_message_handler_for_messenger(self, adapter: MessengerAdapter, controller: MessengerController,
-                                                 params: MessageHandlerParamsForRegistrar) -> None:
-        message_handler = self.__get_message_handler(controller, adapter, params.method_name)
-        adapter.register_message_handler(params, message_handler)
+    def __register_message_handler(self, controller: MessengerController, adapter: MessengerAdapter,
+                                   params: MessageHandlerParamsForRegistrar) -> None:
+        handler: Callable[[Message], Awaitable[None]] = self.__get_method(controller, params.method_name)
+        adapter.register_message_handler(params, handler)
 
-    def __get_message_handler(self, controller: MessengerController, adapter: MessengerAdapter,
-                              method_name: str) -> Callable[[Message], Awaitable[None]]:
-        method: Callable[[MessengerController, Message], Awaitable[None]] = getattr(controller, method_name)
+    def __get_method(self, controller: MessengerController, method_name: str) -> Callable[P, Awaitable[None]]:
+        method: Callable[Concatenate[MessengerController, P], Awaitable[None]] = getattr(controller, method_name)
+        return self.__method_to_function(controller, method)
 
-        async def message_handler(message: Message) -> None:
-            await method(controller, message)
+    def __method_to_function(self, controller: MessengerController,
+                             method: Callable[Concatenate[MessengerController, P], Awaitable[None]]
+                             ) -> Callable[P, Awaitable[None]]:
+        async def handler(*args: P.args, **kwargs: P.kwargs) -> None:
+            await method(controller, *args, **kwargs)
 
-        return message_handler
+        return handler
