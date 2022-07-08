@@ -81,11 +81,10 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
         adapter.register_message_handler(params, message_handler)
 
     def __get_message_handler(self, controller: MessengerController, adapter: MessengerAdapter,
-                              method_name: str) -> Callable[[object], Awaitable[None]]:
+                              method_name: str) -> Callable[[Message], Awaitable[None]]:
         method: Callable[[MessengerController, Message], Awaitable[None]] = getattr(controller, method_name)
 
-        async def message_handler(messenger_message: object) -> None:
-            message = adapter.map_message(messenger_message)
+        async def message_handler(message: Message) -> None:
             await method(controller, message)
 
         return message_handler

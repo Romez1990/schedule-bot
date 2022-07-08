@@ -30,7 +30,7 @@ from messenger_services.messenger_service import (
 )
 
 
-class TelegramAdapter(MessengerAdapter[TelegramMessage]):
+class TelegramAdapter(MessengerAdapter):
     def __init__(self, bot: Bot, dispatcher: Dispatcher) -> None:
         self.__bot = bot
         self.__dispatcher = dispatcher
@@ -72,13 +72,23 @@ class TelegramAdapter(MessengerAdapter[TelegramMessage]):
             case _:
                 raise RuntimeError
 
-    def map_message(self, message: TelegramMessage) -> Message:
+    def register_message_handler(self, params: MessageHandlerParams,
+                                 handler: Callable[[Message], Awaitable[None]]) -> None:
+        filter = Command(params.command, prefixes=['/', ''])
+        messenger_handler = self.__map_message_handler(handler)
+        self.__dispatcher.message_handler(filter)(messenger_handler)
+
+    def __map_message_handler(self, handler: Callable[[Message], Awaitable[None]]
+                              ) -> Callable[[TelegramMessage], Awaitable[None]]:
+        async def messenger_handler(messenger_message: TelegramMessage) -> None:
+            message = self.__map_message(messenger_message)
+            await handler(message)
+
+        return messenger_handler
+
+    def __map_message(self, message: TelegramMessage) -> Message:
         user = self.__map_user(message.chat)
         return Message(user, message.text)
 
     def __map_user(self, chat: Chat) -> User:
         return User(chat.id)
-
-    def register_message_handler(self, params: MessageHandlerParams,
-                                 method: Callable[[TelegramMessage], Awaitable[None]]) -> None:
-        self.__dispatcher.message_handler(Command(params.command, prefixes=['/', '']))(method)

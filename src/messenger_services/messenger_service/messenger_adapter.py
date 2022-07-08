@@ -2,8 +2,6 @@ from abc import ABCMeta, abstractmethod
 from typing import (
     Callable,
     Awaitable,
-    Generic,
-    TypeVar,
 )
 
 from .structures import (
@@ -13,15 +11,11 @@ from .structures import (
     MessageHandlerParams,
 )
 
-T = TypeVar('T')
 
-
-class MessengerAdapter(Generic[T], metaclass=ABCMeta):
+class MessengerAdapter(metaclass=ABCMeta):
     @abstractmethod
     def send_message(self, user: User, text: str, keyboard: KeyboardBase = None) -> Awaitable[None]: ...
 
     @abstractmethod
-    def map_message(self, messenger_message: T) -> Message: ...
-
-    @abstractmethod
-    def register_message_handler(self, params: MessageHandlerParams, method: Callable[[T], Awaitable[None]]) -> None: ...
+    def register_message_handler(self, params: MessageHandlerParams,
+                                 handler: Callable[[Message], Awaitable[None]]) -> None: ...
