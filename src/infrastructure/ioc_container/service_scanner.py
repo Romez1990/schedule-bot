@@ -42,11 +42,11 @@ class ServiceScanner:
             if service_parameters.to_self:
                 container.bind(service_parameters.service).to_self()
             else:
-                interface = self.__get_interface(service_parameters.service)
-                container.bind(service_parameters.service).to(interface)
+                base_class = self.__get_base_class(service_parameters.service)
+                container.bind(service_parameters.service).to(base_class)
 
-    def __get_interface(self, service: type) -> type:
-        interface = service.__bases__[0]
-        if interface.__class__ is not ABCMeta:
-            raise RuntimeError(f'interface "{interface.__name__}" is not abstract class')
-        return interface
+    def __get_base_class(self, service: type) -> type:
+        base_class = service.__bases__[0]
+        if base_class.__class__ is not ABCMeta:
+            raise RuntimeError(f'base_class "{base_class.__name__}" is not abstract class')
+        return base_class
