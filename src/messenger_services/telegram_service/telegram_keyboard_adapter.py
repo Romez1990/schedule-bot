@@ -47,8 +47,8 @@ class TelegramKeyboardAdapter:
             case _:
                 raise RuntimeError
 
-    def __map_row(self, buttons: Sequence[ButtonBase]) -> Sequence[TelegramButton]:
-        return List(buttons) \
+    def __map_row(self, row: Sequence[ButtonBase]) -> Sequence[TelegramButton]:
+        return List(row) \
             .map(self.__map_button)
 
     def __map_button(self, button: ButtonBase) -> TelegramButton:
