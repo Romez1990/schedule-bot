@@ -11,6 +11,5 @@ from .migration_decorator import migrations
 
 @service
 class MigrationRepositoryImpl(MigrationRepository):
-    @property
-    def migrations(self) -> Sequence[Type[Migration]]:
+    def get_all(self) -> Sequence[Type[Migration]]:
         return migrations

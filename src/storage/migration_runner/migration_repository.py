@@ -8,6 +8,5 @@ from storage.migration_runner import Migration
 
 
 class MigrationRepository(metaclass=ABCMeta):
-    @property
     @abstractmethod
-    def migrations(self) -> Sequence[Type[Migration]]: ...
+    def get_all(self) -> Sequence[Type[Migration]]: ...
