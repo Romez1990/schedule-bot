@@ -18,3 +18,4 @@ from .decorators import (
     controller,
     message_handler,
 )
+from .payload_serializer import PayloadSerializer
