@@ -79,7 +79,10 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
                             all_params: Sequence[TParams],
                             register_handler: Callable[[MessengerController, MessengerAdapter, TParams], None]) -> None:
         for params in all_params:
-            controllers_for_messengers = controllers[params.controller_class]
+            controllers_for_messengers = controllers.get(params.controller_class)
+            if controllers_for_messengers is None:
+                controller_name = params.controller_class.__name__
+                raise RuntimeError(f'"{controller_name}" must be decorated with @controller')
             self.__register_handler(controllers_for_messengers, params, register_handler)
 
     def __register_handler(self, controllers: Sequence[MessengerController], params: TParams,
