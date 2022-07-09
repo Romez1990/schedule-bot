@@ -12,7 +12,7 @@ T = TypeVar('T')
 
 @service
 class JsonSerializerImpl(JsonSerializer):
-    def serialize(self, value: object, *, ensure_ascii=True) -> str:
+    def serialize(self, value: object, *, ensure_ascii: bool = True) -> str:
         return json.dumps(value, ensure_ascii=ensure_ascii)
 
     def deserialize(self, data: str, *, value_type: Type[T]) -> T:
