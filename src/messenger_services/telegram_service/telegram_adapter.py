@@ -91,8 +91,8 @@ class TelegramAdapter(MessengerAdapter):
     def __map_chat(self, chat: TelegramChat) -> Chat:
         return Chat(chat.id)
 
-    def __map_callback_data(self, data: str) -> Payload:
-        return self.__payload_serializer.deserialize(data, self.__payload_classes)
-
     def __map_answer(self, answer: Callable[[str], Awaitable[None]]) -> Callable[[str], Awaitable[None]]:
         return answer
+
+    def __map_callback_data(self, data: str) -> Payload:
+        return self.__payload_serializer.deserialize(data, self.__payload_classes)
