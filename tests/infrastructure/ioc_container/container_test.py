@@ -1,3 +1,4 @@
+from abc import ABCMeta
 from pytest import (
     fixture,
 )
@@ -14,7 +15,7 @@ def setup() -> None:
 container: Container
 
 
-class Service:
+class Service(metaclass=ABCMeta):
     pass
 
 
