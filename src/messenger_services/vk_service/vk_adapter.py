@@ -11,9 +11,11 @@ from vkbottle.dispatch.rules.base import CommandRule
 from messenger_services.messenger_service import (
     MessengerAdapter,
     Message,
+    Callback,
     Chat,
     KeyboardBase,
-    MessageHandlerParams, CallbackHandlerParams, Callback,
+    MessageHandlerParams,
+    CallbackHandlerParams,
 )
 
 
