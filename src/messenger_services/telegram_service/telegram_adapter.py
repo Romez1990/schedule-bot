@@ -2,7 +2,6 @@ from typing import (
     MutableMapping,
     Callable,
     Type,
-    TypeVar,
     Awaitable,
 )
 from aiogram import Bot, Dispatcher
@@ -31,8 +30,6 @@ from messenger_services.messenger_service import (
 )
 from .telegram_keyboard_adapter import TelegramKeyboardAdapter
 from .filters import CallbackPayloadFilter
-
-TPayload = TypeVar('TPayload', bound=Payload)
 
 
 class TelegramAdapter(MessengerAdapter):
