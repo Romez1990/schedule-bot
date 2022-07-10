@@ -37,11 +37,10 @@ class HelloController(MessengerController):
         await self._send_message(message.chat, 'Добавленные группы:', keyboard)
 
     @callback_handler(DeleteGroupPayload)
-    async def delete_group(self, callback: Callback, payload: DeleteGroupPayload) -> None:
-        message = f'Группа {payload.group} удалена'
-        await callback.answer(message)
+    async def delete_group(self, callback: Callback[DeleteGroupPayload]) -> None:
+        await callback.answer(f'Группа {callback.payload.group} удалена')
         keyboard = self.__get_groups_keyboard()
-        await self._send_message(callback.chat, message, keyboard)
+        await self._send_message(callback.chat, 'Добавленные группы:', keyboard)
 
     def __get_groups_keyboard(self) -> KeyboardBase:
         groups = [
