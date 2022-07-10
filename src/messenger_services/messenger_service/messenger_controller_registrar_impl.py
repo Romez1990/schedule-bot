@@ -108,7 +108,7 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
 
     def __register_callback_handler(self, controller: MessengerController, adapter: MessengerAdapter,
                                     params: CallbackHandlerParamsForRegistrar) -> None:
-        handler: Callable[[Callback, Payload], Awaitable[None]] = self.__get_method(controller, params.method_name)
+        handler: Callable[[Callback], Awaitable[None]] = self.__get_method(controller, params.method_name)
         adapter.register_callback_handler(params, handler)
 
     def __get_method(self, controller: MessengerController, method_name: str) -> Callable[P, Awaitable[None]]:

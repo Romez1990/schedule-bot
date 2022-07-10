@@ -54,15 +54,14 @@ callback_handler_params: MutableSequence[CallbackHandlerParamsForRegistrar] = []
 
 def callback_handler(payload_class: Type[Payload]) -> type:
     class CallbackHandler:
-        def __init__(self, method: Callable[[MessengerController, Callback, Payload], Awaitable[None]]) -> None:
+        def __init__(self, method: Callable[[MessengerController, Callback], Awaitable[None]]) -> None:
             check_decorating_callable(callback_handler, method)
             self.__method = method
 
         def __set_name__(self, owner: Type[MessengerController], name: str) -> None:
             callback_handler_params.append(CallbackHandlerParamsForRegistrar(owner, name, payload_class))
 
-        async def __call__(self, messenger_controller: MessengerController, callback: Callback,
-                           payload: Payload) -> None:
-            await self.__method(messenger_controller, callback, payload)
+        async def __call__(self, messenger_controller: MessengerController, callback: Callback) -> None:
+            await self.__method(messenger_controller, callback)
 
     return CallbackHandler

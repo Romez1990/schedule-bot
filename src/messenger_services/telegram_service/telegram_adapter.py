@@ -62,7 +62,7 @@ class TelegramAdapter(MessengerAdapter):
     __payload_classes: MutableMapping[str, Type[Payload]] = {}
 
     def register_callback_handler(self, params: CallbackHandlerParams,
-                                  handler: Callable[[Callback, Payload], Awaitable[None]]) -> None:
+                                  handler: Callable[[Callback], Awaitable[None]]) -> None:
         self.__payload_classes[params.payload_class.type] = params.payload_class
         filters = CallbackPayloadFilter(self.__json_serializer, params.payload_class)
         messenger_handler = self.__map_callback_handler(handler)
@@ -76,12 +76,11 @@ class TelegramAdapter(MessengerAdapter):
 
         return messenger_handler
 
-    def __map_callback_handler(self, handler: Callable[[Callback, Payload], Awaitable[None]]
+    def __map_callback_handler(self, handler: Callable[[Callback], Awaitable[None]]
                                ) -> Callable[[CallbackQuery], Awaitable[None]]:
         async def messenger_handler(query: CallbackQuery) -> None:
             callback = self.__map_callback(query)
-            payload = self.__map_callback_data(query.data)
-            await handler(callback, payload)
+            await handler(callback)
 
         return messenger_handler
 
@@ -90,15 +89,16 @@ class TelegramAdapter(MessengerAdapter):
         return Message(chat, message.text)
 
     def __map_callback(self, query: CallbackQuery) -> Callback:
-        message = self.__map_message(query.message)
+        chat = self.__map_chat(query.message.chat)
+        payload = self.__map_callback_data(query.data)
         answer = self.__map_answer(query.answer)
-        return Callback(message, answer)
+        return Callback(chat, payload, answer)
 
     def __map_chat(self, chat: TelegramChat) -> Chat:
         return Chat(chat.id)
 
+    def __map_callback_data(self, data: str) -> Payload:
+        return self.__payload_serializer.deserialize_from_json(data)
+
     def __map_answer(self, answer: Callable[[str], Awaitable[None]]) -> Callable[[str], Awaitable[None]]:
         return answer
-
-    def __map_callback_data(self, data: str) -> Payload:
-        return self.__payload_serializer.deserialize(data, self.__payload_classes)

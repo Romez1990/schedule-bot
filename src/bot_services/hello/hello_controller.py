@@ -41,7 +41,7 @@ class HelloController(MessengerController):
         message = f'Группа {payload.group} удалена'
         await callback.answer(message)
         keyboard = self.__get_groups_keyboard()
-        await self._send_message(callback.message.chat, message, keyboard)
+        await self._send_message(callback.chat, message, keyboard)
 
     def __get_groups_keyboard(self) -> KeyboardBase:
         groups = [
