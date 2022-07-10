@@ -43,9 +43,9 @@ class VkKeyboardAdapter:
     def __create_keyboard(self, keyboard: KeyboardBase) -> VkKeyboard:
         kwargs: MutableMapping[str, object] = {}
         match keyboard:
-            case Keyboard():
+            case Keyboard():  # type: ignore
                 pass
-            case InlineKeyboard():
+            case InlineKeyboard():  # type: ignore
                 kwargs.update({
                     'inline': True,
                 })
@@ -60,9 +60,9 @@ class VkKeyboardAdapter:
     def __map_button(self, button: ButtonBase) -> VkButton:
         args_base = [button.text]
         match button:
-            case Button():
+            case Button():  # type: ignore
                 return Text(*args_base)
-            case InlineButton(payload=payload):
+            case InlineButton(payload=payload):  # type: ignore
                 data = self.__payload_serializer.serialize(payload)
                 return Callback(*args_base, payload=data)
             case _:

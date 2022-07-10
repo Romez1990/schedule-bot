@@ -40,9 +40,9 @@ class TelegramKeyboardAdapter:
 
     def __create_keyboard(self, keyboard: KeyboardBase) -> TelegramKeyboard:
         match keyboard:
-            case Keyboard(resize=resize):
+            case Keyboard(resize=resize):  # type: ignore
                 return ReplyKeyboardMarkup(resize_keyboard=resize)
-            case InlineKeyboard():
+            case InlineKeyboard():  # type: ignore
                 return InlineKeyboardMarkup()
             case _:
                 raise RuntimeError
@@ -54,9 +54,9 @@ class TelegramKeyboardAdapter:
     def __map_button(self, button: ButtonBase) -> TelegramButton:
         args_base = [button.text]
         match button:
-            case Button():
+            case Button():  # type: ignore
                 return KeyboardButton(*args_base)
-            case InlineButton(payload=payload):
+            case InlineButton(payload=payload):  # type: ignore
                 data = self.__payload_serializer.serialize(payload)
                 return InlineKeyboardButton(*args_base, callback_data=data)
             case _:
