@@ -10,10 +10,6 @@ class Payload(metaclass=ABCMeta):
     type: ClassVar[str]
     none: ClassVar[Payload]
 
-    @classmethod
-    def filter(cls) -> object:
-        return cls.type
-
 
 @dataclass
 class NonePayload(Payload):
