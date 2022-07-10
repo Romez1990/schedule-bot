@@ -25,6 +25,7 @@ from .messenger_controller_registrar import MessengerControllerRegistrar
 from .messenger_service import MessengerService
 from .messenger_adapter import MessengerAdapter
 from .messenger_controller import MessengerController
+from .payload_classes_repository import PayloadClassesRepository
 from .decorators import (
     messenger_controllers,
     message_handler_params,
@@ -37,8 +38,10 @@ P = ParamSpec('P')
 
 @service
 class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
-    def __init__(self, telegram: TelegramService,
+    def __init__(self, payload_classes: PayloadClassesRepository,
+                 telegram: TelegramService,
                  vk: VkService) -> None:
+        self.__payload_classes = payload_classes
         self.messenger_services: Sequence[MessengerService] = [
             telegram,
             vk,
@@ -78,6 +81,8 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
                                controllers: Mapping[Type[MessengerController], Sequence[MessengerController]]) -> None:
         self.__register_handlers(controllers, message_handler_params, self.__register_message_handler)
         self.__register_handlers(controllers, callback_handler_params, self.__register_callback_handler)
+        for params in callback_handler_params:
+            self.__payload_classes.save(params.payload_class)
 
     def __register_handlers(self,
                             controllers: Mapping[Type[MessengerController], Sequence[MessengerController]],
