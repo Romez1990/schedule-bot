@@ -56,8 +56,8 @@ class VkAdapter(MessengerAdapter):
         return messenger_handler
 
     def __map_message(self, message: VkMessage) -> Message:
-        chat = self.__map_chat(message)
+        chat = self.__map_chat_from_message(message)
         return Message(chat, message.text)
 
-    def __map_chat(self, message: VkMessage) -> Chat:
+    def __map_chat_from_message(self, message: VkMessage) -> Chat:
         return Chat(message.peer_id)
