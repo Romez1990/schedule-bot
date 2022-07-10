@@ -1,7 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from typing import (
     Mapping,
-    Type,
 )
 
 from .structures import (
@@ -14,4 +13,7 @@ class PayloadSerializer(metaclass=ABCMeta):
     def serialize(self, payload: Payload) -> str: ...
 
     @abstractmethod
-    def deserialize(self, data: str, payload_classes: Mapping[str, Type[Payload]]) -> Payload: ...
+    def deserialize_from_json(self, data: str) -> Payload: ...
+
+    @abstractmethod
+    def deserialize_from_dict(self, data: Mapping[str, object]) -> Payload: ...
