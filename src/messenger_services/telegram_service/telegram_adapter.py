@@ -1,7 +1,5 @@
 from typing import (
-    MutableMapping,
     Callable,
-    Type,
     Awaitable,
 )
 from aiogram import Bot, Dispatcher
@@ -28,8 +26,11 @@ from messenger_services.messenger_service import (
     CallbackHandlerParams,
     PayloadSerializer,
 )
+from messenger_services.messenger_service.filters import (
+    CallbackPayloadFilter,
+)
 from .telegram_keyboard_adapter import TelegramKeyboardAdapter
-from .filters import CallbackPayloadFilter
+from .telegram_filter_adapter import TelegramFilterAdapter
 
 
 class TelegramAdapter(MessengerAdapter):
@@ -38,12 +39,14 @@ class TelegramAdapter(MessengerAdapter):
             bot: Bot,
             dispatcher: Dispatcher,
             keyboard_adapter: TelegramKeyboardAdapter,
+            filter_adapter: TelegramFilterAdapter,
             payload_serializer: PayloadSerializer,
             json_serializer: JsonSerializer,
     ) -> None:
         self.__bot = bot
         self.__dispatcher = dispatcher
         self.__keyboard_adapter = keyboard_adapter
+        self.__filter_adapter = filter_adapter
         self.__payload_serializer = payload_serializer
         self.__json_serializer = json_serializer
 
@@ -59,14 +62,12 @@ class TelegramAdapter(MessengerAdapter):
         messenger_handler = self.__map_message_handler(handler)
         self.__dispatcher.message_handler(filters)(messenger_handler)
 
-    __payload_classes: MutableMapping[str, Type[Payload]] = {}
-
     def register_callback_handler(self, params: CallbackHandlerParams,
                                   handler: Callable[[Callback], Awaitable[None]]) -> None:
-        self.__payload_classes[params.payload_class.type] = params.payload_class
         filters = CallbackPayloadFilter(self.__json_serializer, params.payload_class)
+        messenger_filter = self.__filter_adapter.map_filter(filters, self.__map_callback)
         messenger_handler = self.__map_callback_handler(handler)
-        self.__dispatcher.callback_query_handler(filters)(messenger_handler)
+        self.__dispatcher.callback_query_handler(messenger_filter)(messenger_handler)
 
     def __map_message_handler(self, handler: Callable[[Message], Awaitable[None]]
                               ) -> Callable[[TelegramMessage], Awaitable[None]]:

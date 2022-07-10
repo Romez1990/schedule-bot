@@ -12,6 +12,7 @@ from messenger_services.messenger_service import (
     PayloadSerializer,
 )
 from .telegram_adapter import TelegramAdapter
+from .telegram_filter_adapter import TelegramFilterAdapter
 from .telegram_keyboard_adapter import TelegramKeyboardAdapter
 
 
@@ -21,6 +22,7 @@ class TelegramService(MessengerService):
             self,
             config: Config,
             keyboard_adapter: TelegramKeyboardAdapter,
+            filter_adapter: TelegramFilterAdapter,
             payload_serializer: PayloadSerializer,
             json_serializer: JsonSerializer,
     ) -> None:
@@ -30,6 +32,7 @@ class TelegramService(MessengerService):
             bot,
             self.__dispatcher,
             keyboard_adapter,
+            filter_adapter,
             payload_serializer,
             json_serializer,
         )
