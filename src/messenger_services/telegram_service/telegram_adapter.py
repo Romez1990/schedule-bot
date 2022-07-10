@@ -33,8 +33,14 @@ from .filters import CallbackPayloadFilter
 
 
 class TelegramAdapter(MessengerAdapter):
-    def __init__(self, bot: Bot, dispatcher: Dispatcher, keyboard_adapter: TelegramKeyboardAdapter,
-                 payload_serializer: PayloadSerializer, json_serializer: JsonSerializer) -> None:
+    def __init__(
+            self,
+            bot: Bot,
+            dispatcher: Dispatcher,
+            keyboard_adapter: TelegramKeyboardAdapter,
+            payload_serializer: PayloadSerializer,
+            json_serializer: JsonSerializer,
+    ) -> None:
         self.__bot = bot
         self.__dispatcher = dispatcher
         self.__keyboard_adapter = keyboard_adapter

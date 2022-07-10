@@ -22,7 +22,11 @@ from .vk_keyboard_adapter import VkKeyboardAdapter
 
 
 class VkAdapter(MessengerAdapter):
-    def __init__(self, bot: Bot, keyboard_adapter: VkKeyboardAdapter) -> None:
+    def __init__(
+            self,
+            bot: Bot,
+            keyboard_adapter: VkKeyboardAdapter,
+    ) -> None:
         self.__bot = bot
         self.__api = self.__bot.api
         self.__keyboard_adapter = keyboard_adapter

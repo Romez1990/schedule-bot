@@ -17,11 +17,22 @@ from .telegram_keyboard_adapter import TelegramKeyboardAdapter
 
 @service(to_self=True)
 class TelegramService(MessengerService):
-    def __init__(self, config: Config, keyboard_adapter: TelegramKeyboardAdapter, payload_serializer: PayloadSerializer,
-                 json_serializer: JsonSerializer) -> None:
+    def __init__(
+            self,
+            config: Config,
+            keyboard_adapter: TelegramKeyboardAdapter,
+            payload_serializer: PayloadSerializer,
+            json_serializer: JsonSerializer,
+    ) -> None:
         bot = Bot(config.telegram_bot_token)
         self.__dispatcher = Dispatcher(bot)
-        adapter = TelegramAdapter(bot, self.__dispatcher, keyboard_adapter, payload_serializer, json_serializer)
+        adapter = TelegramAdapter(
+            bot,
+            self.__dispatcher,
+            keyboard_adapter,
+            payload_serializer,
+            json_serializer,
+        )
         super().__init__(adapter)
 
     async def start(self) -> NoReturn:
