@@ -11,7 +11,9 @@ from vkbottle.bot import (
     Message as VkMessage,
     MessageEvent,
 )
-from vkbottle.dispatch.rules.base import CommandRule
+from vkbottle.dispatch.rules.base import (
+    CommandRule,
+)
 
 from data.fp.maybe import Maybe
 from data.serializers import JsonSerializer
