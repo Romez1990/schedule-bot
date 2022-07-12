@@ -1,3 +1,4 @@
 from .chat_repository import ChatRepository
+from .group_subscription_repository import GroupSubscriptionRepository
 from .schedule_hash_repository import ScheduleHashRepository
 from .group_schedule_hash_repository import GroupScheduleHashRepository

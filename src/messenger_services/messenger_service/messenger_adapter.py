@@ -9,7 +9,6 @@ from .structures import (
     Callback,
     Chat,
     KeyboardBase,
-    Payload,
     MessageHandlerParams,
     CallbackHandlerParams,
 )

@@ -49,6 +49,8 @@ class VkAdapter(MessengerAdapter):
         self.__payload_serializer = payload_serializer
         self.__json_serializer = json_serializer
 
+    __messenger_name = 'vk'
+
     async def send_message(self, chat: Chat, text: str, keyboard: KeyboardBase = None) -> None:
         messenger_keyboard = Maybe.from_optional(keyboard) \
             .map(self.__keyboard_adapter.map_keyboard) \
@@ -89,7 +91,7 @@ class VkAdapter(MessengerAdapter):
         return Message(chat, message.text)
 
     def __map_chat_from_message(self, message: VkMessage) -> Chat:
-        return Chat(message.peer_id)
+        return Chat(message.peer_id, self.__messenger_name)
 
     def __map_callback(self, event: MessageEvent) -> Callback:
         chat = self.__map_chat_from_event(event)
@@ -98,7 +100,7 @@ class VkAdapter(MessengerAdapter):
         return Callback(chat, payload, answer)
 
     def __map_chat_from_event(self, event: MessageEvent) -> Chat:
-        return Chat(event.peer_id)
+        return Chat(event.peer_id, self.__messenger_name)
 
     def __map_callback_data(self, data: Mapping[str, object]) -> Payload:
         return self.__payload_serializer.deserialize_from_dict(data)

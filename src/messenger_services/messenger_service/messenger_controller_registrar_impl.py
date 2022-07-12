@@ -16,7 +16,6 @@ from messenger_services.vk_service import VkService
 from .structures import (
     Message,
     Callback,
-    Payload,
     MessageHandlerParamsForRegistrar,
     CallbackHandlerParamsForRegistrar,
     HandlerParamsForRegistrar,

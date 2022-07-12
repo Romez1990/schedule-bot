@@ -59,7 +59,7 @@ class MigrationRunImpl(MigrationRun):
                 raise MigrationSyntaxError(self.__migration, query_name) from error
             return error
 
-        query = getattr(self.__migration.create_relationships, query_name)
+        query = getattr(self.__migration, query_name)
         return self.__data_fetcher.execute(query) \
             .map_left(filter_error) \
             .get_or_raise()

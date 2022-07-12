@@ -7,6 +7,6 @@ class ChatsMigration(Migration):
         CREATE TABLE chats (
             id serial PRIMARY KEY,
             messenger character varying(40) NOT NULL,
-            messenger_id character varying(40) NOT NULL
+            messenger_id int NOT NULL
         )
     '''

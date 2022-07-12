@@ -5,7 +5,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True, eq=False)
 class Chat:
     messenger: str
-    messenger_id: str
+    messenger_id: int
     id: int | None = None
 
     def set_id(self, chat_id: int) -> Chat:

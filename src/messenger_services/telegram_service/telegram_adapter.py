@@ -50,6 +50,8 @@ class TelegramAdapter(MessengerAdapter):
         self.__payload_serializer = payload_serializer
         self.__json_serializer = json_serializer
 
+    __messenger_name = 'telegram'
+
     async def send_message(self, chat: Chat, text: str, keyboard: KeyboardBase = None) -> None:
         messenger_keyboard = Maybe.from_optional(keyboard) \
             .map(self.__keyboard_adapter.map_keyboard) \
@@ -96,7 +98,7 @@ class TelegramAdapter(MessengerAdapter):
         return Callback(chat, payload, answer)
 
     def __map_chat(self, chat: TelegramChat) -> Chat:
-        return Chat(chat.id)
+        return Chat(chat.id, self.__messenger_name)
 
     def __map_callback_data(self, data: str) -> Payload:
         return self.__payload_serializer.deserialize_from_json(data)
