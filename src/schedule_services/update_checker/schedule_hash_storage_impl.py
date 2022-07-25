@@ -27,7 +27,7 @@ class ScheduleHashStorageImpl(ScheduleHashStorage):
 
     @taskify
     async def init(self) -> None:
-        hashes = await self.__schedule_hash_repository.get_all()
+        hashes = await self.__schedule_hash_repository.find_all()
         self.__hashes = {schedule_hash.starts_at: schedule_hash for schedule_hash in hashes}
 
     def get_hashes_by_dates(self, schedule_dates: Sequence[date]) -> Sequence[Maybe[int]]:

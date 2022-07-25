@@ -29,7 +29,7 @@ class GroupScheduleHashStorageImpl(GroupScheduleHashStorage):
 
     @taskify
     async def init(self) -> None:
-        group_schedule_hashes = await self.__group_schedule_hash_repository.get_all()
+        group_schedule_hashes = await self.__group_schedule_hash_repository.find_all()
         List(group_schedule_hashes).map(...)
 
     # def __

@@ -33,16 +33,16 @@ config: Config
 
 @mark.asyncio
 async def test_init__calls_repository() -> None:
-    schedule_hash_repository.get_all = Mock(return_value=Task.from_value([]))
+    schedule_hash_repository.find_all = Mock(return_value=Task.from_value([]))
 
     await schedule_hash_storage.init()
 
-    schedule_hash_repository.get_all.assert_called_once_with()
+    schedule_hash_repository.find_all.assert_called_once_with()
 
 
 @mark.asyncio
 async def test_get_hashes_by_dates__returns_hash__when_repository_returns_it() -> None:
-    schedule_hash_repository.get_all = Mock(return_value=Task.from_value([
+    schedule_hash_repository.find_all = Mock(return_value=Task.from_value([
         ScheduleHash(date(2022, 1, 1), 111),
     ]))
 
@@ -54,7 +54,7 @@ async def test_get_hashes_by_dates__returns_hash__when_repository_returns_it() -
 
 @mark.asyncio
 async def test_get_hashes_by_dates__does_not_return_hash__when_repository_does_not_return_it() -> None:
-    schedule_hash_repository.get_all = Mock(return_value=Task.from_value([]))
+    schedule_hash_repository.find_all = Mock(return_value=Task.from_value([]))
 
     await schedule_hash_storage.init()
 

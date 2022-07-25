@@ -26,7 +26,7 @@ class ThemeRepositoryImpl(ThemeRepository):
         ]
         self.__themes: Mapping[str, Theme] = {theme.name: theme for theme in themes}
 
-    def get_by_name(self, name: str) -> Maybe[Theme]:
+    def find_by_name(self, name: str) -> Maybe[Theme]:
         if name not in self.__themes:
             return Nothing
         return Some(self.__themes[name])

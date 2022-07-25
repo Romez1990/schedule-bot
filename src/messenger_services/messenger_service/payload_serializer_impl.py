@@ -35,6 +35,6 @@ class PayloadSerializerImpl(PayloadSerializer):
         payload_type = data['type']
         if not isinstance(payload_type, str):
             raise RuntimeError
-        payload_class = self.__payload_classes.get_by_type(payload_type)
+        payload_class = self.__payload_classes.find_by_type(payload_type)
         del data['type']
         return payload_class(**data)

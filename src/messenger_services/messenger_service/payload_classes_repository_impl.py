@@ -18,5 +18,5 @@ class PayloadClassesRepositoryImpl(PayloadClassesRepository):
     def save(self, payload_class: Type[Payload]) -> None:
         self.__payloads[payload_class.type] = payload_class
 
-    def get_by_type(self, payload_type: str) -> Type[Payload]:
+    def find_by_type(self, payload_type: str) -> Type[Payload]:
         return self.__payloads[payload_type]

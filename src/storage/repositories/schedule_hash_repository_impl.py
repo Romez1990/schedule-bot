@@ -17,7 +17,7 @@ from .schedule_hash_repository import ScheduleHashRepository
 @service
 class ScheduleHashRepositoryImpl(ScheduleHashRepository, RepositoryBase):
     @taskify
-    async def get_all(self) -> Sequence[ScheduleHash]:
+    async def find_all(self) -> Sequence[ScheduleHash]:
         async with self._get_connection() as connection:
             records = await connection.fetch('''
                 SELECT * FROM schedule_hashes

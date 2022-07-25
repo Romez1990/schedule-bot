@@ -107,7 +107,7 @@ class ScheduleRendererImpl(ScheduleRenderer):
         return self._get_image_bytes()
 
     def _set_theme(self, theme_name: str) -> None:
-        self._theme = self.__themes.get_by_name(theme_name).get_or_raise()
+        self._theme = self.__themes.find_by_name(theme_name).get_or_raise()
 
     def _get_nth_background_color(self, n: int) -> Color:
         background_color_index = n % len(self._theme.background_colors)

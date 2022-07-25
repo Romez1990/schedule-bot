@@ -23,7 +23,7 @@ class MigrationRunnerImpl(MigrationRunner):
                  migrations: MigrationRepository) -> None:
         self.__connection_pool = connection_pool
         self.__migration_run_factory = migration_run_factory
-        self.__migrations = migrations.get_all()
+        self.__migrations = migrations.find_all()
 
     async def run(self) -> None:
         async with self.__connection_pool.get_connection() as connection:
