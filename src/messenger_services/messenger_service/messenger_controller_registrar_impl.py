@@ -11,8 +11,6 @@ from typing import (
 
 from infrastructure.ioc_container import service, Container
 from data.vector import List
-from messenger_services.telegram_service import TelegramService
-from messenger_services.vk_service import VkService
 from .structures import (
     Message,
     Callback,
@@ -24,6 +22,7 @@ from .messenger_controller_registrar import MessengerControllerRegistrar
 from .messenger_service import MessengerService
 from .messenger_adapter import MessengerAdapter
 from .messenger_controller import MessengerController
+from .messenger_service_repository import MessengerServiceRepository
 from .payload_classes_repository import PayloadClassesRepository
 from .decorators import (
     messenger_controllers,
@@ -37,14 +36,10 @@ P = ParamSpec('P')
 
 @service
 class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
-    def __init__(self, payload_classes: PayloadClassesRepository,
-                 telegram: TelegramService,
-                 vk: VkService) -> None:
+    def __init__(self, messenger_services: MessengerServiceRepository,
+                 payload_classes: PayloadClassesRepository) -> None:
+        self.__messenger_services = messenger_services
         self.__payload_classes = payload_classes
-        self.messenger_services: Sequence[MessengerService] = [
-            telegram,
-            vk,
-        ]
 
     def register(self, container: Container) -> None:
         controllers = self.__instantiate_controllers(container)
@@ -60,7 +55,7 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
     def __instantiate_controller(self, container: Container
                                  ) -> Callable[[Type[MessengerController]], Sequence[MessengerController]]:
         def instantiate_controller(controller_class: Type[MessengerController]) -> Sequence[MessengerController]:
-            return List(self.messenger_services) \
+            return List(self.__messenger_services.find_all()) \
                 .map(self.__instantiate_controller_for_messenger(container, controller_class))
 
         return instantiate_controller
@@ -96,7 +91,7 @@ class MessengerControllerRegistrarImpl(MessengerControllerRegistrar):
 
     def __register_handler(self, controllers: Sequence[MessengerController], params: TParams,
                            register_handler: Callable[[MessengerController, MessengerAdapter, TParams], None]) -> None:
-        for messenger_service, controller in zip(self.messenger_services, controllers):
+        for messenger_service, controller in zip(self.__messenger_services.find_all(), controllers):
             adapter = messenger_service.adapter
             register_handler(controller, adapter, params)
 
